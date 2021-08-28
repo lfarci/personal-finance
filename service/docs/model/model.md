@@ -49,7 +49,7 @@
 
 - Date
   - Type: Date.
-  - Constraints: Required.
+  - Constraints: Required. This date should be passed or today.
   - Description: This is the date of the day that the transaction took place in. Time is not relevant.
 
 - Sender bank account
