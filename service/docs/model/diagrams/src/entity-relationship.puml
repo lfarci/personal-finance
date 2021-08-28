@@ -30,7 +30,7 @@ entity "transaction" {
 entity "transaction_category" {
     name: VARCHAR(50) <<PK>>
     description: VARCHAR(255)
-    subcategory: VARCHAR(50) <<FK>>
+    parent: VARCHAR(50) <<FK>>
 }
 
 "owner" ||--|{ "bank_account"
