@@ -19,7 +19,7 @@ class Transaction {
     - description : String
     - category : TransactionCategory
 }
-note bottom: The sender and the recipient should be different.
+note bottom: The sender and the recipient should be different. The date should be passed or present.
 
 class TransactionCategory {
     - name : String
