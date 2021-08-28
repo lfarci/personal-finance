@@ -13,7 +13,7 @@ entity "bank_account" {
     name: VARCHAR(50)
     owner: VARCHAR(50) <<FK>>
     iban: VARCHAR(34)
-    balance: BIGINT
+    balance: DOUBLE PRECISION
 }
 
 entity "transaction" {
@@ -22,7 +22,7 @@ entity "transaction" {
     date: DATE
     sender: BIGINT <<FK>>
     recipient: BIGINT <<FK>>
-    amount: BIGINT
+    amount: DOUBLE PRECISION
     description: VARCHAR(255)
     category: VARCHAR(50) <<FK>>
 }
