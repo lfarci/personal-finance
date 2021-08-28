@@ -1,0 +1,31 @@
+@startuml
+class Owner {
+    - name : String
+}
+
+class BankAccount {
+    - identifier : Long
+    - name : String
+    - iban : String
+    - balance : Long
+}
+
+class Transaction {
+    - identifier : Long
+    - date : Date
+    - sender : BankAccount
+    - recipient : BankAccount
+    - amount : Long
+    - description : String
+    - category : TransactionCategory
+}
+
+class TransactionCategory {
+    - name : String
+    - description : String
+}
+
+TransactionCategory *-- "subcategory" TransactionCategory
+BankAccount "1..*" -- "1..1" Owner : < owns
+BankAccount -- "0..*" Transaction
+@enduml
