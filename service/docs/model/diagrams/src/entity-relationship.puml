@@ -1,0 +1,41 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity "owner" {
+    name: VARCHAR(50) <<PK>>
+    --
+}
+
+entity "bank_account" {
+    id: BIGINT <<generated, PK>>
+    --
+    name: VARCHAR(50)
+    owner: VARCHAR(50) <<FK>>
+    iban: VARCHAR(34)
+    balance: BIGINT
+}
+
+entity "transaction" {
+    id: BIGINT <<generated, PK>>
+    --
+    date: DATE
+    sender: BIGINT <<FK>>
+    recipient: BIGINT <<FK>>
+    amount: BIGINT
+    description: VARCHAR(255)
+    category: VARCHAR(50) <<FK>>
+}
+
+entity "transaction_category" {
+    name: VARCHAR(50) <<PK>>
+    description: VARCHAR(255)
+    subcategory: VARCHAR(50) <<FK>>
+}
+
+"owner" ||--|{ "bank_account"
+"transaction" }o--|| "bank_account"
+"transaction" ||--|| "transaction_category"
+"transaction_category" ||--o{ "transaction_category"
+
+@enduml

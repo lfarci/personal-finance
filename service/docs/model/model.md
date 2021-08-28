@@ -1,6 +1,9 @@
 # Data model
 ## Class diagram
-![Class diagram](.\diagrams\model.png)
+![Class diagram](.\diagrams\class-diagram.png)
+
+## Entity relationship diagram
+![Class diagram](.\diagrams\entity-relationship.png)
 
 ## Details
 ### Owner

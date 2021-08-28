@@ -19,11 +19,13 @@ class Transaction {
     - description : String
     - category : TransactionCategory
 }
+note bottom: The sender and the recipient should be different.
 
 class TransactionCategory {
     - name : String
     - description : String
 }
+note top: A transaction category cannot have itself has a subcategory.
 
 TransactionCategory *-- "subcategory" TransactionCategory
 BankAccount "1..*" -- "1..1" Owner : < owns
