@@ -1,16 +1,17 @@
 package be.loganfarci.financial.service.owner;
 
+import org.hibernate.annotations.Check;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.Size;
 
 @Entity(name = "owner")
+@Check(constraints = "trim(name) <> ''")
 public class OwnerEntity {
 
     @Id
-    @Size(max = 50)
-    @Column(name = "name")
+    @Column(name = "name", length = 50)
     private String name;
 
 }

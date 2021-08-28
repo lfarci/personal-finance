@@ -1,11 +1,8 @@
 package be.loganfarci.financial.service.category;
 
 import org.hibernate.annotations.Check;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
