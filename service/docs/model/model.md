@@ -36,7 +36,7 @@
   - Description: This is a generated sequential identifier.
 
 - Balance
-  - Type: Long.
+  - Type: Double.
   - Constraints: Optional, it should not be specified on external accounts.
   - Description: This is the amount of Euros available on this account.
 
@@ -63,7 +63,7 @@
     - Description: This is the bank account that was credited.
 
 - Amount
-    - Type: Long.
+    - Type: Double.
     - Constraints: Required.
     - Description: This is the amount of Euros that wad transferred.
 
