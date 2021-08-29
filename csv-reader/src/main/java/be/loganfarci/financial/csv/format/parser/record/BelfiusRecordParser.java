@@ -7,7 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.util.Date;
 
-import static be.loganfarci.financial.csv.format.parser.column.ColumnParsers.*;
+import static be.loganfarci.financial.csv.format.parser.column.BelfiusColumnParsers.*;
 
 public class BelfiusRecordParser implements RecordParser<Transaction> {
 
