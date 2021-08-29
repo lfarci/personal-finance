@@ -36,7 +36,7 @@ public class ColumnParsers {
         if (value == null && value.isBlank() && !validator.isValid(value)) {
             return "";
         } else {
-            return value;
+            return value.replaceAll("\\s+", "");
         }
     };
 
