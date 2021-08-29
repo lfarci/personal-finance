@@ -2,10 +2,7 @@ package be.loganfarci.financial.csv.format.parser.record;
 
 import be.loganfarci.financial.csv.format.exception.ColumnParserException;
 import be.loganfarci.financial.csv.format.exception.RecordParserException;
-import be.loganfarci.financial.csv.model.Address;
-import be.loganfarci.financial.csv.model.BankAccount;
-import be.loganfarci.financial.csv.model.Owner;
-import be.loganfarci.financial.csv.model.Transaction;
+import be.loganfarci.financial.csv.model.*;
 import org.apache.commons.csv.CSVRecord;
 
 import java.util.Date;
@@ -31,10 +28,18 @@ public class BelfiusRecordParser implements RecordParser<Transaction> {
         return new RecordParserException(String.format("Failed to parse record %d: %s", record.getRecordNumber(), message), cause);
     }
 
+    private Municipality parseRecipientAddressMunicipality(CSVRecord record) throws RecordParserException {
+        try {
+            return MUNICIPALITY.parse(record.get(RECIPIENT_ADDRESS_MUNICIPALITY_INDEX));
+        } catch (ColumnParserException e) {
+            throw error(record, "could not parse the recipient address municipality.", e);
+        }
+    }
+
     private Address parseRecipientAddress(CSVRecord record) throws RecordParserException {
         try {
             String streetAndNumber = STRING.parse(record.get(RECIPIENT_ADDRESS_STREET_INDEX));
-            String municipality = STRING.parse(record.get(RECIPIENT_ADDRESS_MUNICIPALITY_INDEX));
+            Municipality municipality = parseRecipientAddressMunicipality(record);
             return new Address(streetAndNumber, municipality);
         } catch (ColumnParserException e) {
             throw error(record, "could not parse the recipient address.", e);

@@ -1,6 +1,7 @@
 package be.loganfarci.financial.csv.format.parser.column;
 
 import be.loganfarci.financial.csv.format.exception.ColumnParserException;
+import be.loganfarci.financial.csv.model.Municipality;
 import org.apache.commons.validator.routines.IBANValidator;
 
 import java.text.NumberFormat;
@@ -23,7 +24,7 @@ public class ColumnParsers {
 
     public static ColumnParser<String> IBAN = (String value) -> {
         IBANValidator validator = IBANValidator.getInstance();
-        value = value.replaceAll("\\s+","");
+        value = value.replaceAll("\\s+", "");
         if (!validator.isValid(value)) {
             throw new ColumnParserException("Invalid IBAN: " + value);
         }
@@ -48,6 +49,28 @@ public class ColumnParsers {
         }
     };
 
+    public static ColumnParser<Municipality> MUNICIPALITY = (String value) -> {
+        Municipality municipality = null;
+        if (value != null) {
+            String[] tokens = value.trim().split("\\s+");
+            if (tokens.length == 2) {
+                Integer zipCode = parseToInt(tokens[0], null);
+                if (zipCode != null) {
+                    municipality = new Municipality(tokens[1], zipCode);
+                }
+            }
+        }
+        return municipality;
+    };
+
     public static ColumnParser<String> STRING = (String value) -> value;
 
+    private static Integer parseToInt(String stringToParse, Integer defaultValue) {
+        try {
+            return Integer.parseInt(stringToParse);
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+
+        }
+    }
 }

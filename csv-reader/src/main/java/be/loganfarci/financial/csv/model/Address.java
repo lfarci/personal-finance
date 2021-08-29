@@ -3,9 +3,9 @@ package be.loganfarci.financial.csv.model;
 public class Address {
 
     private final String streetAndNumber;
-    private final String municipality;
+    private final Municipality municipality;
 
-    public Address(String streetAndNumber, String municipality) {
+    public Address(String streetAndNumber, Municipality municipality) {
         this.streetAndNumber = streetAndNumber;
         this.municipality = municipality;
     }
@@ -14,7 +14,7 @@ public class Address {
         return streetAndNumber;
     }
 
-    public String getMunicipality() {
+    public Municipality getMunicipality() {
         return municipality;
     }
 
