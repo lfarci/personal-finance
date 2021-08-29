@@ -24,10 +24,6 @@ public class BelfiusRecordParser implements RecordParser<Transaction> {
     private static final int RECIPIENT_ADDRESS_STREET_INDEX = 6;
     private static final int RECIPIENT_ADDRESS_MUNICIPALITY_INDEX = 7;
 
-    private RecordParserException error(CSVRecord record, String message, Throwable cause) {
-        return new RecordParserException(String.format("Failed to parse record %d: %s", record.getRecordNumber(), message), cause);
-    }
-
     private Municipality parseRecipientAddressMunicipality(CSVRecord record) throws RecordParserException {
         try {
             return MUNICIPALITY.parse(record.get(RECIPIENT_ADDRESS_MUNICIPALITY_INDEX));
@@ -100,5 +96,9 @@ public class BelfiusRecordParser implements RecordParser<Transaction> {
         } catch (ColumnParserException e) {
             throw error(record, "could not parse the transaction.", e);
         }
+    }
+
+    private RecordParserException error(CSVRecord record, String message, Throwable cause) {
+        return new RecordParserException(String.format("Failed to parse record %d: %s", record.getRecordNumber(), message), cause);
     }
 }

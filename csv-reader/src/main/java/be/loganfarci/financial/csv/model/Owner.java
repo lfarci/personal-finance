@@ -10,6 +10,10 @@ public class Owner {
         this.address = address;
     }
 
+    public Owner(String name) {
+        this(name, null);
+    }
+
     public Owner() {
         this(null, null);
     }

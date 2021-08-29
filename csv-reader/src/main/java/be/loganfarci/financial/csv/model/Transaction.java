@@ -6,16 +6,20 @@ public class Transaction {
 
     private final Date date;
     private final Double amount;
-    private final BankAccount sender;
-    private final BankAccount recipient;
+    private final BankAccount internalBankAccount;
+    private final BankAccount externalBankAccount;
     private final String description;
 
-    public Transaction(Date date, Double amount, BankAccount sender, BankAccount recipient, String description) {
+    public Transaction(Date date, Double amount, BankAccount internalBankAccount, BankAccount externalBankAccount, String description) {
         this.date = date;
         this.amount = amount;
-        this.sender = sender;
-        this.recipient = recipient;
+        this.internalBankAccount = internalBankAccount;
+        this.externalBankAccount = externalBankAccount;
         this.description = description;
+    }
+
+    public Transaction(Date date, Double amount, BankAccount externalBankAccount) {
+        this(date, amount, null, externalBankAccount, null);
     }
 
     public Date getDate() {
@@ -26,12 +30,12 @@ public class Transaction {
         return amount;
     }
 
-    public BankAccount getSender() {
-        return sender;
+    public BankAccount getInternalBankAccount() {
+        return internalBankAccount;
     }
 
-    public BankAccount getRecipient() {
-        return recipient;
+    public BankAccount getExternalBankAccount() {
+        return externalBankAccount;
     }
 
     public String getDescription() {
@@ -43,8 +47,8 @@ public class Transaction {
         return "Transaction{" +
                 "date=" + date +
                 ", amount=" + amount +
-                ", sender=" + sender +
-                ", recipient=" + recipient +
+                ", internal=" + internalBankAccount +
+                ", external=" + externalBankAccount +
                 ", description='" + description + '\'' +
                 '}';
     }
