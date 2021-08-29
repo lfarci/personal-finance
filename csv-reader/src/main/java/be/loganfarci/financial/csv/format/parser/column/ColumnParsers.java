@@ -1,6 +1,6 @@
-package be.loganfarci.financial.csv;
+package be.loganfarci.financial.csv.format.parser.column;
 
-import be.loganfarci.financial.csv.exception.ColumnParserException;
+import be.loganfarci.financial.csv.format.exception.ColumnParserException;
 import org.apache.commons.validator.routines.IBANValidator;
 
 import java.text.NumberFormat;
@@ -30,6 +30,15 @@ public class ColumnParsers {
         return value;
     };
 
+    public static ColumnParser<String> OPTIONAL_IBAN = (String value) -> {
+        IBANValidator validator = IBANValidator.getInstance();
+        if (value == null && value.isBlank() && !validator.isValid(value)) {
+            return "";
+        } else {
+            return value;
+        }
+    };
+
     public static ColumnParser<Date> DATE = (String value) -> {
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -38,5 +47,7 @@ public class ColumnParsers {
             throw new ColumnParserException("Invalid date: " + value);
         }
     };
+
+    public static ColumnParser<String> STRING = (String value) -> value;
 
 }

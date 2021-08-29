@@ -1,4 +1,4 @@
-package be.loganfarci.financial.csv.model.owner;
+package be.loganfarci.financial.csv.model;
 
 public class Owner {
 
@@ -10,11 +10,23 @@ public class Owner {
         this.address = address;
     }
 
+    public Owner() {
+        this(null, null);
+    }
+
     public String getName() {
         return name;
     }
 
     public Address getAddress() {
         return address;
+    }
+
+    @Override
+    public String toString() {
+        return "Owner{" +
+                "name='" + name + '\'' +
+                ", address=" + address +
+                '}';
     }
 }

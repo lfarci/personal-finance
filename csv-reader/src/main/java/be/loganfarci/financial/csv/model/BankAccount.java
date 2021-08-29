@@ -1,7 +1,5 @@
 package be.loganfarci.financial.csv.model;
 
-import be.loganfarci.financial.csv.model.owner.Owner;
-
 public class BankAccount {
 
     private final Owner owner;
@@ -24,5 +22,14 @@ public class BankAccount {
 
     public String getBic() {
         return bic;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "owner=" + owner +
+                ", iban='" + iban + '\'' +
+                ", bic='" + bic + '\'' +
+                '}';
     }
 }

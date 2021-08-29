@@ -1,6 +1,7 @@
 package be.loganfarci.financial.csv;
 
-import be.loganfarci.financial.csv.exception.ColumnParserException;
+import be.loganfarci.financial.csv.format.exception.ColumnParserException;
+import be.loganfarci.financial.csv.format.parser.column.ColumnParsers;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

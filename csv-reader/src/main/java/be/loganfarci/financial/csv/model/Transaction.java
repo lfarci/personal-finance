@@ -1,6 +1,6 @@
 package be.loganfarci.financial.csv.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Transaction {
 
@@ -8,16 +8,14 @@ public class Transaction {
     private final Double amount;
     private final BankAccount sender;
     private final BankAccount recipient;
-    private final String transaction;
-    private final String communication;
+    private final String description;
 
-    public Transaction(Date date, Double amount, BankAccount sender, BankAccount recipient, String transaction, String communication) {
+    public Transaction(Date date, Double amount, BankAccount sender, BankAccount recipient, String description) {
         this.date = date;
         this.amount = amount;
         this.sender = sender;
         this.recipient = recipient;
-        this.transaction = transaction;
-        this.communication = communication;
+        this.description = description;
     }
 
     public Date getDate() {
@@ -36,11 +34,18 @@ public class Transaction {
         return recipient;
     }
 
-    public String getTransaction() {
-        return transaction;
+    public String getDescription() {
+        return description;
     }
 
-    public String getCommunication() {
-        return communication;
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "date=" + date +
+                ", amount=" + amount +
+                ", sender=" + sender +
+                ", recipient=" + recipient +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
