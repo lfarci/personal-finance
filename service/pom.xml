@@ -11,7 +11,7 @@
 	<groupId>be.loganfarci</groupId>
 	<artifactId>financial.service</artifactId>
 	<version>0.0.1</version>
-	<name>financial.service</name>
+	<name>Financial Web Service</name>
 	<description>Handles some personal finance tasks.</description>
 	<properties>
 		<java.version>11</java.version>
@@ -30,6 +30,7 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Persistence -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -44,6 +45,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Internal packages -->
+		<dependency>
+			<groupId>be.loganfarci</groupId>
+			<artifactId>financial.csv-reader</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 	</dependencies>
 

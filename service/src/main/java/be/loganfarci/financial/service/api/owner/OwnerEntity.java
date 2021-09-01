@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.owner;
+package be.loganfarci.financial.service.api.owner;
 
 import org.hibernate.annotations.Check;
 

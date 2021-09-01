@@ -1,6 +1,6 @@
-package be.loganfarci.financial.service.account;
+package be.loganfarci.financial.service.api.account;
 
-import be.loganfarci.financial.service.owner.OwnerEntity;
+import be.loganfarci.financial.service.api.owner.OwnerEntity;
 import org.hibernate.annotations.Check;
 
 import javax.persistence.*;

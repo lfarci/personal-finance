@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.account;
+package be.loganfarci.financial.service.api.account;
 
 import org.springframework.data.repository.CrudRepository;
 

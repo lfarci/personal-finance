@@ -1,7 +1,7 @@
-package be.loganfarci.financial.service.transaction;
+package be.loganfarci.financial.service.api.transaction;
 
-import be.loganfarci.financial.service.account.BankAccountEntity;
-import be.loganfarci.financial.service.category.TransactionCategoryEntity;
+import be.loganfarci.financial.service.api.account.BankAccountEntity;
+import be.loganfarci.financial.service.api.category.TransactionCategoryEntity;
 import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
