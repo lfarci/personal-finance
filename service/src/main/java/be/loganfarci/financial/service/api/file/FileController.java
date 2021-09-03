@@ -19,8 +19,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class FileController {
 
-    Logger logger = LoggerFactory.getLogger(FileController.class);
-
+    private final Logger logger = LoggerFactory.getLogger(FileController.class);
     private final FileService service;
 
     public FileController(FileService service) {

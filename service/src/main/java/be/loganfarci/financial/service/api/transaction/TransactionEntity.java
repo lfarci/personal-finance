@@ -42,4 +42,77 @@ public class TransactionEntity {
     @JoinColumn(name = "category", referencedColumnName = "name")
     private TransactionCategoryEntity category;
 
+    public TransactionEntity(Date date, BankAccountEntity sender, BankAccountEntity recipient, Double amount, String description, TransactionCategoryEntity category) {
+        this.id = 0L;
+        this.date = date;
+        this.sender = sender;
+        this.recipient = recipient;
+        this.amount = amount;
+        this.description = description;
+        this.category = category;
+    }
+
+    public TransactionEntity(Date date, BankAccountEntity sender, BankAccountEntity recipient, Double amount, String description) {
+        this(date, sender, recipient, amount, description, null);
+    }
+
+    public TransactionEntity() {
+        this(null, null, null, null, null);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public BankAccountEntity getSender() {
+        return sender;
+    }
+
+    public BankAccountEntity getRecipient() {
+        return recipient;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public TransactionCategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setSender(BankAccountEntity sender) {
+        this.sender = sender;
+    }
+
+    public void setRecipient(BankAccountEntity recipient) {
+        this.recipient = recipient;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(TransactionCategoryEntity category) {
+        this.category = category;
+    }
 }
