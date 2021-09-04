@@ -6,19 +6,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class OwnerService {
 
-    private final OwnerMapper ownerMapper;
     private final OwnerRepository ownerRepository;
 
-    public OwnerService(OwnerMapper ownerMapper, OwnerRepository ownerRepository) {
-        this.ownerMapper = ownerMapper;
+    public OwnerService(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
     }
 
     public OwnerEntity save(Owner owner) {
-        OwnerEntity entity = null;
-        if (owner != null && !owner.getName().isBlank()) {
-            entity = ownerRepository.save(ownerMapper.toEntity(owner));
-        }
-        return entity;
+        OwnerEntity entity = new OwnerEntity();
+        entity.setName(owner.getName());
+        return ownerRepository.save(entity);
     }
 }

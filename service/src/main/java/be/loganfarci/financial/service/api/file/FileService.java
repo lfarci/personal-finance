@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 @Service
@@ -22,8 +23,9 @@ public class FileService {
     }
 
     @Async
-    public void loadTransactions(InputStream inputStream) {
+    public void loadTransactions(byte[] bytes) {
         try {
+            InputStream inputStream = new ByteArrayInputStream(bytes);
             Transactions transactions = FinancialCSVFileReader.read(inputStream);
             for(int i = 0; i < transactions.size(); i++){
                 transactionService.save(transactions.get(i));

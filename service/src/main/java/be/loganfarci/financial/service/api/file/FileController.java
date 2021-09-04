@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Controller
@@ -29,7 +28,7 @@ public class FileController {
     @PostMapping("/files")
     public ResponseEntity handleCSVFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         logger.info("Handle CSV file upload: " + file.getOriginalFilename());
-        service.loadTransactions(new ByteArrayInputStream(file.getBytes()));
+        service.loadTransactions(file.getBytes());
         return new ResponseEntity(HttpStatus.OK);
     }
 

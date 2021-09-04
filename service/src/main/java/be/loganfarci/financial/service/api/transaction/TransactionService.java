@@ -1,12 +1,7 @@
 package be.loganfarci.financial.service.api.transaction;
 
-import be.loganfarci.financial.csv.model.BankAccount;
-import be.loganfarci.financial.csv.model.Owner;
 import be.loganfarci.financial.csv.model.Transaction;
-import be.loganfarci.financial.service.api.account.BankAccountEntity;
-import be.loganfarci.financial.service.api.account.BankAccountRepository;
 import be.loganfarci.financial.service.api.account.BankAccountService;
-import be.loganfarci.financial.service.api.owner.OwnerEntity;
 import be.loganfarci.financial.service.api.owner.OwnerService;
 import org.springframework.stereotype.Service;
 
