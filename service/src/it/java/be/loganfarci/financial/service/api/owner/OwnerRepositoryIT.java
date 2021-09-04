@@ -46,7 +46,7 @@ public class OwnerRepositoryIT {
 
     @Test
     public void shouldReturnExpectedEntityWhenSavingValidOwner() {
-        String ownerName = "Checking account";
+        String ownerName = "Owner";
         OwnerEntity entity = ownerRepository.saveAndFlush(new OwnerEntity(ownerName));
         assertThat(entity.getName()).isEqualTo(ownerName);
     }
