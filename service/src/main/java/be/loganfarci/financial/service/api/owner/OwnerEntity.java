@@ -1,10 +1,12 @@
 package be.loganfarci.financial.service.api.owner;
 
+import be.loganfarci.financial.service.api.account.BankAccountEntity;
 import org.hibernate.annotations.Check;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity(name = "owner")
 @Check(constraints = "trim(name) <> ''")
@@ -17,6 +19,9 @@ public class OwnerEntity {
     @Id
     @Column(name = NAME_COLUMN_NAME, length = NAME_COLUMN_LENGTH)
     private String name;
+
+    @OneToMany(mappedBy = "owner", cascade = ALL, orphanRemoval = true)
+    private List<BankAccountEntity> bankAccounts;
 
     public OwnerEntity(String name) {
         this.name = name;

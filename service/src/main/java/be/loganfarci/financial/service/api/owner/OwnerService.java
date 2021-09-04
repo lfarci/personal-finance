@@ -13,8 +13,14 @@ public class OwnerService {
     }
 
     public OwnerEntity save(Owner owner) {
-        OwnerEntity entity = new OwnerEntity();
-        entity.setName(owner.getName());
-        return ownerRepository.save(entity);
+        if (ownerRepository.existsById(owner.getName())) {
+            throw new IllegalStateException();
+        } else {
+            OwnerEntity entity = new OwnerEntity();
+            entity.setName(owner.getName());
+            return ownerRepository.save(entity);
+        }
+
+
     }
 }

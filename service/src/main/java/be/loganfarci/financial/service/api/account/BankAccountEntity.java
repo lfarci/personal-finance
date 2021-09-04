@@ -6,6 +6,8 @@ import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity(name = "bank_account")
 @Check(constraints = "trim(name) <> ''")
 public class BankAccountEntity {
@@ -23,7 +25,7 @@ public class BankAccountEntity {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @OneToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "owner", referencedColumnName = "name")
     private OwnerEntity owner;
 
