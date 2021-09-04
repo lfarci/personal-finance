@@ -2,7 +2,7 @@ package be.loganfarci.financial.service.api.owner;
 
 import be.loganfarci.financial.csv.model.Owner;
 import be.loganfarci.financial.service.api.owner.exception.OwnerEntityAlreadyExistsException;
-import be.loganfarci.financial.service.api.owner.exception.OwnerEntityConstraintViolationException;
+import be.loganfarci.financial.service.api.owner.exception.OwnerEntityIsInvalidException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,10 +37,6 @@ public class OwnerServiceIT {
         assertThat(thrown).isInstanceOf(OwnerEntityAlreadyExistsException.class);
     }
 
-    private Throwable catchThrowableFor(Owner owner) {
-        return catchThrowable(() -> saveOwner(owner));
-    }
-
     @Test
     public void shouldThrowNullPointerExceptionWhenSavingNull() {
         OwnerService ownerService = new OwnerService(ownerRepository);
@@ -49,21 +45,25 @@ public class OwnerServiceIT {
     }
 
     @Test
-    public void shouldThrowConstraintViolationWhenSavingOwnerWithBlankName() {
+    public void shouldThrowOwnerIsInvalidWhenSavingOwnerWithBlankName() {
         Throwable thrown = catchThrowable(() -> saveOwner(new Owner("")));
-        assertThat(thrown).isInstanceOf(OwnerEntityConstraintViolationException.class);
+        assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
     }
 
     @Test
-    public void shouldThrowConstraintViolationWhenSavingOwnerWithTooLongName() {
+    public void shouldThrowOwnerIsInvalidWhenSavingOwnerWithTooLongName() {
         Throwable thrown = catchThrowable(() -> saveOwner(new Owner("Lorem ipsum dolor sit amet, consectetur massa nunc.")));
-        assertThat(thrown).isInstanceOf(OwnerEntityConstraintViolationException.class);
+        assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
     }
 
     @Test
     public void shouldThrowNullPointerExceptionWhenSavingOwnerWithoutName() {
         Throwable thrown = catchThrowable(() -> saveOwner(new Owner(null)));
         assertThat(thrown).isInstanceOf(NullPointerException.class);
+    }
+
+    private Throwable catchThrowableFor(Owner owner) {
+        return catchThrowable(() -> saveOwner(owner));
     }
 
     private OwnerEntity saveOwner(Owner owner) {
