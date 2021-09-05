@@ -83,6 +83,11 @@
 			<artifactId>financial.csv-reader</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.7</version>
+		</dependency>
 
 	</dependencies>
 

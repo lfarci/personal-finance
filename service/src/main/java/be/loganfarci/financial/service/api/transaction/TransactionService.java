@@ -59,8 +59,8 @@ public class TransactionService {
         Objects.requireNonNull(transaction, "A transaction is required");
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setDate(new Date(transaction.getDate().getTime()));
-        transactionEntity.setSender(bankAccountService.save(transaction.getInternalBankAccount()));
-        transactionEntity.setRecipient(bankAccountService.save(transaction.getExternalBankAccount()));
+//        transactionEntity.setSender(bankAccountService.save(transaction.getInternalBankAccount()));
+//        transactionEntity.setRecipient(bankAccountService.save(transaction.getExternalBankAccount()));
         transactionEntity.setAmount(transaction.getAmount());
         transactionEntity.setDescription(transaction.getDescription());
         transactionRepository.save(transactionEntity);

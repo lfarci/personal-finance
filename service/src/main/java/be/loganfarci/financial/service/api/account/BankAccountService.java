@@ -1,46 +1,84 @@
 package be.loganfarci.financial.service.api.account;
 
-import be.loganfarci.financial.csv.model.BankAccount;
-import be.loganfarci.financial.csv.model.Owner;
+import be.loganfarci.financial.service.api.account.dto.BankAccountDto;
+import be.loganfarci.financial.service.api.account.exception.BankAccountEntityNotFoundException;
+import be.loganfarci.financial.service.api.account.exception.BankAccountIsInvalidException;
 import be.loganfarci.financial.service.api.owner.OwnerEntity;
 import be.loganfarci.financial.service.api.owner.OwnerService;
-import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
+import be.loganfarci.financial.service.api.owner.exception.OwnerNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class BankAccountService {
 
-    private final BankAccountMapper bankAccountMapper;
+    private final BankAccountValidator bankAccountValidator;
     private final BankAccountRepository bankAccountRepository;
     private final OwnerService ownerService;
 
     public BankAccountService(
-            BankAccountMapper bankAccountMapper,
+            BankAccountValidator bankAccountValidator,
             BankAccountRepository bankAccountRepository,
             OwnerService ownerService
     ) {
-        this.bankAccountMapper = bankAccountMapper;
+        this.bankAccountValidator = bankAccountValidator;
         this.bankAccountRepository = bankAccountRepository;
         this.ownerService = ownerService;
     }
 
-
-    private OwnerEntity saveOwnerEntity(OwnerDto owner) {
-        OwnerEntity entity;
-        if (ownerService.existsByName(owner.getName())) {
-            entity = ownerService.findByName(owner.getName());
-        } else {
-            entity = ownerService.save(owner);
-        }
-        return entity;
+    public boolean exists(BankAccountDto bankAccount) {
+        return hasExistingOwner(bankAccount) && exists(bankAccount.getName(), bankAccount.getOwner().getName());
     }
 
-    public BankAccountEntity save(BankAccount bankAccount) {
-        BankAccountEntity entity = new BankAccountEntity();
-        entity.setName("Unknown bank account");
+    public BankAccountEntity save(BankAccountDto bankAccount) {
+        BankAccountEntity entity;
+        OwnerEntity owner;
+
+        if (bankAccount == null) {
+            throw new IllegalArgumentException("Bank account is null.");
+        }
+
+        if (hasExistingOwner(bankAccount)) {
+            owner = ownerService.findByName(bankAccount.getOwner().getName());
+        } else {
+            throw new OwnerNotFoundException(bankAccount.getOwner().getName());
+        }
+
+        if (exists(bankAccount)) {
+            entity = find(bankAccount);
+        } else {
+            entity = new BankAccountEntity();
+        }
+
+        bankAccountValidator.requireValid(bankAccount);
+        entity.setName(bankAccount.getName());
+        entity.setOwner(owner);
         entity.setIban(bankAccount.getIban());
-//        entity.setOwner(ownerService.save(bankAccount.getOwner()));
-        entity.setBalance(0.0);
+        entity.setBalance(bankAccount.getBalance());
         return bankAccountRepository.save(entity);
     }
+
+    private BankAccountEntity findByNameAndOwnerName(String name, String ownerName) {
+        Optional<BankAccountEntity> entity = bankAccountRepository.findByNameAndOwnerName(name, ownerName);
+        return entity.orElseThrow(() -> new BankAccountEntityNotFoundException(name, ownerName));
+    }
+
+    private BankAccountEntity find(BankAccountDto bankAccount) {
+        return findByNameAndOwnerName(bankAccount.getName(), bankAccount.getOwner().getName());
+    }
+
+    private boolean isValidBankAccount(BankAccountDto bankAccount) {
+        return bankAccountValidator.isValid(bankAccount);
+    }
+
+    private boolean hasExistingOwner(BankAccountDto bankAccount) {
+        return bankAccount != null && bankAccount.getOwner() != null
+                && ownerService.existsByName(bankAccount.getOwner().getName());
+    }
+
+    private boolean exists(String name, String owner) {
+        return bankAccountRepository.existsByNameAndOwnerName(name, owner);
+    }
+
 }

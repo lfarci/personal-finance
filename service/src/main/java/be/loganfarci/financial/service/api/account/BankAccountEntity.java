@@ -1,6 +1,5 @@
 package be.loganfarci.financial.service.api.account;
 
-import be.loganfarci.financial.csv.model.BankAccount;
 import be.loganfarci.financial.service.api.owner.OwnerEntity;
 import org.hibernate.annotations.Check;
 
@@ -9,8 +8,13 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity(name = "bank_account")
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "name", "owner" })
+})
 @Check(constraints = "trim(name) <> ''")
 public class BankAccountEntity {
+
+    public static final int BANK_ACCOUNT_NAME_LENGTH = 50;
 
     @Id
     @GeneratedValue(generator = "account_sequence_generator", strategy = GenerationType.SEQUENCE)
@@ -22,14 +26,14 @@ public class BankAccountEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = "name", length = BANK_ACCOUNT_NAME_LENGTH, nullable = false)
     private String name;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "owner", referencedColumnName = "name")
     private OwnerEntity owner;
 
-    @Column(name = "iban", length = 34)
+    @Column(name = "iban", length = 34, unique = true)
     private String iban;
 
     @Column(name = "balance")
