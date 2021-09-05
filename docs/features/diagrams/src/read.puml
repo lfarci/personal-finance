@@ -1,0 +1,20 @@
+@startuml
+start
+:01. Read a CSV file to transactions.;
+if (Do the file has a known format?) then (yes)
+    repeat
+        if (Line has valid data?) then (yes)
+            :02. Parse line to transaction.;
+            :03. Save transaction in memory.;
+        else (no)
+            :04. Error: Could not parse the transaction;
+            stop
+        endif
+    repeat while (More transactions?) is (yes)
+    ->no;
+    stop
+else (false)
+    :05.Error: unknown file format.;
+    stop
+endif
+@enduml

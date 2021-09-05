@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:01. Import a CSV file to database;
+if (Can read file content?) then (yes)
+    :02. Parse file to transactions;
+    repeat
+        :03. Write transaction to database.;
+    repeat while (More transactions?) is (yes)
+    ->no;
+    stop
+else (no)
+    :04. Error: Could not read the file.;
+    stop
+endif
+
+@enduml
