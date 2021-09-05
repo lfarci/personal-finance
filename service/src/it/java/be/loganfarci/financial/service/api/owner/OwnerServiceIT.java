@@ -1,6 +1,6 @@
 package be.loganfarci.financial.service.api.owner;
 
-import be.loganfarci.financial.csv.model.Owner;
+import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
 import be.loganfarci.financial.service.api.owner.exception.OwnerEntityAlreadyExistsException;
 import be.loganfarci.financial.service.api.owner.exception.OwnerEntityIsInvalidException;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ public class OwnerServiceIT {
 
     @Test
     public void shouldThrowOwnerAlreadyExistsWhenSavingExistingOwner() {
-        Owner owner = new Owner("Name");
+        OwnerDto owner = new OwnerDto("Name");
         saveOwner(owner);
         Throwable thrown = catchThrowableFor(owner);
         assertThat(thrown).isInstanceOf(OwnerEntityAlreadyExistsException.class);
@@ -40,33 +40,33 @@ public class OwnerServiceIT {
     @Test
     public void shouldThrowNullPointerExceptionWhenSavingNull() {
         OwnerService ownerService = new OwnerService(ownerRepository);
-        Throwable thrown = catchThrowable(() -> ownerService.save(null));
+        Throwable thrown = catchThrowable(() -> ownerService.save((OwnerDto) null));
         assertThat(thrown).isInstanceOf(NullPointerException.class);
     }
 
     @Test
     public void shouldThrowOwnerIsInvalidWhenSavingOwnerWithBlankName() {
-        Throwable thrown = catchThrowable(() -> saveOwner(new Owner("")));
+        Throwable thrown = catchThrowable(() -> saveOwner(new OwnerDto("")));
         assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
     }
 
     @Test
     public void shouldThrowOwnerIsInvalidWhenSavingOwnerWithTooLongName() {
-        Throwable thrown = catchThrowable(() -> saveOwner(new Owner("Lorem ipsum dolor sit amet, consectetur massa nunc.")));
+        Throwable thrown = catchThrowable(() -> saveOwner(new OwnerDto("Lorem ipsum dolor sit amet, consectetur massa nunc.")));
         assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
     }
 
     @Test
     public void shouldThrowNullPointerExceptionWhenSavingOwnerWithoutName() {
-        Throwable thrown = catchThrowable(() -> saveOwner(new Owner(null)));
+        Throwable thrown = catchThrowable(() -> saveOwner(new OwnerDto(null)));
         assertThat(thrown).isInstanceOf(NullPointerException.class);
     }
 
-    private Throwable catchThrowableFor(Owner owner) {
+    private Throwable catchThrowableFor(OwnerDto owner) {
         return catchThrowable(() -> saveOwner(owner));
     }
 
-    private OwnerEntity saveOwner(Owner owner) {
+    private OwnerEntity saveOwner(OwnerDto owner) {
         OwnerService ownerService = new OwnerService(ownerRepository);
         return ownerService.save(owner);
     }

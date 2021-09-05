@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.file;
+package be.loganfarci.financial.service.api.transaction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,19 +16,19 @@ import java.io.IOException;
 @Controller
 @CrossOrigin("*")
 @RequestMapping("/api")
-public class FileController {
+public class TransactionController {
 
-    private final Logger logger = LoggerFactory.getLogger(FileController.class);
-    private final FileService service;
+    private final Logger logger = LoggerFactory.getLogger(TransactionController.class);
+    private final TransactionService service;
 
-    public FileController(FileService service) {
+    public TransactionController(TransactionService service) {
         this.service = service;
     }
 
-    @PostMapping("/files")
+    @PostMapping("/transactions/files")
     public ResponseEntity handleCSVFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         logger.info("Handle CSV file upload: " + file.getOriginalFilename());
-        service.loadTransactions(file.getBytes());
+        service.saveTransactionsFrom(file.getBytes());
         return new ResponseEntity(HttpStatus.OK);
     }
 

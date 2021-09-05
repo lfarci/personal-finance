@@ -1,6 +1,6 @@
 package be.loganfarci.financial.service.api.owner;
 
-import be.loganfarci.financial.csv.model.Owner;
+import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
 import be.loganfarci.financial.service.api.owner.exception.OwnerEntityAlreadyExistsException;
 import be.loganfarci.financial.service.api.owner.exception.OwnerEntityIsInvalidException;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
@@ -25,13 +27,21 @@ public class OwnerServiceTests {
     }
 
     @Test
+    public void shouldReturnEntityWhenFindingAnExistingEntity() {
+        OwnerService service = new OwnerService(ownerRepository);
+        Optional<OwnerEntity> entity = Optional.of(new OwnerEntity("name"));
+        when(ownerRepository.findById(anyString())).thenReturn(entity);
+        assertThat(service.findByName("name")).isSameAs(entity.get());
+    }
+
+    @Test
     public void shouldThrowNullPointerExceptionWhenSavingNull() {
         assertInstanceException(null, NullPointerException.class);
     }
 
     @Test
     public void shouldThrowNullPointerExceptionWhenSavingOwnerWithoutName() {
-        assertInstanceException(new Owner(null), NullPointerException.class);
+        assertInstanceException(new OwnerDto(null), NullPointerException.class);
     }
 
     @Test
@@ -46,7 +56,7 @@ public class OwnerServiceTests {
 
     @Test
     public void shouldThrowOwnerAlreadyExistsExceptionWhenSavingExistingOwner() {
-        assertInstanceException(new Owner("Name"), OwnerEntityAlreadyExistsException.class);
+        assertInstanceException(new OwnerDto("Name"), OwnerEntityAlreadyExistsException.class);
     }
 
     @Test
@@ -55,16 +65,16 @@ public class OwnerServiceTests {
         String ownerName = "Owner name";
         lenient().when(ownerRepository.existsById(anyString())).thenReturn(false);
         when(ownerRepository.save(any())).thenReturn(new OwnerEntity(ownerName));
-        assertThat(service.save(new Owner(ownerName)).getName()).isEqualTo(ownerName);
+        assertThat(service.save(new OwnerDto(ownerName)).getName()).isEqualTo(ownerName);
     }
 
     private void assertInvalidOwnerIsInvalidFor(String s) {
         lenient().when(ownerRepository.save(any())).thenReturn(new OwnerEntity(s));
-        Throwable thrown = catchThrowable(() -> new OwnerService(ownerRepository).save(new Owner(s)));
+        Throwable thrown = catchThrowable(() -> new OwnerService(ownerRepository).save(new OwnerDto(s)));
         assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
     }
 
-    public void assertInstanceException(Owner owner, Class<?> exceptionClass) {
+    public void assertInstanceException(OwnerDto owner, Class<?> exceptionClass) {
         Throwable thrown = catchThrowable(() -> new OwnerService(ownerRepository).save(owner));
         assertThat(thrown).isInstanceOf(exceptionClass);
     }
