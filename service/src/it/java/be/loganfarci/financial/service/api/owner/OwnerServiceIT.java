@@ -25,7 +25,7 @@ public class OwnerServiceIT {
     private OwnerRepository ownerRepository;
 
     @BeforeEach
-    public void tearDown() {
+    public void setUp() {
         ownerRepository.deleteAll();
     }
 

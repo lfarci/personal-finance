@@ -61,4 +61,36 @@ public class BankAccountDto {
         this.balance = balance;
     }
 
+    public BankAccountDto iban(String iban) {
+        setIban(iban);
+        return this;
+    }
+
+    public BankAccountDto name(String name) {
+        setName(name);
+        return this;
+    }
+
+    public BankAccountDto owner(OwnerDto owner) {
+        setOwner(owner);
+        return this;
+    }
+
+    public BankAccountDto balance(Double balance) {
+        setBalance(balance);
+        return this;
+    }
+
+    public static BankAccountDto with(OwnerDto owner) {
+        return with("Unknown", owner, "BE82957211769368", 0.0);
+    }
+
+    public static BankAccountDto get() {
+        return with("Unknown", new OwnerDto("Name"), "BE82957211769368", 0.0);
+    }
+
+    public static BankAccountDto with(String name, OwnerDto owner, String iban, Double balance) {
+        return new BankAccountDto(name, owner, iban, balance);
+    }
+
 }

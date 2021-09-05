@@ -1,13 +1,11 @@
 package be.loganfarci.financial.service.api.account;
 
 import be.loganfarci.financial.service.api.account.dto.BankAccountDto;
-import be.loganfarci.financial.service.api.account.exception.BankAccountEntityNotFoundException;
 import be.loganfarci.financial.service.api.account.exception.BankAccountIsInvalidException;
 import be.loganfarci.financial.service.api.owner.OwnerEntity;
 import be.loganfarci.financial.service.api.owner.OwnerService;
 import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
 import be.loganfarci.financial.service.api.owner.exception.OwnerNotFoundException;
-import org.assertj.core.api.AbstractThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
