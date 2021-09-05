@@ -60,22 +60,14 @@ public enum FinancialCSVFormat {
         return record.stream().anyMatch(value -> areEqual(value, expectedValue));
     }
 
-    public boolean canRead(File file) throws FinancialCSVFormatException {
-        try {
-            Iterator<CSVRecord> records = records(new FileReader(file, charset)).iterator();
-            CSVRecord record = records.next();
-            return records.hasNext() && Arrays.stream(headers).allMatch(header -> isInRecord(record, header));
-        } catch (IOException e) {
-            throw new FinancialCSVFormatException("Could not read file: " + file.getPath());
-        }
+    public boolean canRead(InputStream inputStream) throws FinancialCSVFormatException {
+        Iterator<CSVRecord> records = records(new InputStreamReader(inputStream, charset)).iterator();
+        CSVRecord record = records.next();
+        return records.hasNext() && Arrays.stream(headers).allMatch(header -> isInRecord(record, header));
     }
 
-    public Transactions parse(File file) throws FinancialCSVFormatException {
-        try {
-            return parse(new FileReader(file, charset));
-        } catch (IOException e) {
-            throw new FinancialCSVFormatException("Cannot reade from file: " + file.getPath());
-        }
+    public Transactions parse(InputStream inputStream) throws FinancialCSVFormatException {
+        return parse(new InputStreamReader(inputStream, charset));
     }
 
     private Transactions parse(Reader reader) throws FinancialCSVFormatException {
@@ -93,7 +85,7 @@ public enum FinancialCSVFormat {
         try {
             return getCSVFormat().parse(reader);
         } catch (IOException e) {
-            throw new FinancialCSVFormatException("Failed to read the file.", e);
+            throw new FinancialCSVFormatException("Failed to read the input.", e);
         }
     }
 

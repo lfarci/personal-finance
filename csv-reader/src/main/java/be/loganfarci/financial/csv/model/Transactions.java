@@ -14,6 +14,8 @@ public class Transactions implements Iterable<Transaction> {
         transactions = new ArrayList<>();
     }
 
+    public Transaction get(int index) { return transactions.get(index); }
+
     public void add(Transaction transaction) {
         transactions.add(transaction);
     }
@@ -32,4 +34,6 @@ public class Transactions implements Iterable<Transaction> {
     public Iterator<Transaction> iterator() {
         return transactions.iterator();
     }
+
+    public int size() { return transactions.size(); }
 }

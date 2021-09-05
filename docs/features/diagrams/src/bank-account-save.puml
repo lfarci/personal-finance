@@ -1,37 +1,26 @@
 @startuml
-'https://plantuml.com/activity-diagram-beta
 
 start
-:ClickServlet.handleRequest();
-:new page;
-if (Page.onSecurityCheck) then (true)
-  :Page.onInit();
-  if (isForward?) then (no)
-    :Process controls;
-    if (continue processing?) then (no)
-      stop
-    endif
-
-    if (isPost?) then (yes)
-      :Page.onPost();
-    else (no)
-      :Page.onGet();
-    endif
-    :Page.onRender();
-  endif
-else (false)
+:Save bank account dto.;
+if (Does the bank account's owner exist?) then (yes)
+    :Find bank owner by name.;
+else (no)
+    :Error: Owner not found.;
+    stop
+endif
+if (Does the bank account exist?) then (yes)
+    :Find bank account entity.;
+else (no)
+    :Create new empty entity.;
 endif
 
-if (do redirect?) then (yes)
-  :redirect process;
-else
-  if (do forward?) then (yes)
-    :Forward request;
-  else (no)
-    :Render page template;
-  endif
+if (Are bank account field values valid?) then (yes)
+    :Set entity to given values.;
+else (no)
+    :Error: Invalid bank account values;
+    stop
 endif
 
+:Write entity to the database.;
 stop
-
 @enduml

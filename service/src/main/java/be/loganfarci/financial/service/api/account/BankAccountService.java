@@ -2,7 +2,6 @@ package be.loganfarci.financial.service.api.account;
 
 import be.loganfarci.financial.service.api.account.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.account.exception.BankAccountEntityNotFoundException;
-import be.loganfarci.financial.service.api.account.exception.BankAccountIsInvalidException;
 import be.loganfarci.financial.service.api.owner.OwnerEntity;
 import be.loganfarci.financial.service.api.owner.OwnerService;
 import be.loganfarci.financial.service.api.owner.exception.OwnerNotFoundException;
@@ -12,6 +11,9 @@ import java.util.Optional;
 
 @Service
 public class BankAccountService {
+
+    static final String REQUIRED_BANK_ACCOUNT_ERROR = "Bank account is null.";
+    static final String REQUIRED_BANK_ACCOUNT_OWNER_ERROR = "Bank account owner is null.";
 
     private final BankAccountValidator bankAccountValidator;
     private final BankAccountRepository bankAccountRepository;
@@ -36,7 +38,11 @@ public class BankAccountService {
         OwnerEntity owner;
 
         if (bankAccount == null) {
-            throw new IllegalArgumentException("Bank account is null.");
+            throw new IllegalArgumentException(REQUIRED_BANK_ACCOUNT_ERROR);
+        }
+
+        if (bankAccount.getOwner() == null) {
+            throw new IllegalArgumentException(REQUIRED_BANK_ACCOUNT_OWNER_ERROR);
         }
 
         if (hasExistingOwner(bankAccount)) {
@@ -45,13 +51,14 @@ public class BankAccountService {
             throw new OwnerNotFoundException(bankAccount.getOwner().getName());
         }
 
+        bankAccountValidator.requireValid(bankAccount);
+
         if (exists(bankAccount)) {
             entity = find(bankAccount);
         } else {
             entity = new BankAccountEntity();
         }
 
-        bankAccountValidator.requireValid(bankAccount);
         entity.setName(bankAccount.getName());
         entity.setOwner(owner);
         entity.setIban(bankAccount.getIban());
@@ -66,10 +73,6 @@ public class BankAccountService {
 
     private BankAccountEntity find(BankAccountDto bankAccount) {
         return findByNameAndOwnerName(bankAccount.getName(), bankAccount.getOwner().getName());
-    }
-
-    private boolean isValidBankAccount(BankAccountDto bankAccount) {
-        return bankAccountValidator.isValid(bankAccount);
     }
 
     private boolean hasExistingOwner(BankAccountDto bankAccount) {
