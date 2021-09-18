@@ -25,4 +25,46 @@ public class TransactionCategoryEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TransactionCategoryEntity> children;
 
+    public TransactionCategoryEntity(String name, String description, TransactionCategoryEntity parent, List<TransactionCategoryEntity> children) {
+        this.name = name;
+        this.description = description;
+        this.parent = parent;
+        this.children = children;
+    }
+
+    public TransactionCategoryEntity() {
+        this(null, null, null, null);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TransactionCategoryEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(TransactionCategoryEntity parent) {
+        this.parent = parent;
+    }
+
+    public List<TransactionCategoryEntity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TransactionCategoryEntity> children) {
+        this.children = children;
+    }
 }

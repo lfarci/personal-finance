@@ -26,11 +26,11 @@ public class TransactionEntity {
 
     @OneToOne
     @JoinColumn(name = "sender", referencedColumnName = "id")
-    private BankAccountEntity sender;
+    private BankAccountEntity internalBankAccount;
 
     @OneToOne
     @JoinColumn(name = "recipient", referencedColumnName = "id")
-    private BankAccountEntity recipient;
+    private BankAccountEntity externalBankAccount;
 
     @Column(name = "amount", nullable = false)
     private Double amount;
@@ -42,18 +42,18 @@ public class TransactionEntity {
     @JoinColumn(name = "category", referencedColumnName = "name")
     private TransactionCategoryEntity category;
 
-    public TransactionEntity(Date date, BankAccountEntity sender, BankAccountEntity recipient, Double amount, String description, TransactionCategoryEntity category) {
+    public TransactionEntity(Date date, BankAccountEntity internalBankAccount, BankAccountEntity externalBankAccount, Double amount, String description, TransactionCategoryEntity category) {
         this.id = 0L;
         this.date = date;
-        this.sender = sender;
-        this.recipient = recipient;
+        this.internalBankAccount = internalBankAccount;
+        this.externalBankAccount = externalBankAccount;
         this.amount = amount;
         this.description = description;
         this.category = category;
     }
 
-    public TransactionEntity(Date date, BankAccountEntity sender, BankAccountEntity recipient, Double amount, String description) {
-        this(date, sender, recipient, amount, description, null);
+    public TransactionEntity(Date date, BankAccountEntity internalBankAccount, BankAccountEntity externalBankAccount, Double amount, String description) {
+        this(date, internalBankAccount, externalBankAccount, amount, description, null);
     }
 
     public TransactionEntity() {
@@ -68,12 +68,12 @@ public class TransactionEntity {
         return date;
     }
 
-    public BankAccountEntity getSender() {
-        return sender;
+    public BankAccountEntity getInternalBankAccount() {
+        return internalBankAccount;
     }
 
-    public BankAccountEntity getRecipient() {
-        return recipient;
+    public BankAccountEntity getExternalBankAccount() {
+        return externalBankAccount;
     }
 
     public Double getAmount() {
@@ -96,12 +96,12 @@ public class TransactionEntity {
         this.date = date;
     }
 
-    public void setSender(BankAccountEntity sender) {
-        this.sender = sender;
+    public void setInternalBankAccount(BankAccountEntity internalBankAccount) {
+        this.internalBankAccount = internalBankAccount;
     }
 
-    public void setRecipient(BankAccountEntity recipient) {
-        this.recipient = recipient;
+    public void setExternalBankAccount(BankAccountEntity externalBankAccount) {
+        this.externalBankAccount = externalBankAccount;
     }
 
     public void setAmount(Double amount) {

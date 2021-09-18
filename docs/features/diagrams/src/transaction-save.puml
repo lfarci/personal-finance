@@ -1,0 +1,23 @@
+@startuml
+
+start
+:Save transaction dto.;
+
+if (Does the internal bank account exist?) then (yes)
+    :Get the internal bank account.;
+else (no)
+    :Error: Internal bank account not found.;
+    stop
+endif
+
+if (Does the external bank account exist?) then (yes)
+    :Get the external bank account.;
+else (no)
+    :Error: External bank account not found.;
+    stop
+endif
+
+:Write entity to the database.;
+stop
+@enduml
+

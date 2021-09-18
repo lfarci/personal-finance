@@ -33,6 +33,10 @@ public class BankAccountService {
         return hasExistingOwner(bankAccount) && exists(bankAccount.getName(), bankAccount.getOwner().getName());
     }
 
+    public BankAccountEntity find(BankAccountDto bankAccount) {
+        return findByNameAndOwnerName(bankAccount.getName(), bankAccount.getOwner().getName());
+    }
+
     public BankAccountEntity save(BankAccountDto bankAccount) {
         BankAccountEntity entity;
         OwnerEntity owner;
@@ -63,16 +67,13 @@ public class BankAccountService {
         entity.setOwner(owner);
         entity.setIban(bankAccount.getIban());
         entity.setBalance(bankAccount.getBalance());
+
         return bankAccountRepository.save(entity);
     }
 
     private BankAccountEntity findByNameAndOwnerName(String name, String ownerName) {
         Optional<BankAccountEntity> entity = bankAccountRepository.findByNameAndOwnerName(name, ownerName);
         return entity.orElseThrow(() -> new BankAccountEntityNotFoundException(name, ownerName));
-    }
-
-    private BankAccountEntity find(BankAccountDto bankAccount) {
-        return findByNameAndOwnerName(bankAccount.getName(), bankAccount.getOwner().getName());
     }
 
     private boolean hasExistingOwner(BankAccountDto bankAccount) {
