@@ -30,11 +30,25 @@ public class BankAccountService {
     }
 
     public boolean exists(BankAccountDto bankAccount) {
+        return existsByIban(bankAccount.getIban()) || existsByNameAndOwnerName(bankAccount);
+    }
+
+    public boolean existsByIban(String iban) {
+        return iban != null && bankAccountRepository.existsByIban(iban);
+    }
+
+    public boolean existsByNameAndOwnerName(BankAccountDto bankAccount) {
         return hasExistingOwner(bankAccount) && exists(bankAccount.getName(), bankAccount.getOwner().getName());
     }
 
     public BankAccountEntity find(BankAccountDto bankAccount) {
-        return findByNameAndOwnerName(bankAccount.getName(), bankAccount.getOwner().getName());
+        if (existsByIban(bankAccount.getIban())) {
+            return findByIban(bankAccount.getIban());
+        }
+        if (existsByNameAndOwnerName(bankAccount)) {
+            return findByNameAndOwnerName(bankAccount.getName(), bankAccount.getOwner().getName());
+        }
+        throw new BankAccountEntityNotFoundException("Failed to find a bank account based on IBAN or name.");
     }
 
     public BankAccountEntity save(BankAccountDto bankAccount) {
@@ -69,6 +83,11 @@ public class BankAccountService {
         entity.setBalance(bankAccount.getBalance());
 
         return bankAccountRepository.save(entity);
+    }
+
+    private BankAccountEntity findByIban(String iban) {
+        Optional<BankAccountEntity> entity = bankAccountRepository.findByIban(iban);
+        return entity.orElseThrow(() -> new BankAccountEntityNotFoundException("No bank account with iban: " + iban));
     }
 
     private BankAccountEntity findByNameAndOwnerName(String name, String ownerName) {

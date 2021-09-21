@@ -19,7 +19,7 @@ import java.util.Iterator;
 public enum FinancialCSVFormat {
 
     BELFIUS(new BelfiusRecordParser(), StandardCharsets.ISO_8859_1, Headers.BELFIUS),
-    SODEXO(new SodexoRecordParser(), StandardCharsets.UTF_8, Headers.SODEXO);
+    SODEXO(new SodexoRecordParser(), StandardCharsets.ISO_8859_1, Headers.SODEXO);
 
     private RecordParser<Transaction> recordParser;
     private Charset charset;
@@ -46,6 +46,7 @@ public enum FinancialCSVFormat {
         } catch (IOException e) {
             equal = false;
         }
+        System.out.println("Equal " + csvFileValue + " = " + expectedValue + " => " + equal );
         return equal;
     }
 

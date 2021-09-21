@@ -14,7 +14,7 @@ public class TransactionCategoryService {
     }
 
     public boolean exists(TransactionCategoryDto category) {
-        return transactionCategoryRepository.existsById(category.getName());
+        return category != null && transactionCategoryRepository.existsById(category.getName());
     }
 
     public TransactionCategoryEntity find(TransactionCategoryDto category) {

@@ -31,7 +31,7 @@ public class OwnerService {
 
     private String requireValidOwnerName(String ownerName) {
         if (!isValidOwnerName(ownerName)) {
-            throw new OwnerEntityIsInvalidException(ownerName + " is not a valid name.");
+            throw new OwnerEntityIsInvalidException("\"" + ownerName + "\" is not a valid name");
         }
         return ownerName;
     }

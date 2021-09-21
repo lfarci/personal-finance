@@ -21,7 +21,7 @@ public class BankAccountValidator {
         return name != null && !name.isBlank() && name.length() <= BANK_ACCOUNT_NAME_LENGTH;
     }
 
-    private boolean isValidBankAccountIban(String iban) {
+    public boolean isValidBankAccountIban(String iban) {
         return iban == null || iban.isBlank() || IBAN_VALIDATOR.isValid(iban);
     }
 
@@ -35,10 +35,10 @@ public class BankAccountValidator {
 
     public void requireValid(BankAccountDto bankAccount) {
         if (!isValidBankAccountName(bankAccount.getName())) {
-            throw error(ErrorMessages.INVALID_BANK_ACCOUNT_NAME + bankAccount.getName());
+            throw error(ErrorMessages.INVALID_BANK_ACCOUNT_NAME + "\"" + bankAccount.getName() + "\"");
         }
         if (!isValidBankAccountIban(bankAccount.getIban())) {
-            throw error(ErrorMessages.INVALID_BANK_ACCOUNT_IBAN + bankAccount.getIban());
+            throw error(ErrorMessages.INVALID_BANK_ACCOUNT_IBAN + "\"" + bankAccount.getIban() + "\"");
         }
     }
 

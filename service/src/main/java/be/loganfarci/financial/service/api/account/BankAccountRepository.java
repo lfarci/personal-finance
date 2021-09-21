@@ -6,5 +6,7 @@ import java.util.Optional;
 
 public interface BankAccountRepository extends CrudRepository<BankAccountEntity, Long> {
     boolean existsByNameAndOwnerName(String name, String ownerName);
+    boolean existsByIban(String iban);
     Optional<BankAccountEntity> findByNameAndOwnerName(String name, String ownerName);
+    Optional<BankAccountEntity> findByIban(String iban);
 }

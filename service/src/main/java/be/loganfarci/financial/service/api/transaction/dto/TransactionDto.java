@@ -10,7 +10,7 @@ import java.sql.Date;
 
 public class TransactionDto {
 
-    private @NotNull @Min(0) Long id;
+    private @Min(0) Long id;
     private @NotNull Date date;
     private @NotNull BankAccountDto internalBankAccount;
     private @NotNull BankAccountDto externalBankAccount;
@@ -26,6 +26,10 @@ public class TransactionDto {
         this.amount = amount;
         this.description = description;
         this.category = category;
+    }
+
+    public TransactionDto(Date date, BankAccountDto internalBankAccount, BankAccountDto externalBankAccount, Double amount, String description) {
+        this(null, date, internalBankAccount, externalBankAccount, amount, description, null);
     }
 
     public Long getId() {

@@ -1,8 +1,5 @@
 package be.loganfarci.financial.service.api.transaction;
 
-import be.loganfarci.financial.csv.FinancialCSVFileReader;
-import be.loganfarci.financial.csv.format.exception.FinancialCSVFormatException;
-import be.loganfarci.financial.csv.model.Transactions;
 import be.loganfarci.financial.service.api.account.BankAccountEntity;
 import be.loganfarci.financial.service.api.account.BankAccountService;
 import be.loganfarci.financial.service.api.account.exception.BankAccountEntityNotFoundException;
@@ -10,18 +7,10 @@ import be.loganfarci.financial.service.api.category.TransactionCategoryEntity;
 import be.loganfarci.financial.service.api.category.TransactionCategoryService;
 import be.loganfarci.financial.service.api.owner.OwnerService;
 import be.loganfarci.financial.service.api.transaction.dto.TransactionDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 @Service
 public class TransactionService {
-
-    private final Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     private final TransactionRepository transactionRepository;
     private final OwnerService ownerService;
@@ -38,21 +27,6 @@ public class TransactionService {
         this.ownerService = ownerService;
         this.bankAccountService = bankAccountService;
         this.transactionCategoryService = transactionCategoryService;
-    }
-
-    @Async
-    public void saveTransactionsFrom(byte[] bytes) {
-        try {
-            InputStream inputStream = new ByteArrayInputStream(bytes);
-            Transactions transactions = FinancialCSVFileReader.read(inputStream);
-            for(int i = 0; i < transactions.size(); i++){
-//                save(transactions.get(i));
-                logTransactionLoadingProgress(i, transactions.size());
-            }
-        } catch (FinancialCSVFormatException e) {
-            logger.error("Failed to load transactions: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     private boolean hasExistingInternalBankAccount(TransactionDto transaction) {
@@ -115,11 +89,6 @@ public class TransactionService {
         entity.setCategory(category);
 
         return transactionRepository.save(entity);
-    }
-
-    private void logTransactionLoadingProgress(int index, int size) {
-        int progress = (int) ((index + 1) * 100.0f) / size;
-        logger.info(String.format("Saving transactions: %d%%", progress));
     }
 
 }
