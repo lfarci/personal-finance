@@ -19,7 +19,7 @@ import java.util.Iterator;
 public enum FinancialCSVFormat {
 
     BELFIUS(new BelfiusRecordParser(), StandardCharsets.ISO_8859_1, Headers.BELFIUS),
-    SODEXO(new SodexoRecordParser(), StandardCharsets.ISO_8859_1, Headers.SODEXO);
+    SODEXO(new SodexoRecordParser(), StandardCharsets.UTF_8, Headers.SODEXO);
 
     private RecordParser<Transaction> recordParser;
     private Charset charset;
@@ -61,13 +61,16 @@ public enum FinancialCSVFormat {
         return record.stream().anyMatch(value -> areEqual(value, expectedValue));
     }
 
-    public boolean canRead(InputStream inputStream) throws FinancialCSVFormatException {
+    public boolean canRead(byte[] bytes) throws FinancialCSVFormatException {
+        InputStream inputStream = new ByteArrayInputStream(bytes);
         Iterator<CSVRecord> records = records(new InputStreamReader(inputStream, charset)).iterator();
         CSVRecord record = records.next();
+        System.out.println(record);
         return records.hasNext() && Arrays.stream(headers).allMatch(header -> isInRecord(record, header));
     }
 
-    public Transactions parse(InputStream inputStream) throws FinancialCSVFormatException {
+    public Transactions parse(byte[] bytes) throws FinancialCSVFormatException {
+        InputStream inputStream = new ByteArrayInputStream(bytes);
         return parse(new InputStreamReader(inputStream, charset));
     }
 
