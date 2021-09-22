@@ -46,7 +46,6 @@ public enum FinancialCSVFormat {
         } catch (IOException e) {
             equal = false;
         }
-        System.out.println("Equal " + csvFileValue + " = " + expectedValue + " => " + equal );
         return equal;
     }
 

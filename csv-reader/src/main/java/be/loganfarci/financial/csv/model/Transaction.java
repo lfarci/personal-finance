@@ -18,6 +18,10 @@ public class Transaction {
         this.description = description;
     }
 
+    public Transaction(Date date, Double amount, BankAccount internalBankAccount, BankAccount externalBankAccount) {
+        this(date, amount, internalBankAccount, externalBankAccount, null);
+    }
+
     public Transaction(Date date, Double amount, BankAccount externalBankAccount) {
         this(date, amount, null, externalBankAccount, null);
     }

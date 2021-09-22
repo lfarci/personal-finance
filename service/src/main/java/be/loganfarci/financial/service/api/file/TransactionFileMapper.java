@@ -40,13 +40,17 @@ public class TransactionFileMapper {
         );
     }
 
+    private String getTransactionDescription(String description) {
+        return description == null ? null : getStringOfSize(description, MAX_DESCRIPTION_LENGTH);
+    }
+
     public TransactionDto readTransactionDtoFrom(Transaction transaction) {
         return new TransactionDto(
                 new Date(transaction.getDate().getTime()),
                 readBankAccountDtoFrom(transaction.getInternalBankAccount()),
                 readBankAccountDtoFrom(transaction.getExternalBankAccount()),
                 transaction.getAmount(),
-                getStringOfSize(transaction.getDescription(), MAX_DESCRIPTION_LENGTH)
+                getTransactionDescription(transaction.getDescription())
         );
     }
 

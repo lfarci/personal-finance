@@ -17,6 +17,10 @@ public class SodexoRecordParser implements RecordParser<Transaction> {
     private static final int EXTERNAL_ACCOUNT_INDEX = 1;
     private static final int AMOUNT_INDEX = 2;
 
+    private static final String SODEXO_OWNER_NAME = "Sodexo";
+    private static final Owner DEFAULT_BANK_ACCOUNT_OWNER = new Owner(SODEXO_OWNER_NAME);
+    private static final BankAccount DEFAULT_BANK_ACCOUNT = new BankAccount(DEFAULT_BANK_ACCOUNT_OWNER);
+
     @Override
     public Transaction parse(CSVRecord record) throws RecordParserException {
         try {
@@ -28,8 +32,8 @@ public class SodexoRecordParser implements RecordParser<Transaction> {
             } else {
                 owner = CREDIT_RECIPIENT.parse(record.get(EXTERNAL_ACCOUNT_INDEX));
             }
-            BankAccount account = new BankAccount(owner, null, null);
-            return new Transaction(date, amount, account);
+            BankAccount externalBankAccount = new BankAccount(owner);
+            return new Transaction(date, amount, DEFAULT_BANK_ACCOUNT, externalBankAccount);
         } catch (ColumnParserException e) {
             throw error(record, "could not parse the transaction.", e);
         }

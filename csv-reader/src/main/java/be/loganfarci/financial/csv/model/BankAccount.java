@@ -12,6 +12,10 @@ public class BankAccount {
         this.bic = bic;
     }
 
+    public BankAccount(Owner owner) {
+        this(owner, null, null);
+    }
+
     public Owner getOwner() {
         return owner;
     }
