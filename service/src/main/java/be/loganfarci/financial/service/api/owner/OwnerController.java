@@ -29,7 +29,7 @@ public class OwnerController {
     }
 
     @PostMapping("/owners")
-    public ResponseEntity<OwnerDto> saveOwner(@RequestBody OwnerDto owner) {
+    public ResponseEntity<HttpStatus> saveOwner(@RequestBody OwnerDto owner) {
         ownerService.save(owner);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

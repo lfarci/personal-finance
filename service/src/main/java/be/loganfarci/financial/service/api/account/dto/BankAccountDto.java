@@ -2,11 +2,13 @@ package be.loganfarci.financial.service.api.account.dto;
 
 import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class BankAccountDto {
+
+    @Null
+    @Min(0)
+    private Long id;
 
     @NotBlank
     @Size(min = 1, max = 50)
@@ -22,11 +24,20 @@ public class BankAccountDto {
     @Null
     private Double balance;
 
-    public BankAccountDto(String name, OwnerDto owner, String iban, Double balance) {
+    public BankAccountDto(Long id, String name, OwnerDto owner, String iban, Double balance) {
+        this.id = id;
         this.name = name;
         this.owner = owner;
         this.iban = iban;
         this.balance = balance;
+    }
+
+    public BankAccountDto(String name, OwnerDto owner, String iban, Double balance) {
+        this(0L, name, owner, iban, balance);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

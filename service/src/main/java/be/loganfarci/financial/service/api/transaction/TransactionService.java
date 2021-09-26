@@ -34,7 +34,7 @@ public class TransactionService {
     }
 
     private BankAccountEntity findInternalBankAccount(TransactionDto transaction) {
-        return bankAccountService.find(transaction.getInternalBankAccount());
+        return bankAccountService.findEntity(transaction.getInternalBankAccount());
     }
 
     private boolean hasExistingExternalBankAccount(TransactionDto transaction) {
@@ -42,7 +42,7 @@ public class TransactionService {
     }
 
     private BankAccountEntity findExternalBankAccount(TransactionDto transaction) {
-        return bankAccountService.find(transaction.getExternalBankAccount());
+        return bankAccountService.findEntity(transaction.getExternalBankAccount());
     }
 
     public TransactionEntity save(TransactionDto transaction) {
