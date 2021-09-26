@@ -64,7 +64,7 @@ public class BankAccountService {
         }
 
         if (hasExistingOwner(bankAccount)) {
-            owner = ownerService.findByName(bankAccount.getOwner().getName());
+            owner = ownerService.findEntityByName(bankAccount.getOwner().getName());
         } else {
             throw new OwnerNotFoundException(bankAccount.getOwner().getName());
         }

@@ -1,6 +1,7 @@
 package be.loganfarci.financial.service.api.owner;
 
 import be.loganfarci.financial.service.api.account.BankAccountEntity;
+import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
 import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
@@ -37,6 +38,10 @@ public class OwnerEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void set(OwnerDto values) {
+        name = values.getName();
     }
 
 }

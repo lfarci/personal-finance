@@ -81,7 +81,7 @@ public class BankAccountServiceTests {
 
     private void arrangeOwnerService(boolean exists, OwnerEntity entity) {
         lenient().when(ownerService.existsByName(anyString())).thenReturn(exists);
-        lenient().when(ownerService.findByName(anyString())).thenReturn(entity);
+        lenient().when(ownerService.findEntityByName(anyString())).thenReturn(entity);
     }
 
     private void arrangeBankAccountRepository(boolean exists, BankAccountEntity entity) {

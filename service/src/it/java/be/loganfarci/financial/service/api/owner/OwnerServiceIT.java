@@ -1,8 +1,8 @@
 package be.loganfarci.financial.service.api.owner;
 
 import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
-import be.loganfarci.financial.service.api.owner.exception.OwnerEntityAlreadyExistsException;
-import be.loganfarci.financial.service.api.owner.exception.OwnerEntityIsInvalidException;
+import be.loganfarci.financial.service.api.owner.exception.OwnerAlreadyExistsException;
+import be.loganfarci.financial.service.api.owner.exception.OwnerIsInvalidException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ public class OwnerServiceIT {
         OwnerDto owner = new OwnerDto("Name");
         saveOwner(owner);
         Throwable thrown = catchThrowableFor(owner);
-        assertThat(thrown).isInstanceOf(OwnerEntityAlreadyExistsException.class);
+        assertThat(thrown).isInstanceOf(OwnerAlreadyExistsException.class);
     }
 
     @Test
@@ -47,13 +47,13 @@ public class OwnerServiceIT {
     @Test
     public void shouldThrowOwnerIsInvalidWhenSavingOwnerWithBlankName() {
         Throwable thrown = catchThrowable(() -> saveOwner(new OwnerDto("")));
-        assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
+        assertThat(thrown).isInstanceOf(OwnerIsInvalidException.class);
     }
 
     @Test
     public void shouldThrowOwnerIsInvalidWhenSavingOwnerWithTooLongName() {
         Throwable thrown = catchThrowable(() -> saveOwner(new OwnerDto("Lorem ipsum dolor sit amet, consectetur massa nunc.")));
-        assertThat(thrown).isInstanceOf(OwnerEntityIsInvalidException.class);
+        assertThat(thrown).isInstanceOf(OwnerIsInvalidException.class);
     }
 
     @Test
