@@ -70,7 +70,9 @@ public class TransactionFileService {
     private void importBankAccount(BankAccount bankAccount) {
         BankAccountDto bankAccountDto = mapper.readBankAccountDtoFrom(bankAccount);
         importOwner(bankAccount);
-        if (bankAccountService.existsByIban(bankAccountDto.getIban())) {
+        if (bankAccountService.existsById(bankAccountDto.getId())) {
+            logger.debug("Account with id " + bankAccountDto.getId() + " exists.");
+        } else if (bankAccountService.existsByIban(bankAccountDto.getIban())) {
             logger.debug("Account with IBAN " + bankAccountDto.getIban() + " exists.");
         } else if (bankAccountService.existsByNameAndOwnerName(bankAccountDto)) {
             logger.debug("Account with name " + bankAccountDto.getName() + " exists.");
