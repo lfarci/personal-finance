@@ -1,12 +1,16 @@
 package be.loganfarci.financial.service.api.account;
 
-import be.loganfarci.financial.service.api.account.dto.BankAccountDto;
-import be.loganfarci.financial.service.api.account.exception.BankAccountIsInvalidException;
-import be.loganfarci.financial.service.api.owner.OwnerEntity;
-import be.loganfarci.financial.service.api.owner.OwnerRepository;
-import be.loganfarci.financial.service.api.owner.OwnerService;
-import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
-import be.loganfarci.financial.service.api.owner.exception.OwnerNotFoundException;
+import be.loganfarci.financial.service.api.account.persistence.BankAccountEntity;
+import be.loganfarci.financial.service.api.account.persistence.BankAccountRepository;
+import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
+import be.loganfarci.financial.service.api.account.model.exception.InvalidBankAccountException;
+import be.loganfarci.financial.service.api.account.service.BankAccountService;
+import be.loganfarci.financial.service.api.account.service.BankAccountValidator;
+import be.loganfarci.financial.service.api.owner.persistence.OwnerEntity;
+import be.loganfarci.financial.service.api.owner.persistence.OwnerRepository;
+import be.loganfarci.financial.service.api.owner.service.OwnerService;
+import be.loganfarci.financial.service.api.owner.model.dto.OwnerDto;
+import be.loganfarci.financial.service.api.owner.model.exception.OwnerNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,28 +92,28 @@ public class BankAccountServiceIT {
 
     @Test
     public void shouldThrowErrorWhenSavingBankAccountWithInvalidIban() {
-        assertErrorWhenSaving(validBankAccount().iban("Invalid"), BankAccountIsInvalidException.class);
+        assertErrorWhenSaving(validBankAccount().iban("Invalid"), InvalidBankAccountException.class);
     }
 
     @Test
     public void shouldLeaveTableEmptyWhenSavingBankAccountWithInvalidIban() {
         try {
             saveBankAccount(validBankAccount().iban("Invalid"));
-        } catch (BankAccountIsInvalidException e) {
+        } catch (InvalidBankAccountException e) {
             assertEmptyBankAccountTable();
         }
     }
 
     @Test
     public void shouldThrowErrorWhenSavingBankAccountWithBlankName() {
-        assertErrorWhenSaving(validBankAccount().name(""), BankAccountIsInvalidException.class);
+        assertErrorWhenSaving(validBankAccount().name(""), InvalidBankAccountException.class);
     }
 
     @Test
     public void shouldLeaveTableEmptyWhenSavingBankAccountWithBlankName() {
         try {
             saveBankAccount(validBankAccount().name(""));
-        } catch (BankAccountIsInvalidException e) {
+        } catch (InvalidBankAccountException e) {
             assertEmptyBankAccountTable();
         }
     }
@@ -117,14 +121,14 @@ public class BankAccountServiceIT {
     @Test
     public void shouldThrowErrorWhenSavingBankAccountWithTooLongName() {
         BankAccountDto bankAccount = validBankAccount().name(FAR_TOO_LONG_BANK_ACCOUNT_NAME);
-        assertErrorWhenSaving(bankAccount, BankAccountIsInvalidException.class);
+        assertErrorWhenSaving(bankAccount, InvalidBankAccountException.class);
     }
 
     @Test
     public void shouldLeaveTableEmptyWhenSavingBankAccountWithTooLongName() {
         try {
             saveBankAccount(validBankAccount().name(FAR_TOO_LONG_BANK_ACCOUNT_NAME));
-        } catch (BankAccountIsInvalidException e) {
+        } catch (InvalidBankAccountException e) {
             assertEmptyBankAccountTable();
         }
     }

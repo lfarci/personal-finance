@@ -1,5 +1,7 @@
 package be.loganfarci.financial.service.api.owner;
 
+import be.loganfarci.financial.service.api.owner.persistence.OwnerEntity;
+import be.loganfarci.financial.service.api.owner.persistence.OwnerRepository;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

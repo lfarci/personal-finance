@@ -1,16 +1,14 @@
 package be.loganfarci.financial.service.api.file;
 
 import be.loganfarci.financial.csv.model.BankAccount;
-import be.loganfarci.financial.csv.model.Owner;
 import be.loganfarci.financial.csv.model.Transaction;
-import be.loganfarci.financial.service.api.account.BankAccountValidator;
-import be.loganfarci.financial.service.api.account.dto.BankAccountDto;
-import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
+import be.loganfarci.financial.service.api.account.service.BankAccountValidator;
+import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
+import be.loganfarci.financial.service.api.owner.model.dto.OwnerDto;
 import be.loganfarci.financial.service.api.transaction.dto.TransactionDto;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 @Component
 public class TransactionFileMapper {

@@ -1,8 +1,11 @@
 package be.loganfarci.financial.service.api.owner;
 
-import be.loganfarci.financial.service.api.owner.dto.OwnerDto;
-import be.loganfarci.financial.service.api.owner.exception.OwnerAlreadyExistsException;
-import be.loganfarci.financial.service.api.owner.exception.OwnerIsInvalidException;
+import be.loganfarci.financial.service.api.owner.model.dto.OwnerDto;
+import be.loganfarci.financial.service.api.owner.model.exception.OwnerAlreadyExistsException;
+import be.loganfarci.financial.service.api.owner.model.exception.OwnerIsInvalidException;
+import be.loganfarci.financial.service.api.owner.persistence.OwnerEntity;
+import be.loganfarci.financial.service.api.owner.persistence.OwnerRepository;
+import be.loganfarci.financial.service.api.owner.service.OwnerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

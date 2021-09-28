@@ -1,11 +1,11 @@
 package be.loganfarci.financial.service.api.transaction;
 
-import be.loganfarci.financial.service.api.account.BankAccountEntity;
-import be.loganfarci.financial.service.api.account.BankAccountService;
-import be.loganfarci.financial.service.api.account.exception.BankAccountEntityNotFoundException;
+import be.loganfarci.financial.service.api.account.persistence.BankAccountEntity;
+import be.loganfarci.financial.service.api.account.service.BankAccountService;
+import be.loganfarci.financial.service.api.account.model.exception.BankAccountEntityNotFoundException;
 import be.loganfarci.financial.service.api.category.TransactionCategoryEntity;
 import be.loganfarci.financial.service.api.category.TransactionCategoryService;
-import be.loganfarci.financial.service.api.owner.OwnerService;
+import be.loganfarci.financial.service.api.owner.service.OwnerService;
 import be.loganfarci.financial.service.api.transaction.dto.TransactionDto;
 import org.springframework.stereotype.Service;
 
