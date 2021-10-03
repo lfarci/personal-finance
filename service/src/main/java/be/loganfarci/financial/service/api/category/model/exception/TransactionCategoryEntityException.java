@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.category.exception;
+package be.loganfarci.financial.service.api.category.model.exception;
 
 public class TransactionCategoryEntityException extends RuntimeException {
     public TransactionCategoryEntityException(String message) {

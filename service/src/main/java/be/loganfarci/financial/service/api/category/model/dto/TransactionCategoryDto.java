@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.category.dto;
+package be.loganfarci.financial.service.api.category.model.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;

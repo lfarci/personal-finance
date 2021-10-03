@@ -1,7 +1,7 @@
 package be.loganfarci.financial.service.api.transaction.dto;
 
 import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
-import be.loganfarci.financial.service.api.category.dto.TransactionCategoryDto;
+import be.loganfarci.financial.service.api.category.model.dto.TransactionCategoryDto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

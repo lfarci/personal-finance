@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.category;
+package be.loganfarci.financial.service.api.category.persistence;
 
 import org.hibernate.annotations.Check;
 
