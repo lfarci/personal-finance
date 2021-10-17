@@ -9,7 +9,7 @@ import be.loganfarci.financial.service.api.account.service.BankAccountService;
 import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.owner.service.OwnerService;
 import be.loganfarci.financial.service.api.owner.model.dto.OwnerDto;
-import be.loganfarci.financial.service.api.transaction.TransactionService;
+import be.loganfarci.financial.service.api.transaction.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;

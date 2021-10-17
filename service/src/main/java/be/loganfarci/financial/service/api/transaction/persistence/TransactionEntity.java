@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.transaction;
+package be.loganfarci.financial.service.api.transaction.persistence;
 
 import be.loganfarci.financial.service.api.account.persistence.BankAccountEntity;
 import be.loganfarci.financial.service.api.category.persistence.TransactionCategoryEntity;

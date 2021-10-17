@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.transaction.dto;
+package be.loganfarci.financial.service.api.transaction.model.dto;
 
 import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.category.model.dto.TransactionCategoryDto;

@@ -5,7 +5,7 @@ import be.loganfarci.financial.csv.model.Transaction;
 import be.loganfarci.financial.service.api.account.service.BankAccountValidator;
 import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.owner.model.dto.OwnerDto;
-import be.loganfarci.financial.service.api.transaction.dto.TransactionDto;
+import be.loganfarci.financial.service.api.transaction.model.dto.TransactionDto;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
