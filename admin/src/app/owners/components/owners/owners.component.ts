@@ -9,7 +9,8 @@ import { OwnersService } from '../../services/owners.service';
 })
 export class OwnersComponent implements OnInit {
 
-  owners: Owner[] = [];
+  displayedColumns: string[] = ['name', ];
+  dataSource: Owner[] = [];
 
   constructor(private readonly service: OwnersService) { }
 
@@ -18,7 +19,7 @@ export class OwnersComponent implements OnInit {
   }
 
   private handleOwners = (owners: Owner[]) => {
-    this.owners = owners;
+    this.dataSource = owners;
   };
 
 }

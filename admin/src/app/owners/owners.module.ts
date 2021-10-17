@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OwnersComponent } from './components/owners/owners.component';
 import { OwnersRoutingModule } from './owners-routing.module';
-
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
@@ -11,7 +11,8 @@ import { OwnersRoutingModule } from './owners-routing.module';
   ],
   imports: [
     CommonModule,
-    OwnersRoutingModule
+    OwnersRoutingModule,
+    MatTableModule
   ]
 })
 export class OwnersModule { }
