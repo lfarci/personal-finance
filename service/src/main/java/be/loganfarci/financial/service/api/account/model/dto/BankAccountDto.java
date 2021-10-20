@@ -21,13 +21,22 @@ public class BankAccountDto {
     @NotNull
     private Double balance;
 
-    public BankAccountDto(Long id, String name, OwnerDto owner, String iban, Double balance) {
+    boolean isInternal;
+
+    public BankAccountDto(Long id, String name, OwnerDto owner, String iban, Double balance, boolean isInternal) {
         this.id = id;
         this.name = name;
         this.owner = owner;
         this.iban = iban;
         this.balance = balance;
+        this.isInternal = isInternal;
     }
+
+
+    public BankAccountDto(Long id, String name, OwnerDto owner, String iban, Double balance) {
+        this(0L, name, owner, iban, balance, true);
+    }
+
 
     public BankAccountDto(String name, OwnerDto owner, String iban, Double balance) {
         this(0L, name, owner, iban, balance);
@@ -67,6 +76,18 @@ public class BankAccountDto {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean isInternal() {
+        return isInternal;
+    }
+
+    public void setInternal(boolean internal) {
+        isInternal = internal;
     }
 
     public BankAccountDto iban(String iban) {

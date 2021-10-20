@@ -28,8 +28,8 @@ public class BankAccountController {
     }
 
     @GetMapping("/accounts")
-    public ResponseEntity<List<BankAccountDto>> findAll() {
-        return ResponseEntity.ok(bankAccountService.findAll());
+    public ResponseEntity<List<BankAccountDto>> findAll(@RequestParam(name = "internal") Boolean isInternal) {
+        return ResponseEntity.ok(bankAccountService.findAll(isInternal));
     }
 
     @PostMapping("/accounts")

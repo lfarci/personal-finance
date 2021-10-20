@@ -121,7 +121,7 @@ public class TransactionService {
             category = transactionCategoryService.find(transaction.getCategory());
         }
 
-        if (transactionRepository.existsById(transaction.getId())) {
+        if (transaction.getId() != null && transactionRepository.existsById(transaction.getId())) {
             entity = findEntityById(transaction.getId());
         } else {
             entity = new TransactionEntity();

@@ -32,14 +32,14 @@ public class TransactionController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @DeleteMapping("/transactions")
+    @PostMapping("/transactions")
     public void save(@RequestBody WriteTransactionDto values) {
         transactionService.save(values);
     }
 
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/transactions/{transactionId}")
+    @PutMapping("/transactions/{transactionId}")
     public void updateById(
             @PathVariable Long transactionId,
             @RequestBody WriteTransactionDto values

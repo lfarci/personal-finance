@@ -39,16 +39,24 @@ public class BankAccountEntity {
     @Column(name = "balance")
     private Double balance;
 
-    public BankAccountEntity(String name, OwnerEntity owner, String iban, Double balance) {
+    @Column(name = "is_internal")
+    private boolean isInternal;
+
+    public BankAccountEntity(String name, OwnerEntity owner, String iban, Double balance, boolean isInternal) {
         this.id = 0L;
         this.name = name;
         this.owner = owner;
         this.iban = iban;
         this.balance = balance;
+        this.isInternal = isInternal;
+    }
+
+    public BankAccountEntity(String name, OwnerEntity owner, String iban, Double balance) {
+        this(name, owner, iban, balance, true);
     }
 
     public BankAccountEntity() {
-        this(null, null, null, null);
+        this(null, null, null, null, true);
     }
 
     public Long getId() {
@@ -89,5 +97,13 @@ public class BankAccountEntity {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public boolean isInternal() {
+        return isInternal;
+    }
+
+    public void setInternal(boolean internal) {
+        isInternal = internal;
     }
 }

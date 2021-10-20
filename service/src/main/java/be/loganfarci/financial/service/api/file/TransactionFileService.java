@@ -67,9 +67,10 @@ public class TransactionFileService {
         }
     }
 
-    private void importBankAccount(BankAccount bankAccount) {
+    private void importBankAccount(BankAccount bankAccount, boolean isInternal) {
         BankAccountDto bankAccountDto = mapper.readBankAccountDtoFrom(bankAccount);
         importOwner(bankAccount);
+        bankAccountDto.setInternal(isInternal);
         if (bankAccountService.existsById(bankAccountDto.getId())) {
             logger.debug("Account with id " + bankAccountDto.getId() + " exists.");
         } else if (bankAccountService.existsByIban(bankAccountDto.getIban())) {
@@ -83,8 +84,8 @@ public class TransactionFileService {
     }
 
     private void importTransaction(Transaction transaction) {
-        importBankAccount(transaction.getInternalBankAccount());
-        importBankAccount(transaction.getExternalBankAccount());
+        importBankAccount(transaction.getInternalBankAccount(), true);
+        importBankAccount(transaction.getExternalBankAccount(), false);
         transactionService.save(mapper.readTransactionDtoFrom(transaction));
     }
 

@@ -62,10 +62,16 @@ public class BankAccountService {
         }
     }
 
-    public List<BankAccountDto> findAll() {
+    private boolean isInBankAccountSelection(BankAccountDto bankAccount, Boolean isInternal) {
+        return isInternal == null || bankAccount.isInternal().equals(isInternal);
+    }
+
+    public List<BankAccountDto> findAll(Boolean isInternal) {
+        System.out.println("Internal " + isInternal);
         return bankAccountRepository.findAll()
                 .stream()
                 .map(this::fromEntity)
+                .filter(b -> isInBankAccountSelection(b, isInternal))
                 .collect(Collectors.toList());
     }
 
@@ -117,6 +123,7 @@ public class BankAccountService {
         entity.setOwner(owner);
         entity.setIban(bankAccount.getIban());
         entity.setBalance(bankAccount.getBalance());
+        entity.setInternal(bankAccount.isInternal());
 
         return bankAccountRepository.save(entity);
     }
@@ -170,7 +177,8 @@ public class BankAccountService {
                 entity.getName(),
                 ownerDto,
                 entity.getIban(),
-                entity.getBalance()
+                entity.getBalance(),
+                entity.isInternal()
         );
     }
 
