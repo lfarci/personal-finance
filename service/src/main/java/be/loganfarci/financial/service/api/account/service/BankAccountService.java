@@ -67,7 +67,6 @@ public class BankAccountService {
     }
 
     public List<BankAccountDto> findAll(Boolean isInternal) {
-        System.out.println("Internal " + isInternal);
         return bankAccountRepository.findAll()
                 .stream()
                 .map(this::fromEntity)
@@ -143,10 +142,14 @@ public class BankAccountService {
     }
 
     public void deleteById(Long id) {
-        bankAccountRepository.deleteById(id);
+        if (bankAccountRepository.existsById(id)) {
+            bankAccountRepository.deleteById(id);
+        } else {
+            throw new BankAccountEntityNotFoundException("No bank account with id: " + id);
+        }
     }
 
-    private BankAccountEntity findEntityById(Long id) {
+    public BankAccountEntity findEntityById(Long id) {
         Optional<BankAccountEntity> entity = bankAccountRepository.findById(id);
         return entity.orElseThrow(() -> new BankAccountEntityNotFoundException("No bank account with id: " + id));
     }

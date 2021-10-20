@@ -3,6 +3,7 @@ package be.loganfarci.financial.service.api.account.web;
 import be.loganfarci.financial.service.api.account.service.BankAccountService;
 import be.loganfarci.financial.service.api.account.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.account.model.dto.BankAccountRequestBodyDto;
+import be.loganfarci.financial.service.api.transaction.service.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,9 +18,11 @@ import java.util.List;
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
+    private final TransactionService transactionService;
 
-    public BankAccountController(BankAccountService bankAccountService) {
+    public BankAccountController(BankAccountService bankAccountService, TransactionService transactionService) {
         this.bankAccountService = bankAccountService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping("/accounts/{id}")
@@ -47,6 +50,7 @@ public class BankAccountController {
 
     @DeleteMapping("/accounts/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+        transactionService.deleteAllForBankAccountId(id);
         bankAccountService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

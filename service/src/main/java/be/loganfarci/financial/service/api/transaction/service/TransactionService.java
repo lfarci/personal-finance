@@ -152,6 +152,11 @@ public class TransactionService {
         }
     }
 
+    public void deleteAllForBankAccountId(Long id) {
+        BankAccountEntity entity = bankAccountService.findEntityById(id);
+        transactionRepository.deleteAllForBankAccount(entity);
+    }
+
     public void deleteById(Long id) {
         if (transactionRepository.existsById(id)) {
             transactionRepository.deleteById(id);

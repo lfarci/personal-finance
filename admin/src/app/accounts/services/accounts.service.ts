@@ -13,11 +13,16 @@ export class BankAccountService {
   private _accountsBaseUrl: string;
 
   constructor(private readonly http: HttpClient) { 
-    this._accountsBaseUrl = `${environment.baseUrl}/accounts`;
+    this._accountsBaseUrl = environment.baseUrl;
   }
 
-  getBankAccounts(): Observable<BankAccount[]> {
-    return this.http.get<BankAccount[]>(this._accountsBaseUrl)
-      .pipe(catchError(error => throwError(error)));
-  }
+  getBankAccounts = (): Observable<BankAccount[]> => {
+    const url = `${this._accountsBaseUrl}/accounts?internal=true`;
+    return this.http.get<BankAccount[]>(url).pipe(catchError(error => throwError(error)));
+  };
+
+  deleteById = (id: number): Observable<void> => {
+    const url = `${this._accountsBaseUrl}/accounts/${id}`;
+    return this.http.delete<void>(url).pipe(catchError(error => throwError(error)));
+  };
 }
