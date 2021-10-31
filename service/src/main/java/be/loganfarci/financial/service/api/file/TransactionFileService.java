@@ -48,7 +48,7 @@ public class TransactionFileService {
             InputStream inputStream = new ByteArrayInputStream(bytes);
             Transactions transactions = FinancialCSVFileReader.read(inputStream);
             for (int i = 0; i < transactions.size(); i++) {
-                importTransaction(transactions.get(i));
+//                importTransaction(transactions.get(i));
                 logTransactionLoadingProgress(i, transactions.size());
             }
         } catch (FinancialCSVFormatException e) {

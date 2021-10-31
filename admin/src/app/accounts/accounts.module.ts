@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from '../shared/shared.module';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -13,7 +17,11 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     AccountsRoutingModule,
     AccountsRoutingModule,
-    MatTableModule
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    SharedModule
   ]
 })
 export class AccountsModule { }

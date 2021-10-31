@@ -2,7 +2,7 @@ package be.loganfarci.financial.service.api.account.web;
 
 import be.loganfarci.financial.service.api.account.model.exception.BankAccountEntityAlreadyExistsException;
 import be.loganfarci.financial.service.api.account.model.exception.BankAccountEntityNotFoundException;
-import be.loganfarci.financial.service.api.error.dto.ErrorResponseDto;
+import be.loganfarci.financial.service.api.errors.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,6 +1,6 @@
 package be.loganfarci.financial.service.api.owner.web;
 
-import be.loganfarci.financial.service.api.error.dto.ErrorResponseDto;
+import be.loganfarci.financial.service.api.errors.dto.ErrorResponseDto;
 import be.loganfarci.financial.service.api.owner.model.exception.OwnerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

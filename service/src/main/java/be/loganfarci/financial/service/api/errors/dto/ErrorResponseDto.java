@@ -1,4 +1,4 @@
-package be.loganfarci.financial.service.api.error.dto;
+package be.loganfarci.financial.service.api.errors.dto;
 
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class ErrorResponseDto {
     }
 
     public ErrorResponseDto(String title, String message) {
-        this(title, message, new HashMap<>());
+        this(title, message, null);
     }
 
     public String getTitle() {

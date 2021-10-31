@@ -1,6 +1,6 @@
-package be.loganfarci.financial.service.api.error;
+package be.loganfarci.financial.service.api.errors;
 
-import be.loganfarci.financial.service.api.error.dto.ErrorResponseDto;
+import be.loganfarci.financial.service.api.errors.dto.ErrorResponseDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
