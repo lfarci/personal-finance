@@ -3,6 +3,7 @@ package be.loganfarci.financial.service.api;
 import be.loganfarci.financial.service.api.errors.dto.ErrorResponseDto;
 import be.loganfarci.financial.service.api.users.model.UserDto;
 import be.loganfarci.financial.service.api.users.persistence.UserRepository;
+import be.loganfarci.financial.service.api.users.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,9 @@ public class UserControllerIT {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private UserService service;
 
     @Autowired
     private MessageSource messageSource;
@@ -118,9 +122,15 @@ public class UserControllerIT {
     }
 
     @Test
-    public void save_statusIsBadRequestWhenNameIsBlank() throws Exception {
+    public void save_statusIsBadRequestWhenNameIsEmpty() throws Exception {
         postUserJsonContent(toJson("")).andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void save_statusIsBadRequestWhenNameIsBlank() throws Exception {
+        postUserJsonContent(toJson("     ")).andExpect(status().isBadRequest());
+    }
+
 
     @Test
     public void save_statusIsBadRequestWhenNameIsTooLong() throws Exception {
@@ -132,12 +142,69 @@ public class UserControllerIT {
         postUserJsonContent(toJson(0L, "User A")).andExpect(status().isConflict());
     }
 
-    private ResultActions postUserJsonContent(String jsonContent) throws Exception {
-        return mvc.perform(post("/api/users")
-                .contentType(APPLICATION_JSON)
-                .content(jsonContent)
-        );
+    @Test
+    public void updateById_statusIsNoContentAfterSuccessfulUpdate() throws Exception {
+        putUserJsonContent(0L, toJson(0L, "User A")).andExpect(status().isNoContent());
     }
+
+    @Test
+    public void updateById_userNameIsUpdated() throws Exception {
+        String userName = "New user A";
+        putUserJsonContent(0L, toJson(0L, userName)).andReturn();
+        assertThat(service.findById(0L).getName()).isEqualTo(userName);
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenNameIsNull() throws Exception {
+        putUserJsonContent(0L, toJson(0L, null)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenNameIsEmpty() throws Exception {
+        putUserJsonContent(0L, toJson(0L, "")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenNameIsBlank() throws Exception {
+        putUserJsonContent(0L, toJson(0L, "      ")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenNameIsTooLong() throws Exception {
+        putUserJsonContent(0L, toJson(0L, TOO_LONG_NAME)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenContentAndPathIdentifierMismatch() throws Exception {
+        putUserJsonContent(0L, toJson(1L, "User A")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenUserIdIsNull() throws Exception {
+        putUserJsonContent(0L, toJson((Long) null, "User A")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_responseContentIsExpectedErrorWhenUserIDMismatch() throws Exception {
+        String title = getMessage("title.bad_request");
+        String message = getMessage("user.id_mismatch", new Long[] { 1L, 0L });
+        String jsonContent = toJson(title, message);
+        putUserJsonContent(0L, toJson(1L, "User A")).andExpect(content().json(jsonContent));
+    }
+
+    @Test
+    public void updateById_responseContentIsExpectedErrorWhenUserIdIsNull() throws Exception {
+        String title = getMessage("title.bad_request");
+        String message = getMessage("user.required_id");
+        String jsonContent = toJson(title, message);
+        putUserJsonContent(0L, toJson((Long) null, "User A")).andExpect(content().json(jsonContent));
+    }
+
+    @Test
+    public void updateById_statusIsNotFoundWhenUserDoesNotExist() throws Exception {
+        putUserJsonContent(5L, toJson(5L, "Unknown")).andExpect(status().isNotFound());
+    }
+
 
     @Test
     public void deleteById_statusIsNoContentWhenDeletionIsSuccessful() throws Exception {
@@ -159,6 +226,20 @@ public class UserControllerIT {
     public void deleteById_responseJsonContentIsExpectedError() throws Exception {
         String jsonContent = getUserNotFoundJsonContent();
         mvc.perform(delete("/api/users/5")).andExpect(content().json(jsonContent));
+    }
+
+    private ResultActions postUserJsonContent(String jsonContent) throws Exception {
+        return mvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(jsonContent)
+        );
+    }
+
+    private ResultActions putUserJsonContent(Long id, String jsonContent) throws Exception {
+        return mvc.perform(put("/api/users/" + id)
+                .contentType(APPLICATION_JSON)
+                .content(jsonContent)
+        );
     }
 
     private String getUserNotFoundJsonContent() throws JsonProcessingException {

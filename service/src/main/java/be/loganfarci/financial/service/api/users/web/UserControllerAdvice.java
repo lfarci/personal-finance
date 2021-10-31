@@ -15,6 +15,7 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     private static final String NOT_FOUND_TITLE = "title.not_found";
     private static final String CONFLICT_TITLE = "title.conflict";
+    private static final String BAD_REQUEST_TITLE = "title.bad_request";
 
     private MessageSourceAccessor messages;
 
@@ -32,6 +33,12 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserService.Conflict.class)
     public ErrorResponseDto handleUserConflict(UserService.Conflict e) {
         return new ErrorResponseDto(messages.getMessage(CONFLICT_TITLE), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserService.InvalidArgument.class)
+    public ErrorResponseDto handleInvalidArgument(UserService.InvalidArgument e) {
+        return new ErrorResponseDto(messages.getMessage(BAD_REQUEST_TITLE), e.getMessage());
     }
 
 }

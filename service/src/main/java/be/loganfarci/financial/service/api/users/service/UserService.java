@@ -18,6 +18,8 @@ public class UserService {
 
     public static final String NOT_FOUND_MESSAGE_CODE = "user.not_found";
     public static final String CONFLICT_MESSAGE_CODE = "user.conflict";
+    public static final String ID_MISMATCH_MESSAGE_CODE = "user.id_mismatch";
+    public static final String REQUIRED_ID_MESSAGE_CODE = "user.required_id";
 
     private final UserRepository repository;
     private final UserMapper mapper;
@@ -36,6 +38,14 @@ public class UserService {
 
     private Conflict conflict(Long userId) {
         return new Conflict(messages.getMessage(CONFLICT_MESSAGE_CODE, new Long[]{ userId }));
+    }
+
+    private InvalidArgument userIdMismatch(Long bodyId, Long URLQueryParamId) {
+        return new InvalidArgument(messages.getMessage(ID_MISMATCH_MESSAGE_CODE, new Long[]{ bodyId, URLQueryParamId }));
+    }
+
+    private InvalidArgument userIdIsRequired() {
+        return new InvalidArgument(messages.getMessage(REQUIRED_ID_MESSAGE_CODE));
     }
 
     public UserDto findById(Long id) {
@@ -71,6 +81,22 @@ public class UserService {
         }
     }
 
+    public void updateById(Long userId, UserDto user) {
+        validateUpdateArguments(userId, user);
+        UserDto updated = findById(userId);
+        updated.setName(user.getName());
+        repository.save(mapper.fromRest(updated));
+    }
+
+    private void validateUpdateArguments(Long userId, UserDto user) {
+        if (user.getId() == null) {
+            throw userIdIsRequired();
+        }
+        if (!userId.equals(user.getId())) {
+            throw userIdMismatch(user.getId(), userId);
+        }
+    }
+
     public static class NotFound extends ResourceNotFound {
         public NotFound(String message) {
             super(message);
@@ -82,4 +108,11 @@ public class UserService {
             super(message);
         }
     }
+
+    public static class InvalidArgument extends RuntimeException {
+        public InvalidArgument(String message) {
+            super(message);
+        }
+    }
+
 }

@@ -22,7 +22,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{userId}")
     public UserDto findById(@PathVariable Long userId) {
-        System.out.println("trying to get user by id");
         return service.findById(userId);
     }
 
@@ -36,6 +35,12 @@ public class UserController {
     @PostMapping("/users")
     public UserDto save(@Valid @RequestBody UserDto user) {
         return service.save(user);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/users/{userId}")
+    public void save(@PathVariable Long userId, @Valid @RequestBody UserDto user) {
+        service.updateById(userId, user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
