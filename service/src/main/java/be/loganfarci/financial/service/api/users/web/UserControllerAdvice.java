@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     private static final String NOT_FOUND_TITLE = "title.not_found";
+    private static final String CONFLICT_TITLE = "title.conflict";
 
     private MessageSourceAccessor messages;
 
@@ -25,6 +26,12 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserService.NotFound.class)
     public ErrorResponseDto handleUserNotFound(UserService.NotFound e) {
         return new ErrorResponseDto(messages.getMessage(NOT_FOUND_TITLE), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(UserService.Conflict.class)
+    public ErrorResponseDto handleUserConflict(UserService.Conflict e) {
+        return new ErrorResponseDto(messages.getMessage(CONFLICT_TITLE), e.getMessage());
     }
 
 }

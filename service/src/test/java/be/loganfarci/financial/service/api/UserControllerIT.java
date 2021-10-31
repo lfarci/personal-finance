@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -24,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,6 +40,7 @@ public class UserControllerIT {
 
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String DEFAULT_DATE_TIME = "2021-01-01 00:00:00";
+    private static final String TOO_LONG_NAME = "Lorem ipsum dolor sit amet, consectetur vestibulum.";
 
     @Autowired
     private MockMvc mvc;
@@ -53,7 +55,7 @@ public class UserControllerIT {
     private MessageSource messageSource;
 
     public static char getChar(long i) {
-        return i<0 || i>25 ? '?' : (char)('A' + i);
+        return i < 0 || i > 25 ? '?' : (char) ('A' + i);
     }
 
     @Test
@@ -74,9 +76,7 @@ public class UserControllerIT {
 
     @Test
     public void findById_responseJsonContentIsExpectedError() throws Exception {
-        String title = getMessage("title.not_found");
-        String message = getMessage("user.not_found", new Long[] { 5L });
-        String jsonContent = toJson(title, message);
+        String jsonContent = getUserNotFoundJsonContent();
         mvc.perform(get("/api/users/5")).andExpect(content().json(jsonContent));
     }
 
@@ -100,7 +100,47 @@ public class UserControllerIT {
     }
 
     @Test
-    public void deleteById_isNoContentWhenDeletionIsSuccessful() throws Exception {
+    public void save_statusIsCreatedAfterSuccessfulCreation() throws Exception {
+        postUserJsonContent(toJson("User F")).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void save_responseContentHasExpectedIdentifier() throws Exception {
+        MvcResult result = postUserJsonContent(toJson("User F")).andReturn();
+        String content = result.getResponse().getContentAsString();
+        UserDto response = mapper.readValue(content, UserDto.class);
+        assertThat(response.getId()).isEqualTo(5L);
+    }
+
+    @Test
+    public void save_statusIsBadRequestWhenNameIsNull() throws Exception {
+        postUserJsonContent(toJson(null)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_statusIsBadRequestWhenNameIsBlank() throws Exception {
+        postUserJsonContent(toJson("")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_statusIsBadRequestWhenNameIsTooLong() throws Exception {
+        postUserJsonContent(toJson(TOO_LONG_NAME)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_statusIsConflictWhenSavingAnExistingUser() throws Exception {
+        postUserJsonContent(toJson(0L, "User A")).andExpect(status().isConflict());
+    }
+
+    private ResultActions postUserJsonContent(String jsonContent) throws Exception {
+        return mvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(jsonContent)
+        );
+    }
+
+    @Test
+    public void deleteById_statusIsNoContentWhenDeletionIsSuccessful() throws Exception {
         mvc.perform(delete("/api/users/0")).andExpect(status().isNoContent());
     }
 
@@ -117,10 +157,14 @@ public class UserControllerIT {
 
     @Test
     public void deleteById_responseJsonContentIsExpectedError() throws Exception {
-        String title = getMessage("title.not_found");
-        String message = getMessage("user.not_found", new Long[] { 5L });
-        String jsonContent = toJson(title, message);
+        String jsonContent = getUserNotFoundJsonContent();
         mvc.perform(delete("/api/users/5")).andExpect(content().json(jsonContent));
+    }
+
+    private String getUserNotFoundJsonContent() throws JsonProcessingException {
+        String title = getMessage("title.not_found");
+        String message = getMessage("user.not_found", new Long[]{5L});
+        return toJson(title, message);
     }
 
     private LocalDateTime getDate() {
@@ -142,6 +186,10 @@ public class UserControllerIT {
         LocalDateTime date = getDate();
         UserDto userDto = new UserDto(id, name, date, date);
         return mapper.writeValueAsString(userDto);
+    }
+
+    private String toJson(String name) throws JsonProcessingException {
+        return toJson((Long) null, name);
     }
 
     private String makeUsersJsonOfSize(long size) throws JsonProcessingException {

@@ -1,5 +1,6 @@
 package be.loganfarci.financial.service.api.users.service;
 
+import be.loganfarci.financial.service.api.errors.exceptions.ResourceConflict;
 import be.loganfarci.financial.service.api.errors.exceptions.ResourceNotFound;
 import be.loganfarci.financial.service.api.users.model.UserDto;
 import be.loganfarci.financial.service.api.users.persistence.UserEntity;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     public static final String NOT_FOUND_MESSAGE_CODE = "user.not_found";
+    public static final String CONFLICT_MESSAGE_CODE = "user.conflict";
 
     private final UserRepository repository;
     private final UserMapper mapper;
@@ -32,6 +34,10 @@ public class UserService {
         return new NotFound(messages.getMessage(NOT_FOUND_MESSAGE_CODE, new Long[]{ userId }));
     }
 
+    private Conflict conflict(Long userId) {
+        return new Conflict(messages.getMessage(CONFLICT_MESSAGE_CODE, new Long[]{ userId }));
+    }
+
     public UserDto findById(Long id) {
         Optional<UserEntity> entity = repository.findById(id);
         if (entity.isPresent()) {
@@ -45,6 +51,18 @@ public class UserService {
         return repository.findAll().stream().map(mapper::toRest).collect(Collectors.toList());
     }
 
+    public UserDto save(UserDto user) {
+        if (existsById(user)) {
+            throw conflict(user.getId());
+        } else {
+            return mapper.toRest(repository.save(mapper.fromRest(user)));
+        }
+    }
+
+    private boolean existsById(UserDto user) {
+        return user.getId() != null && repository.existsById(user.getId());
+    }
+
     public void deleteById(Long userId) {
         if (repository.existsById(userId)) {
             repository.deleteById(userId);
@@ -55,6 +73,12 @@ public class UserService {
 
     public static class NotFound extends ResourceNotFound {
         public NotFound(String message) {
+            super(message);
+        }
+    }
+
+    public static class Conflict extends ResourceConflict {
+        public Conflict(String message) {
             super(message);
         }
     }

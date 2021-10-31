@@ -5,6 +5,7 @@ import be.loganfarci.financial.service.api.users.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,12 @@ public class UserController {
     @GetMapping("/users")
     public List<UserDto> findAll() {
         return service.findAll();
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/users")
+    public UserDto save(@Valid @RequestBody UserDto user) {
+        return service.save(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

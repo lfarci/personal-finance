@@ -11,4 +11,8 @@ public class UserMapper {
         return new UserDto(entity.getId(), entity.getName(), entity.getCreationDate(), entity.getUpdateDate());
     }
 
+    public UserEntity fromRest(UserDto user) {
+        return new UserEntity(user.getId(), user.getName());
+    }
+
 }
