@@ -31,5 +31,10 @@ public class UserController {
         return service.findAll();
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/users/{userId}")
+    public void deleteById(@PathVariable Long userId) {
+        service.deleteById(userId);
+    }
 
 }

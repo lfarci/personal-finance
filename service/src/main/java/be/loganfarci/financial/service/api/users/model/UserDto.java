@@ -1,9 +1,5 @@
 package be.loganfarci.financial.service.api.users.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,8 +7,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class UserDto {
-
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ssTZD";
 
     @Min(0)
     private Long id;

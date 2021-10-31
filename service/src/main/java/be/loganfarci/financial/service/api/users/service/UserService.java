@@ -45,6 +45,14 @@ public class UserService {
         return repository.findAll().stream().map(mapper::toRest).collect(Collectors.toList());
     }
 
+    public void deleteById(Long userId) {
+        if (repository.existsById(userId)) {
+            repository.deleteById(userId);
+        } else {
+            throw notFound(userId);
+        }
+    }
+
     public static class NotFound extends ResourceNotFound {
         public NotFound(String message) {
             super(message);

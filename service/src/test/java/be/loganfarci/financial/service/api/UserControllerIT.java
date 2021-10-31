@@ -10,23 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +51,10 @@ public class UserControllerIT {
 
     @Autowired
     private MessageSource messageSource;
+
+    public static char getChar(long i) {
+        return i<0 || i>25 ? '?' : (char)('A' + i);
+    }
 
     @Test
     public void findById_statusIsOkWhenIdExists() throws Exception {
@@ -97,6 +99,30 @@ public class UserControllerIT {
         assertThat(result.getResponse().getContentAsString()).isEqualTo(makeUsersJsonOfSize(5));
     }
 
+    @Test
+    public void deleteById_isNoContentWhenDeletionIsSuccessful() throws Exception {
+        mvc.perform(delete("/api/users/0")).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void deleteById_statusIsNotFoundWhenIdDoesNotExist() throws Exception {
+        mvc.perform(delete("/api/users/5")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void deleteById_userIsDeleted() throws Exception {
+        mvc.perform(delete("/api/users/4")).andReturn();
+        assertThat(repository.existsById(4L)).isFalse();
+    }
+
+    @Test
+    public void deleteById_responseJsonContentIsExpectedError() throws Exception {
+        String title = getMessage("title.not_found");
+        String message = getMessage("user.not_found", new Long[] { 5L });
+        String jsonContent = toJson(title, message);
+        mvc.perform(delete("/api/users/5")).andExpect(content().json(jsonContent));
+    }
+
     private LocalDateTime getDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
         return LocalDateTime.parse(DEFAULT_DATE_TIME, formatter);
@@ -116,10 +142,6 @@ public class UserControllerIT {
         LocalDateTime date = getDate();
         UserDto userDto = new UserDto(id, name, date, date);
         return mapper.writeValueAsString(userDto);
-    }
-
-    public static char getChar(long i) {
-        return i<0 || i>25 ? '?' : (char)('A' + i);
     }
 
     private String makeUsersJsonOfSize(long size) throws JsonProcessingException {
