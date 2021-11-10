@@ -1,6 +1,8 @@
 package be.loganfarci.financial.service.api.users.persistence;
 
 import org.hibernate.annotations.Check;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -26,11 +28,11 @@ public class UserEntity {
     @Column(name = "name", length = NAME_COLUMN_LENGTH)
     private String name;
 
-    @CreatedDate
-    @Column(name = "created", columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    @Column(name = "created", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime creationDate;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDate;
 

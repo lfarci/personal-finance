@@ -143,6 +143,13 @@ public class UserControllerIT {
     }
 
     @Test
+    public void save_creationDateIsEqualToLateUpdateDate() throws Exception {
+        postUserJsonContent(toJson("User A")).andReturn();
+        UserDto savedUser = service.findById(5L);
+        assertThat(savedUser.getCreationDate()).isEqualTo(savedUser.getUpdateDate());
+    }
+
+    @Test
     public void updateById_statusIsNoContentAfterSuccessfulUpdate() throws Exception {
         putUserJsonContent(0L, toJson(0L, "User A")).andExpect(status().isNoContent());
     }
