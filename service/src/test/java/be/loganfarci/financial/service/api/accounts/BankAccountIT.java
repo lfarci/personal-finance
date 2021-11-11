@@ -2,7 +2,10 @@ package be.loganfarci.financial.service.api.accounts;
 
 import be.loganfarci.financial.service.api.ResourceIT;
 import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
+import be.loganfarci.financial.service.api.accounts.persistence.BankAccountRepository;
+import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -12,11 +15,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @Sql(scripts = "classpath:accounts/accounts.sql")
 @Transactional
 public abstract class BankAccountIT extends ResourceIT {
+
+    @Autowired
+    protected BankAccountService service;
 
     protected static class Sample {
         static final Long ID = 0L;
@@ -34,12 +41,16 @@ public abstract class BankAccountIT extends ResourceIT {
         return String.format("/api/users/%d/accounts", userId);
     }
 
-    protected ResultActions findByUserIdAndBankAccountId(long userId, long bankAccountId) throws Exception {
+    protected ResultActions findByIdAndUserId(long userId, long bankAccountId) throws Exception {
         return mvc.perform(get(getBankAccountPath(userId, bankAccountId)));
     }
 
-    protected ResultActions findAll(long userId) throws Exception {
+    protected ResultActions findByUserId(long userId) throws Exception {
         return mvc.perform(get(getBankAccountPath(userId)));
+    }
+
+    protected ResultActions deleteByIdAndUserId(long userId, long bankAccountId) throws Exception {
+        return mvc.perform(delete(getBankAccountPath(userId, bankAccountId)));
     }
 
     protected String sampleJsonContent() throws JsonProcessingException {

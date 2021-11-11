@@ -21,13 +21,19 @@ public class BankAccountController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{userId}/accounts/{bankAccountId}")
     public BankAccountDto findByUserIdAndBankAccountId(@PathVariable Long userId, @PathVariable Long bankAccountId) {
-        return bankAccountService.findByUserIdAndBankAccountId(userId, bankAccountId);
+        return bankAccountService.findByIdAndUserId(userId, bankAccountId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{userId}/accounts")
     public List<BankAccountDto> findByUserId(@PathVariable Long userId) {
         return bankAccountService.findByUserId(userId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/users/{userId}/accounts/{bankAccountId}")
+    public void deleteByIdAndUserId(@PathVariable Long userId, @PathVariable Long bankAccountId) {
+        bankAccountService.deleteByIdAndUserId(userId, bankAccountId);
     }
 
 //    @GetMapping("/accounts")

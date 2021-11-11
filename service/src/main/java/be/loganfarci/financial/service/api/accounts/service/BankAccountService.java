@@ -35,12 +35,16 @@ public class BankAccountService {
         this.messages = new MessageSourceAccessor(messages);
     }
 
+    public boolean existsByUserIdAndBankAccountId(Long userId, Long bankAccountId) {
+        return repository.existsByIdAndUserId(bankAccountId, userId);
+    }
+
     public List<BankAccountDto> findByUserId(Long userId) {
         UserDto user = userService.findById(userId);
         return findAllFor(user);
     }
 
-    public BankAccountDto findByUserIdAndBankAccountId(Long userId, Long bankAccountId) {
+    public BankAccountDto findByIdAndUserId(Long userId, Long bankAccountId) {
         UserDto user = userService.findById(userId);
         return findById(user, bankAccountId);
     }
@@ -54,14 +58,24 @@ public class BankAccountService {
         }
     }
 
-    public Optional<BankAccountDto> attemptToFindById(UserDto user, Long bankAccountId) {
+    public void deleteByIdAndUserId(Long userId, Long bankAccountId) {
+        UserDto user = userService.findById(userId);
+        Optional<BankAccountDto> bankAccount = attemptToFindById(user, bankAccountId);
+        if (bankAccount.isPresent()) {
+            repository.deleteById(bankAccountId);
+        } else {
+            throw notFound(bankAccountId);
+        }
+    }
+
+    private Optional<BankAccountDto> attemptToFindById(UserDto user, Long bankAccountId) {
         return findAllFor(user)
                 .stream()
                 .filter(b -> b.getId().equals(bankAccountId))
                 .findFirst();
     }
 
-    public List<BankAccountDto> findAllFor(UserDto user) {
+    private List<BankAccountDto> findAllFor(UserDto user) {
         return repository.findByUserId(user.getId())
                 .stream()
                 .map(mapper::toRest)
@@ -71,7 +85,6 @@ public class BankAccountService {
     private BankAccountService.NotFound notFound(Long bankAccountId) {
         return new BankAccountService.NotFound(messages.getMessage(NOT_FOUND_MESSAGE_CODE, new Long[]{ bankAccountId }));
     }
-
 
     public static class NotFound extends ResourceNotFound {
         public NotFound(String message) {
