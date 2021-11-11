@@ -19,7 +19,7 @@ public class SaveUserIT extends UserIT {
         MvcResult result = save(userJsonContent("User F")).andReturn();
         String content = result.getResponse().getContentAsString();
         UserDto response = mapper.readValue(content, UserDto.class);
-        assertThat(response.getId()).isEqualTo(5L);
+        assertThat(response.getId()).isEqualTo(NEXT_USER_ID);
     }
 
     @Test

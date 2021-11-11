@@ -1,5 +1,6 @@
 package be.loganfarci.financial.service.api.users.service;
 
+import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.errors.exceptions.ResourceConflict;
 import be.loganfarci.financial.service.api.errors.exceptions.ResourceNotFound;
 import be.loganfarci.financial.service.api.users.model.UserDto;
@@ -49,9 +50,13 @@ public class UserService {
     }
 
     public UserDto findById(Long id) {
+        return mapper.toRest(findEntityById(id));
+    }
+
+    public UserEntity findEntityById(Long id) {
         Optional<UserEntity> entity = repository.findById(id);
         if (entity.isPresent()) {
-            return mapper.toRest(entity.get());
+            return entity.get();
         } else {
             throw notFound(id);
         }
@@ -69,10 +74,6 @@ public class UserService {
         }
     }
 
-    private boolean exists(UserDto user) {
-        return user.getId() != null && repository.existsById(user.getId());
-    }
-
     public void deleteById(Long userId) {
         if (repository.existsById(userId)) {
             repository.deleteById(userId);
@@ -86,6 +87,10 @@ public class UserService {
         UserDto updated = findById(userId);
         updated.setName(user.getName());
         repository.save(mapper.fromRest(updated));
+    }
+
+    private boolean exists(UserDto user) {
+        return user.getId() != null && repository.existsById(user.getId());
     }
 
     private void validateUpdateArguments(Long userId, UserDto user) {

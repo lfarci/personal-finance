@@ -7,16 +7,18 @@ import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.transaction.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @Sql(scripts = "classpath:accounts/accounts.sql")
 @Transactional
@@ -33,6 +35,8 @@ public abstract class BankAccountIT extends ResourceIT {
         static final Long USER_ID = 0L;
     }
 
+    protected static final String TOO_LONG_NAME = "Lorem ipsum dolor sit amet, consectetur vestibulum.";
+
     protected String getBankAccountPath(long userId, long bankAccountId) {
         return String.format("/api/users/%d/accounts/%d", userId, bankAccountId);
     }
@@ -47,6 +51,12 @@ public abstract class BankAccountIT extends ResourceIT {
 
     protected ResultActions findByUserId(long userId) throws Exception {
         return mvc.perform(get(getBankAccountPath(userId)));
+    }
+
+    protected ResultActions save(BankAccountDto bankAccount) throws Exception {
+        String bankAccountsPath = getBankAccountPath(bankAccount.getUserId());
+        String jsonContent = mapper.writeValueAsString(bankAccount);
+        return mvc.perform(post(bankAccountsPath).contentType(APPLICATION_JSON).content(jsonContent));
     }
 
     protected ResultActions deleteByIdAndUserId(long userId, long bankAccountId) throws Exception {
@@ -65,6 +75,16 @@ public abstract class BankAccountIT extends ResourceIT {
     protected String toJson(long id, String name, long userId, String iban, double balance) throws JsonProcessingException {
         BankAccountDto bankAccount = new BankAccountDto(id, name, userId, iban, balance);
         return mapper.writeValueAsString(bankAccount);
+    }
+
+    protected String toJson(String name, long userId, String iban, double balance) throws JsonProcessingException {
+        BankAccountDto bankAccount = new BankAccountDto(name, userId, iban, balance);
+        return mapper.writeValueAsString(bankAccount);
+    }
+
+    protected BankAccountDto parseBankAccountFrom(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
+        String content = result.getResponse().getContentAsString();
+        return mapper.readValue(content, BankAccountDto.class);
     }
 
     protected String userNotFoundJsonContent(long userId) throws JsonProcessingException {

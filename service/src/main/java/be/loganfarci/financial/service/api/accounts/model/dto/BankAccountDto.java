@@ -19,7 +19,6 @@ public class BankAccountDto {
 
     private String iban;
 
-    @NotNull
     private Double balance;
 
     public BankAccountDto(Long id, String name, Long userId, String iban, Double balance) {
@@ -28,6 +27,14 @@ public class BankAccountDto {
         this.userId = userId;
         this.iban = iban;
         this.balance = balance;
+    }
+
+    public BankAccountDto(String name, Long userId, String iban, Double balance) {
+        this(null, name, userId, iban, balance);
+    }
+
+    public BankAccountDto() {
+        this(null, null, null, null, null);
     }
 
     public Long getId() {

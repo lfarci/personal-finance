@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface BankAccountRepository extends JpaRepository<BankAccountEntity, Long> {
     boolean existsByIdAndUserId(Long id, Long userId);
+    boolean existsByIban(String iban);
     List<BankAccountEntity> findByUserId(Long userId);
 }

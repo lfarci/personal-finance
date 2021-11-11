@@ -2,6 +2,7 @@ package be.loganfarci.financial.service.api.accounts.service;
 
 import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.accounts.persistence.BankAccountEntity;
+import be.loganfarci.financial.service.api.users.persistence.UserEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,8 +17,14 @@ public class BankAccountMapper {
                 entity.getBalance());
     }
 
-    public BankAccountEntity fromRest(BankAccountDto user) {
-        return null;
+    public BankAccountEntity fromRest(BankAccountDto bankAccount, UserEntity user) {
+        return new BankAccountEntity(
+                bankAccount.getId(),
+                bankAccount.getName(),
+                user,
+                bankAccount.getIban(),
+                bankAccount.getBalance()
+        );
     }
 
 
