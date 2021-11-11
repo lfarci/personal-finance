@@ -10,25 +10,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DeleteUserIT extends UserIT {
 
     @Test
-    public void deleteById_statusIsNoContentWhenDeletionIsSuccessful() throws Exception {
-        mvc.perform(delete("/api/users/0")).andExpect(status().isNoContent());
+    public void statusIsNoContentWhenDeletionIsSuccessful() throws Exception {
+        mvc.perform(delete(getUserPathWithId(FIRST_EXISTING_USER_ID))).andExpect(status().isNoContent());
     }
 
     @Test
-    public void deleteById_statusIsNotFoundWhenIdDoesNotExist() throws Exception {
-        mvc.perform(delete("/api/users/5")).andExpect(status().isNotFound());
+    public void statusIsNotFoundWhenIdDoesNotExist() throws Exception {
+        mvc.perform(delete(getUserPathWithId(NEXT_USER_ID))).andExpect(status().isNotFound());
     }
 
     @Test
-    public void deleteById_userIsDeleted() throws Exception {
-        mvc.perform(delete("/api/users/4")).andReturn();
-        assertThat(repository.existsById(4L)).isFalse();
+    public void userIsDeletedWhenDeletionIsSuccessful() throws Exception {
+        mvc.perform(delete(getUserPathWithId(LAST_EXISTING_USER_ID))).andReturn();
+        assertThat(repository.existsById(LAST_EXISTING_USER_ID)).isFalse();
     }
 
     @Test
-    public void deleteById_responseJsonContentIsExpectedError() throws Exception {
-        String jsonContent = getUserNotFoundJsonContent();
-        mvc.perform(delete("/api/users/5")).andExpect(content().json(jsonContent));
+    public void responseJsonContentIsExpectedError() throws Exception {
+        String jsonContent = getUserNotFoundJsonContent(NEXT_USER_ID);
+        mvc.perform(delete(getUserPathWithId(NEXT_USER_ID))).andExpect(content().json(jsonContent));
     }
 
 }

@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,9 +35,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public abstract class UserIT {
 
     protected static final String USERS_PATH = "/api/users";
+    protected static final long FIRST_EXISTING_USER_ID = 0L;
+    protected static final long LAST_EXISTING_USER_ID = 4L;
+    protected static final long NEXT_USER_ID = 5L;
 
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String DEFAULT_DATE_TIME = "2021-01-01 00:00:00";
+
+    protected static final String TOO_LONG_NAME = "Lorem ipsum dolor sit amet, consectetur vestibulum.";
 
     @Autowired
     protected MockMvc mvc;
@@ -63,21 +67,38 @@ public abstract class UserIT {
         return String.format("%s/%d", USERS_PATH, id);
     }
 
-    protected ResultActions postUserJsonContent(String jsonContent) throws Exception {
-        return mvc.perform(post(USERS_PATH).contentType(APPLICATION_JSON).content(jsonContent)
-        );
+    protected ResultActions findAll() throws Exception {
+        return mvc.perform(get(USERS_PATH));
     }
 
-    protected ResultActions putUserJsonContent(Long id, String jsonContent) throws Exception {
+    protected ResultActions findById(long id) throws Exception {
+        return mvc.perform(get(getUserPathWithId(id)));
+    }
+
+    protected ResultActions save(String jsonContent) throws Exception {
+        return mvc.perform(post(USERS_PATH).contentType(APPLICATION_JSON).content(jsonContent));
+    }
+
+    protected ResultActions updateById(Long id, String jsonContent) throws Exception {
         return mvc.perform(put(getUserPathWithId(id))
                 .contentType(APPLICATION_JSON)
                 .content(jsonContent)
         );
     }
 
-    protected String getUserNotFoundJsonContent() throws JsonProcessingException {
+    protected String getUserNotFoundJsonContent(long id) throws JsonProcessingException {
         String title = getMessage("title.not_found");
-        String message = getMessage("user.not_found", new Long[]{5L});
+        String message = getMessage("user.not_found", new Long[]{ id });
+        return toJson(title, message);
+    }
+
+    protected String getRequiredIdErrorJsonContent() throws JsonProcessingException {
+        return toJson(getMessage("title.bad_request"), getMessage("user.required_id"));
+    }
+
+    protected String getIdMismatchErrorJsonContent(long bodyUserId, long queryParamUserId) throws JsonProcessingException {
+        String title = getMessage("title.bad_request");
+        String message = getMessage("user.id_mismatch", new Long[] { bodyUserId, queryParamUserId });
         return toJson(title, message);
     }
 
@@ -106,6 +127,12 @@ public abstract class UserIT {
         return toJson((Long) null, name);
     }
 
+
+    protected String toJson(String title, String message) throws JsonProcessingException {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(title, message);
+        return mapper.writeValueAsString(errorResponseDto);
+    }
+
     protected String makeUsersJsonOfSize(long size) throws JsonProcessingException {
         LocalDateTime date = getDate();
         List<UserDto> users = new ArrayList<>() {{
@@ -114,11 +141,6 @@ public abstract class UserIT {
             }
         }};
         return mapper.writeValueAsString(users);
-    }
-
-    protected String toJson(String title, String message) throws JsonProcessingException {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(title, message);
-        return mapper.writeValueAsString(errorResponseDto);
     }
 
 }
