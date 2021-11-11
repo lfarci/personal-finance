@@ -1,6 +1,6 @@
 package be.loganfarci.financial.service.api.owner.persistence;
 
-import be.loganfarci.financial.service.api.account.persistence.BankAccountEntity;
+import be.loganfarci.financial.service.api.accounts.persistence.BankAccountEntity;
 import be.loganfarci.financial.service.api.owner.model.dto.OwnerDto;
 import org.hibernate.annotations.Check;
 

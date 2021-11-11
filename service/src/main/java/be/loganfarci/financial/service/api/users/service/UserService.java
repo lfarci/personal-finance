@@ -62,14 +62,14 @@ public class UserService {
     }
 
     public UserDto save(UserDto user) {
-        if (existsById(user)) {
+        if (exists(user)) {
             throw conflict(user.getId());
         } else {
             return mapper.toRest(repository.save(mapper.fromRest(user)));
         }
     }
 
-    private boolean existsById(UserDto user) {
+    private boolean exists(UserDto user) {
         return user.getId() != null && repository.existsById(user.getId());
     }
 

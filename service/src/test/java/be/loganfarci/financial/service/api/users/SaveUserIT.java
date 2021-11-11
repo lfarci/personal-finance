@@ -11,12 +11,12 @@ public class SaveUserIT extends UserIT {
 
     @Test
     public void save_statusIsCreatedAfterSuccessfulCreation() throws Exception {
-        save(toJson("User F")).andExpect(status().isCreated());
+        save(userJsonContent("User F")).andExpect(status().isCreated());
     }
 
     @Test
     public void save_responseContentHasExpectedIdentifier() throws Exception {
-        MvcResult result = save(toJson("User F")).andReturn();
+        MvcResult result = save(userJsonContent("User F")).andReturn();
         String content = result.getResponse().getContentAsString();
         UserDto response = mapper.readValue(content, UserDto.class);
         assertThat(response.getId()).isEqualTo(5L);
@@ -24,32 +24,32 @@ public class SaveUserIT extends UserIT {
 
     @Test
     public void save_statusIsBadRequestWhenNameIsNull() throws Exception {
-        save(toJson(null)).andExpect(status().isBadRequest());
+        save(userJsonContent(null)).andExpect(status().isBadRequest());
     }
 
     @Test
     public void save_statusIsBadRequestWhenNameIsEmpty() throws Exception {
-        save(toJson("")).andExpect(status().isBadRequest());
+        save(userJsonContent("")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void save_statusIsBadRequestWhenNameIsBlank() throws Exception {
-        save(toJson("     ")).andExpect(status().isBadRequest());
+        save(userJsonContent("     ")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void save_statusIsBadRequestWhenNameIsTooLong() throws Exception {
-        save(toJson(TOO_LONG_NAME)).andExpect(status().isBadRequest());
+        save(userJsonContent(TOO_LONG_NAME)).andExpect(status().isBadRequest());
     }
 
     @Test
     public void save_statusIsConflictWhenSavingAnExistingUser() throws Exception {
-        save(toJson(FIRST_EXISTING_USER_ID, "User A")).andExpect(status().isConflict());
+        save(userJsonContent(FIRST_EXISTING_USER_ID, "User A")).andExpect(status().isConflict());
     }
 
     @Test
     public void save_creationDateIsEqualToLateUpdateDate() throws Exception {
-        save(toJson("User A")).andReturn();
+        save(userJsonContent("User A")).andReturn();
         UserDto savedUser = service.findById(NEXT_USER_ID);
         assertThat(savedUser.getCreationDate()).isEqualTo(savedUser.getUpdateDate());
     }

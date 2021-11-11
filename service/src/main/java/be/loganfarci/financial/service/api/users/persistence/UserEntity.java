@@ -1,13 +1,13 @@
 package be.loganfarci.financial.service.api.users.persistence;
 
+import be.loganfarci.financial.service.api.accounts.persistence.BankAccountEntity;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "application_user")
 @Check(constraints = "trim(name) <> ''")
@@ -27,6 +27,9 @@ public class UserEntity {
 
     @Column(name = "name", length = NAME_COLUMN_LENGTH)
     private String name;
+
+    @OneToMany(mappedBy = "user")
+    private List<BankAccountEntity> bankAccounts;
 
     @CreationTimestamp
     @Column(name = "created", columnDefinition = "TIMESTAMP", updatable = false)

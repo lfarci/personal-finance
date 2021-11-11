@@ -17,7 +17,7 @@ public class FindUserIT extends UserIT {
 
     @Test
     public void findById_responseJsonContentIsExpectedUser() throws Exception {
-        String jsonContent = toJson(FIRST_EXISTING_USER_ID, "User A");
+        String jsonContent = userJsonContent(FIRST_EXISTING_USER_ID, "User A");
         findById(FIRST_EXISTING_USER_ID).andExpect(content().json(jsonContent));
     }
 
@@ -28,17 +28,17 @@ public class FindUserIT extends UserIT {
 
     @Test
     public void findById_responseJsonContentIsExpectedError() throws Exception {
-        String jsonContent = getUserNotFoundJsonContent(NEXT_USER_ID);
+        String jsonContent = notFoundJsonContent(NEXT_USER_ID);
         findById(NEXT_USER_ID).andExpect(content().json(jsonContent));
     }
 
     @Test
-    public void findAll_statusIsOk() throws Exception {
+    public void statusIsOkWhenGettingUsers() throws Exception {
         findAll().andExpect(status().isOk());
     }
 
     @Test
-    public void findAll_responseContentHasExpectedLength() throws Exception {
+    public void responseContentHasExpectedLengthWhenGettingUsers() throws Exception {
         MvcResult result = findAll().andReturn();
         String json = result.getResponse().getContentAsString();
         UserDto[] users = mapper.readValue(json, UserDto[].class);
@@ -46,7 +46,7 @@ public class FindUserIT extends UserIT {
     }
 
     @Test
-    public void findAll_responseContentHasExpectedUsers() throws Exception {
+    public void responseContentHasExpectedUsersWhenGettingUsers() throws Exception {
         MvcResult result = findAll().andReturn();
         assertThat(result.getResponse().getContentAsString()).isEqualTo(makeUsersJsonOfSize(5));
     }

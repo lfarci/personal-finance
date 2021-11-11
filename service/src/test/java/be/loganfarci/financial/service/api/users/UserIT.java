@@ -1,20 +1,12 @@
 package be.loganfarci.financial.service.api.users;
 
-import be.loganfarci.financial.service.api.errors.dto.ErrorResponseDto;
+import be.loganfarci.financial.service.api.ResourceIT;
 import be.loganfarci.financial.service.api.users.model.UserDto;
 import be.loganfarci.financial.service.api.users.persistence.UserRepository;
 import be.loganfarci.financial.service.api.users.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.transaction.Transactional;
@@ -26,13 +18,9 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:users/application-test.yml")
-@ActiveProfiles("test")
 @Sql(scripts = "classpath:users/users.sql")
 @Transactional
-public abstract class UserIT {
+public abstract class UserIT extends ResourceIT {
 
     protected static final String USERS_PATH = "/api/users";
     protected static final long FIRST_EXISTING_USER_ID = 0L;
@@ -45,19 +33,10 @@ public abstract class UserIT {
     protected static final String TOO_LONG_NAME = "Lorem ipsum dolor sit amet, consectetur vestibulum.";
 
     @Autowired
-    protected MockMvc mvc;
-
-    @Autowired
-    protected ObjectMapper mapper;
-
-    @Autowired
     protected UserRepository repository;
 
     @Autowired
     protected UserService service;
-
-    @Autowired
-    protected MessageSource messageSource;
 
     public static char getChar(long i) {
         return i < 0 || i > 25 ? '?' : (char) ('A' + i);
@@ -86,20 +65,18 @@ public abstract class UserIT {
         );
     }
 
-    protected String getUserNotFoundJsonContent(long id) throws JsonProcessingException {
-        String title = getMessage("title.not_found");
-        String message = getMessage("user.not_found", new Long[]{ id });
-        return toJson(title, message);
+    protected final String notFoundJsonContent(long id) throws JsonProcessingException {
+        return notFoundJsonContent(getMessage("user.not_found", new Long[]{ id }));
     }
 
-    protected String getRequiredIdErrorJsonContent() throws JsonProcessingException {
-        return toJson(getMessage("title.bad_request"), getMessage("user.required_id"));
+    protected final String requiredIdErrorJsonContent() throws JsonProcessingException {
+        return badRequestJsonContent(getMessage("user.required_id"));
     }
 
-    protected String getIdMismatchErrorJsonContent(long bodyUserId, long queryParamUserId) throws JsonProcessingException {
-        String title = getMessage("title.bad_request");
+    protected final String idMismatchErrorJsonContent(long bodyUserId, long queryParamUserId) throws JsonProcessingException {
         String message = getMessage("user.id_mismatch", new Long[] { bodyUserId, queryParamUserId });
-        return toJson(title, message);
+        return badRequestJsonContent(message);
+
     }
 
     protected LocalDateTime getDate() {
@@ -107,30 +84,14 @@ public abstract class UserIT {
         return LocalDateTime.parse(DEFAULT_DATE_TIME, formatter);
     }
 
-    protected String getMessage(String messageCode, Object[] args) {
-        MessageSourceAccessor accessor = new MessageSourceAccessor(messageSource);
-        return accessor.getMessage(messageCode, args);
-    }
-
-    protected String getMessage(String messageCode) {
-        MessageSourceAccessor accessor = new MessageSourceAccessor(messageSource);
-        return accessor.getMessage(messageCode);
-    }
-
-    protected String toJson(Long id, String name) throws JsonProcessingException {
+    protected String userJsonContent(Long id, String name) throws JsonProcessingException {
         LocalDateTime date = getDate();
         UserDto userDto = new UserDto(id, name, date, date);
         return mapper.writeValueAsString(userDto);
     }
 
-    protected String toJson(String name) throws JsonProcessingException {
-        return toJson((Long) null, name);
-    }
-
-
-    protected String toJson(String title, String message) throws JsonProcessingException {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(title, message);
-        return mapper.writeValueAsString(errorResponseDto);
+    protected String userJsonContent(String name) throws JsonProcessingException {
+        return userJsonContent(null, name);
     }
 
     protected String makeUsersJsonOfSize(long size) throws JsonProcessingException {

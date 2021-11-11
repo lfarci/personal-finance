@@ -27,7 +27,7 @@ public class DeleteUserIT extends UserIT {
 
     @Test
     public void responseJsonContentIsExpectedError() throws Exception {
-        String jsonContent = getUserNotFoundJsonContent(NEXT_USER_ID);
+        String jsonContent = notFoundJsonContent(NEXT_USER_ID);
         mvc.perform(delete(getUserPathWithId(NEXT_USER_ID))).andExpect(content().json(jsonContent));
     }
 
