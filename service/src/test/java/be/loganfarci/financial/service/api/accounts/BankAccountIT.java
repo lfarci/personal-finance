@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -57,6 +56,12 @@ public abstract class BankAccountIT extends ResourceIT {
         String bankAccountsPath = getBankAccountPath(bankAccount.getUserId());
         String jsonContent = mapper.writeValueAsString(bankAccount);
         return mvc.perform(post(bankAccountsPath).contentType(APPLICATION_JSON).content(jsonContent));
+    }
+
+    protected ResultActions updateById(Long bankAccountId, BankAccountDto bankAccount) throws Exception {
+        String bankAccountsPath = getBankAccountPath(bankAccount.getUserId(), bankAccountId);
+        String jsonContent = mapper.writeValueAsString(bankAccount);
+        return mvc.perform(put(bankAccountsPath).contentType(APPLICATION_JSON).content(jsonContent));
     }
 
     protected ResultActions deleteByIdAndUserId(long userId, long bankAccountId) throws Exception {

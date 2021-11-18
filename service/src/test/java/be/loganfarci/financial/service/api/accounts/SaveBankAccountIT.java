@@ -10,53 +10,59 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class SaveBankAccountIT extends BankAccountIT {
 
+    protected static class SaveSample extends Sample {
+        static final String NAME = "Account B";
+        static final String IBAN = "IT15X0300203280649287215782";
+    }
+
+    private static BankAccountDto sample() {
+        return new BankAccountDto(
+                SaveSample.NAME,
+                SaveSample.USER_ID,
+                SaveSample.IBAN,
+                SaveSample.BALANCE
+        );
+    }
+
     @Test
     public void statusIsCreatedWhenCreationIsSuccessful() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", 0.0);
-        save(bankAccount).andExpect(status().isCreated());
+        save(sample()).andExpect(status().isCreated());
     }
 
     @Test
     public void statusIsCreatedWhenCreationIsSuccessfulWithoutIBAN() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, null, 0.0);
-        save(bankAccount).andExpect(status().isCreated());
+        save(sample().iban(null)).andExpect(status().isCreated());
     }
 
     @Test
     public void statusIsCreatedWhenCreationIsSuccessfulWithoutBalance() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", null);
-        save(bankAccount).andExpect(status().isCreated());
+        save(sample().balance(null)).andExpect(status().isCreated());
     }
 
     @Test
     public void bankAccountExistsAfterASuccessfulCreation() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", null);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
-        assertThat(service.existsByUserIdAndBankAccountId(0L, response.getId()));
+        BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
+        assertThat(service.existsByUserIdAndBankAccountId(0L, response.getId())).isTrue();
     }
 
     @Test
     public void statusIsBadRequestWhenCreatingAnAccountWithEmptyName() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("", 0L, "IT15X0300203280649287215782", 0.0);
-        save(bankAccount).andExpect(status().isBadRequest());
+        save(sample().name("")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void statusIsBadRequestWhenCreatingAnAccountWithBlankName() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("     ", 0L, "IT15X0300203280649287215782", 0.0);
-        save(bankAccount).andExpect(status().isBadRequest());
+        save(sample().name("     ")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void statusIsBadRequestWhenCreatingAnAccountWithATooLongName() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto(TOO_LONG_NAME, 0L, "IT15X0300203280649287215782", 0.0);
-        save(bankAccount).andExpect(status().isBadRequest());
+        save(sample().name(TOO_LONG_NAME)).andExpect(status().isBadRequest());
     }
 
     @Test
     public void statusIsBadRequestWhenCreatingAnAccountWithoutAName() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto(null, 0L, "IT15X0300203280649287215782", 0.0);
-        save(bankAccount).andExpect(status().isBadRequest());
+        save(sample().name(null)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -77,57 +83,48 @@ public class SaveBankAccountIT extends BankAccountIT {
 
     @Test
     public void statusIsConflictWhenCreatingAnAccountWithExistingIban() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, Sample.IBAN, 0.0);
-        save(bankAccount).andExpect(status().isConflict());
+        save(sample().iban(Sample.IBAN)).andExpect(status().isConflict());
     }
 
     @Test
     public void statusIsNotFoundWhenCreatingAnAccountWithUserIdThatDoesNotExist() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 5L, Sample.IBAN, 0.0);
-        save(bankAccount).andExpect(status().isNotFound());
+        save(sample().userId(5L)).andExpect(status().isNotFound());
     }
 
     @Test
     public void responseContentHasExpectedIdentifierWhenCreationIsSuccessful() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", 0.0);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
+        BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
         assertThat(response.getId()).isEqualTo(1L);
     }
 
     @Test
     public void responseContentHasExpectedNameWhenCreationIsSuccessful() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", 0.0);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
-        assertThat(response.getName()).isEqualTo("Account B");
+        BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
+        assertThat(response.getName()).isEqualTo(SaveSample.NAME);
     }
 
     @Test
     public void responseContentHasExpectedUserIdWhenCreationIsSuccessful() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", 0.0);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
-        assertThat(response.getUserId()).isEqualTo(0L);
+        BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
+        assertThat(response.getUserId()).isEqualTo(SaveSample.USER_ID);
     }
 
     @Test
     public void responseContentHasExpectedIBANWhenCreationIsSuccessful() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", 0.0);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
-        assertThat(response.getIban()).isEqualTo("IT15X0300203280649287215782");
+        BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
+        assertThat(response.getIban()).isEqualTo(SaveSample.IBAN);
     }
 
     @Test
     public void responseContentHasExpectedBalanceWhenCreationIsSuccessful() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", 23.23);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
-        assertThat(response.getBalance()).isEqualTo(23.23);
+        BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
+        assertThat(response.getBalance()).isEqualTo(SaveSample.BALANCE);
     }
 
     @Test
     public void responseContentHasDefaultBalanceWhenCreationIsSuccessfulWithoutBalance() throws Exception {
-        BankAccountDto bankAccount = new BankAccountDto("Account B", 0L, "IT15X0300203280649287215782", null);
-        BankAccountDto response = parseBankAccountFrom(save(bankAccount).andReturn());
+        BankAccountDto response = parseBankAccountFrom(save(sample().balance(null)).andReturn());
         assertThat(response.getBalance()).isEqualTo(0.0);
     }
-
 
 }

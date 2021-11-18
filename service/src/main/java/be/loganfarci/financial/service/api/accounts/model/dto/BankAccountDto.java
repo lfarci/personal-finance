@@ -76,4 +76,24 @@ public class BankAccountDto {
     public void setBalance(Double balance) {
         this.balance = balance;
     }
+
+    public BankAccountDto name(String value) {
+        this.name = value;
+        return this;
+    }
+
+    public BankAccountDto userId(Long value) {
+        this.userId = value;
+        return this;
+    }
+
+    public BankAccountDto iban(String value) {
+        this.iban = value;
+        return this;
+    }
+
+    public BankAccountDto balance(Double value) {
+        this.balance = value;
+        return this;
+    }
 }
