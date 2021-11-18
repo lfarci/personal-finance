@@ -22,6 +22,7 @@ public class BankAccountService {
     public static final String NOT_FOUND_MESSAGE_CODE = "account.not_found";
     public static final String IBAN_ALREADY_EXIST_MESSAGE_CODE = "account.iban_conflict";
     public static final String SAVE_ID_MISMATCH_MESSAGE_CODE = "account.save_id_mismatch";
+    public static final String REQUIRED_BALANCE_MESSAGE_CODE = "account.required_balance";
     public static final Double DEFAULT_BALANCE = 0.0;
 
     private final UserService userService;
@@ -88,24 +89,6 @@ public class BankAccountService {
                 .collect(Collectors.toList());
     }
 
-    private BankAccountService.NotFound notFound(Long bankAccountId) {
-        return new BankAccountService.NotFound(messages.getMessage(NOT_FOUND_MESSAGE_CODE, new Long[]{ bankAccountId }));
-    }
-
-
-    private BankAccountService.Conflict conflict(String iban) {
-        return new Conflict(messages.getMessage(IBAN_ALREADY_EXIST_MESSAGE_CODE, new String[] { iban }));
-    }
-
-
-    private UserService.InvalidArgument userIdMismatch(Long bodyId, Long URLQueryParamId) {
-        return new UserService.InvalidArgument(messages.getMessage(SAVE_ID_MISMATCH_MESSAGE_CODE, new Long[]{ bodyId, URLQueryParamId }));
-    }
-
-    private boolean existsByIban(String iban) {
-        return iban != null && repository.existsByIban(iban);
-    }
-
     public BankAccountDto saveForUserId(Long userId, BankAccountDto bankAccount) {
         UserEntity user = userService.findEntityById(userId);
         BankAccountEntity entity = mapper.fromRest(bankAccount, user);
@@ -119,6 +102,28 @@ public class BankAccountService {
             entity.setBalance(DEFAULT_BALANCE);
         }
         return mapper.toRest(repository.save(entity));
+    }
+
+    private boolean hasNewIban(BankAccountDto existing, BankAccountDto updated) {
+        return existing.getIban() != null && !existing.getIban().equals(updated.getIban());
+    }
+
+    public void updateByIdAndUserUd(Long userId, Long bankAccountId, BankAccountDto updated) {
+        UserEntity user = userService.findEntityById(userId);
+        BankAccountDto existing = findByIdAndUserId(userId, bankAccountId);
+        if (updated.getBalance() == null) {
+            throw balanceRequired();
+        }
+        if (!userId.equals(updated.getUserId())) {
+            throw userIdMismatch(userId, updated.getId());
+        }
+        if (hasNewIban(existing, updated) && existsByIban(updated.getIban())) {
+            throw conflict(updated.getIban());
+        }
+        existing.setName(updated.getName());
+        existing.setIban(updated.getIban());
+        existing.setBalance(updated.getBalance());
+        repository.save(mapper.fromRest(existing, user));
     }
 
     public static class NotFound extends ResourceNotFound {
@@ -137,6 +142,27 @@ public class BankAccountService {
         public InvalidArgument(String message) {
             super(message);
         }
+    }
+
+    private BankAccountService.NotFound notFound(Long bankAccountId) {
+        return new BankAccountService.NotFound(messages.getMessage(NOT_FOUND_MESSAGE_CODE, new Long[]{ bankAccountId }));
+    }
+
+
+    private BankAccountService.Conflict conflict(String iban) {
+        return new Conflict(messages.getMessage(IBAN_ALREADY_EXIST_MESSAGE_CODE, new String[] { iban }));
+    }
+
+    private UserService.InvalidArgument balanceRequired() {
+        return new UserService.InvalidArgument(messages.getMessage(REQUIRED_BALANCE_MESSAGE_CODE));
+    }
+
+    private UserService.InvalidArgument userIdMismatch(Long bodyId, Long URLQueryParamId) {
+        return new UserService.InvalidArgument(messages.getMessage(SAVE_ID_MISMATCH_MESSAGE_CODE, new Long[]{ bodyId, URLQueryParamId }));
+    }
+
+    private boolean existsByIban(String iban) {
+        return iban != null && repository.existsByIban(iban);
     }
 
 }

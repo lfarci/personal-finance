@@ -2,7 +2,6 @@ package be.loganfarci.financial.service.api.accounts;
 
 import be.loganfarci.financial.service.api.ResourceIT;
 import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
-import be.loganfarci.financial.service.api.accounts.persistence.BankAccountRepository;
 import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +57,14 @@ public abstract class BankAccountIT extends ResourceIT {
         return mvc.perform(post(bankAccountsPath).contentType(APPLICATION_JSON).content(jsonContent));
     }
 
-    protected ResultActions updateById(Long bankAccountId, BankAccountDto bankAccount) throws Exception {
-        String bankAccountsPath = getBankAccountPath(bankAccount.getUserId(), bankAccountId);
+    protected ResultActions updateById(Long userId, Long bankAccountId, BankAccountDto bankAccount) throws Exception {
+        String bankAccountsPath = getBankAccountPath(userId, bankAccountId);
         String jsonContent = mapper.writeValueAsString(bankAccount);
         return mvc.perform(put(bankAccountsPath).contentType(APPLICATION_JSON).content(jsonContent));
+    }
+
+    protected ResultActions updateById(Long userId, BankAccountDto bankAccount) throws Exception {
+        return updateById(userId, bankAccount.getId(), bankAccount);
     }
 
     protected ResultActions deleteByIdAndUserId(long userId, long bankAccountId) throws Exception {

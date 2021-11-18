@@ -55,9 +55,4 @@ public class FindBankAccountIT extends BankAccountIT {
         findByUserId(5L).andExpect(content().json(userNotFoundJsonContent(5L)));
     }
 
-    @Test
-    public void responseJsonContentIsExpectedBankAccounts() throws Exception {
-        findByUserId(Sample.USER_ID).andExpect(content().json(sampleListJsonContent()));
-    }
-
 }

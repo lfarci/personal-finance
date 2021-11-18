@@ -1,5 +1,7 @@
 package be.loganfarci.financial.service.api.accounts.model.dto;
 
+import be.loganfarci.financial.service.api.accounts.model.constraints.ValidIban;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,6 +19,7 @@ public class BankAccountDto {
     @NotNull
     private Long userId;
 
+    @ValidIban
     private String iban;
 
     private Double balance;
@@ -75,6 +78,11 @@ public class BankAccountDto {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public BankAccountDto id(Long value) {
+        this.id = value;
+        return this;
     }
 
     public BankAccountDto name(String value) {

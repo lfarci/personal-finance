@@ -87,6 +87,21 @@ public class SaveBankAccountIT extends BankAccountIT {
     }
 
     @Test
+    public void statusIsBadRequestWhenCreatingAnAccountWithEmptyIBAN() throws Exception {
+        save(sample().iban("")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void statusIsBadRequestWhenCreatingAnAccountWithBlankIBAN() throws Exception {
+        save(sample().iban("")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void statusIsBadRequestWhenCreatingAnAccountWithInvalidIBAN() throws Exception {
+        save(sample().iban("invalid")).andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void statusIsNotFoundWhenCreatingAnAccountWithUserIdThatDoesNotExist() throws Exception {
         save(sample().userId(5L)).andExpect(status().isNotFound());
     }
@@ -94,7 +109,7 @@ public class SaveBankAccountIT extends BankAccountIT {
     @Test
     public void responseContentHasExpectedIdentifierWhenCreationIsSuccessful() throws Exception {
         BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
-        assertThat(response.getId()).isEqualTo(1L);
+        assertThat(response.getId()).isEqualTo(2L);
     }
 
     @Test

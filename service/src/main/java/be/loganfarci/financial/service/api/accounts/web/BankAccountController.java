@@ -40,34 +40,19 @@ public class BankAccountController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/users/{userId}/accounts/{bankAccountId}")
+    public void updateForUserId(
+            @PathVariable Long userId,
+            @PathVariable Long bankAccountId,
+            @Valid @RequestBody BankAccountDto bankAccount
+    ) {
+        bankAccountService.updateByIdAndUserUd(userId, bankAccountId, bankAccount);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users/{userId}/accounts/{bankAccountId}")
     public void deleteByIdAndUserId(@PathVariable Long userId, @PathVariable Long bankAccountId) {
         bankAccountService.deleteByIdAndUserId(userId, bankAccountId);
     }
-
-//    @GetMapping("/accounts")
-//    public ResponseEntity<List<BankAccountDto>> findAll(@RequestParam(name = "internal") Boolean isInternal) {
-//        return ResponseEntity.ok(oldBankAccountService.findAll(isInternal));
-//    }
-//
-//    @PostMapping("/accounts")
-//    public ResponseEntity<BankAccountDto> save(@Valid @RequestBody BankAccountRequestBodyDto requestBodyDto) {
-//        return new ResponseEntity<>(oldBankAccountService.save(requestBodyDto), HttpStatus.CREATED);
-//    }
-//
-//    @PutMapping("/accounts/{id}")
-//    public ResponseEntity<BankAccountDto> update(
-//            @PathVariable Long id,
-//            @Valid @RequestBody BankAccountRequestBodyDto requestBodyDto
-//    ) {
-//        return new ResponseEntity<>(oldBankAccountService.update(id, requestBodyDto), HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/accounts/{id}")
-//    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
-//        transactionService.deleteAllForBankAccountId(id);
-//        oldBankAccountService.deleteById(id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 
 }
