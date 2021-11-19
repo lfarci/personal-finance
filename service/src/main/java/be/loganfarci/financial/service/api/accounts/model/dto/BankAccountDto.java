@@ -24,12 +24,22 @@ public class BankAccountDto {
 
     private Double balance;
 
-    public BankAccountDto(Long id, String name, Long userId, String iban, Double balance) {
+    private Boolean isInternal;
+
+    private String ownerName;
+
+    public BankAccountDto(Long id, String name, Long userId, String iban, Double balance, Boolean isInternal, String ownerName) {
         this.id = id;
         this.name = name;
         this.userId = userId;
         this.iban = iban;
         this.balance = balance;
+        this.isInternal = isInternal;
+        this.ownerName = ownerName;
+    }
+
+    public BankAccountDto(Long id, String name, Long userId, String iban, Double balance) {
+        this(id, name, userId, iban, balance, true, null);
     }
 
     public BankAccountDto(String name, Long userId, String iban, Double balance) {
@@ -56,6 +66,18 @@ public class BankAccountDto {
         this.name = name;
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public Boolean hasOwnerName() {
+        return ownerName != null;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -80,6 +102,18 @@ public class BankAccountDto {
         this.balance = balance;
     }
 
+    public Boolean isInternal() {
+        return isInternal;
+    }
+
+    public Boolean isExternal() {
+        return !isInternal;
+    }
+
+    public void setInternal(Boolean internal) {
+        isInternal = internal;
+    }
+
     public BankAccountDto id(Long value) {
         this.id = value;
         return this;
@@ -102,6 +136,16 @@ public class BankAccountDto {
 
     public BankAccountDto balance(Double value) {
         this.balance = value;
+        return this;
+    }
+
+    public BankAccountDto ownerName(String value) {
+        this.ownerName = value;
+        return this;
+    }
+
+    public BankAccountDto internal(Boolean value) {
+        this.isInternal = value;
         return this;
     }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SaveBankAccountIT extends BankAccountIT {
@@ -107,9 +108,19 @@ public class SaveBankAccountIT extends BankAccountIT {
     }
 
     @Test
+    public void statusIsUnprocessableEntityWhenCreatingAnInternalAccountWithOwnerName() throws Exception {
+        save(sample().internal(true).ownerName("Owner")).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void statusIsUnprocessableEntityWhenCreatingAnExternalAccountWithoutOwnerName() throws Exception {
+        save(sample().internal(false).ownerName(null)).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void responseContentHasExpectedIdentifierWhenCreationIsSuccessful() throws Exception {
         BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
-        assertThat(response.getId()).isEqualTo(2L);
+        assertThat(response.getId()).isEqualTo(3L);
     }
 
     @Test
@@ -140,6 +151,20 @@ public class SaveBankAccountIT extends BankAccountIT {
     public void responseContentHasDefaultBalanceWhenCreationIsSuccessfulWithoutBalance() throws Exception {
         BankAccountDto response = parseBankAccountFrom(save(sample().balance(null)).andReturn());
         assertThat(response.getBalance()).isEqualTo(0.0);
+    }
+
+    @Test
+    public void responseContentIsErrorWhenSavingInternalAccountWithOwnerName() throws Exception {
+        BankAccountDto account = sample().internal(true).ownerName("Owner Name");
+        String errorMessage = getMessage("account.save_internal_with_owner_name");
+        save(account).andExpect(content().json(unprocessableEntityJsonContent(errorMessage)));
+    }
+
+    @Test
+    public void responseContentIsErrorWhenSavingExternalAccountWithoutOwnerName() throws Exception {
+        BankAccountDto account = sample().internal(false).ownerName(null);
+        String errorMessage = getMessage("account.save_external_without_owner_name");
+        save(account).andExpect(content().json(unprocessableEntityJsonContent(errorMessage)));
     }
 
 }

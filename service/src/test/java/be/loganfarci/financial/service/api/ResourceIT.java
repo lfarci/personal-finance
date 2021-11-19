@@ -45,6 +45,10 @@ public abstract class ResourceIT {
         return errorJsonContent("title.not_found", message);
     }
 
+    protected String unprocessableEntityJsonContent(String message) throws JsonProcessingException {
+        return errorJsonContent("title.unprocessable_entity", message);
+    }
+
     private String errorJsonContent(String titleKey, String message) throws JsonProcessingException {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(getMessage(titleKey), message);
         return mapper.writeValueAsString(errorResponseDto);

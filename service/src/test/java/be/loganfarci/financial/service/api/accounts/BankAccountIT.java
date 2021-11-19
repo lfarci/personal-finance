@@ -4,6 +4,7 @@ import be.loganfarci.financial.service.api.ResourceIT;
 import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,6 +32,8 @@ public abstract class BankAccountIT extends ResourceIT {
         static final String IBAN = "NL46INGB4987790602";
         static final Double BALANCE = 237.45;
         static final Long USER_ID = 0L;
+        static final String OWNER_NAME = null;
+        static final Boolean INTERNAL = true;
     }
 
     protected static final String TOO_LONG_NAME = "Lorem ipsum dolor sit amet, consectetur vestibulum.";
@@ -93,6 +96,11 @@ public abstract class BankAccountIT extends ResourceIT {
     protected BankAccountDto parseBankAccountFrom(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
         String content = result.getResponse().getContentAsString();
         return mapper.readValue(content, BankAccountDto.class);
+    }
+
+    protected List<BankAccountDto> parseBankAccountsFrom(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
+        String content = result.getResponse().getContentAsString();
+        return mapper.readValue(content, new TypeReference<>(){});
     }
 
     protected String userNotFoundJsonContent(long userId) throws JsonProcessingException {

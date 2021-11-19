@@ -1,10 +1,11 @@
 package be.loganfarci.financial.service.api.accounts;
 
 import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
+import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UpdateBankAccountIT extends BankAccountIT {
@@ -15,7 +16,9 @@ public class UpdateBankAccountIT extends BankAccountIT {
                 Sample.NAME,
                 Sample.USER_ID,
                 Sample.IBAN,
-                Sample.BALANCE
+                Sample.BALANCE,
+                Sample.INTERNAL,
+                Sample.OWNER_NAME
         );
     }
 
@@ -103,6 +106,28 @@ public class UpdateBankAccountIT extends BankAccountIT {
     }
 
     @Test
+    public void statusIsUnprocessableEntityWhenUpdatingAnExternalAccountToInternal() throws Exception {
+        updateById(Sample.USER_ID, Sample.ID, sample().internal(false)).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void statusIsUnprocessableEntityWhenUpdatingAnInternalAccountToExternal() throws Exception {
+        updateById(Sample.USER_ID, 2L, sample().internal(true)).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void statusIsUnprocessableEntityWhenUpdatingAnInternalAccountWithOwnerNameDifferentThanNull() throws Exception {
+        BankAccountDto account = sample().internal(true).ownerName("Owner Name");
+        updateById(Sample.USER_ID, Sample.ID, account).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void statusIsUnprocessableEntityWhenUpdatingAnExternalAccountWithoutOwnerName() throws Exception {
+        BankAccountDto account = sample().internal(false).ownerName(null);
+        updateById(Sample.USER_ID, 2L, account).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void nameIsUpdatedAfterASuccessfulUpdate() throws Exception {
         String newName = "Updated bank account name";
         updateById(Sample.USER_ID, sample().name(newName)).andReturn();
@@ -124,5 +149,34 @@ public class UpdateBankAccountIT extends BankAccountIT {
         updateById(Sample.USER_ID, sample().balance(newBalance)).andReturn();
         BankAccountDto bankAccount = service.findByIdAndUserId(Sample.USER_ID, Sample.ID);
         assertThat(bankAccount.getBalance()).isEqualTo(newBalance);
+    }
+
+    @Test
+    public void ownerNameIsUpdatedAfterASuccessfulUpdateOfExternalAccount() throws Exception {
+        String newOwnerName = "Owner Name";
+        BankAccountDto account = sample().internal(false).iban(null).ownerName(newOwnerName);
+        updateById(Sample.USER_ID, 2L, account).andReturn();
+        BankAccountDto bankAccount = service.findByIdAndUserId(Sample.USER_ID, 2L);
+        assertThat(bankAccount.getOwnerName()).isEqualTo(newOwnerName);
+    }
+
+    @Test
+    public void responseContentIsErrorWhenUpdatingInternalFlag() throws Exception {
+        String errorMessage = getMessage(BankAccountService.INTERNAL_FLAG_UPDATE);
+        updateById(Sample.USER_ID, sample().internal(false)).andExpect(content().json(unprocessableEntityJsonContent(errorMessage)));
+    }
+
+    @Test
+    public void responseContentIsErrorWhenUpdatingExternalAccountWithoutOwnerName() throws Exception {
+        BankAccountDto account = sample().internal(false).ownerName(null);
+        String errorMessage = getMessage(BankAccountService.UPDATE_EXTERNAL_OWNER_NAME);
+        updateById(Sample.USER_ID, 2L, account).andExpect(content().json(unprocessableEntityJsonContent(errorMessage)));
+    }
+
+    @Test
+    public void responseContentIsErrorWhenUpdatingInternalAccountWithOwnerName() throws Exception {
+        BankAccountDto account = sample().internal(true).ownerName("Owner Name");
+        String errorMessage = getMessage(BankAccountService.UPDATE_INTERNAL_OWNER_NAME);
+        updateById(Sample.USER_ID, 0L, account).andExpect(content().json(unprocessableEntityJsonContent(errorMessage)));
     }
 }

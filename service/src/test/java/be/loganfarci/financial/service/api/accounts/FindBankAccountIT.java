@@ -1,7 +1,11 @@
 package be.loganfarci.financial.service.api.accounts;
 
+import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,6 +57,12 @@ public class FindBankAccountIT extends BankAccountIT {
     @Test
     public void responseJsonContentIsExpectedErrorWhenGettingBankAccountsForAUserIdThatDoesNotExist() throws Exception {
         findByUserId(5L).andExpect(content().json(userNotFoundJsonContent(5L)));
+    }
+
+    @Test
+    public void responseJsonContentAreInternalAccountsOnlyWhenGettingBankAccountsForAUserId() throws Exception {
+        List<BankAccountDto> accounts = parseBankAccountsFrom(findByUserId(0L).andReturn());
+        assertThat(accounts).allMatch(BankAccountDto::isInternal);
     }
 
 }

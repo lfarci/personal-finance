@@ -15,6 +15,7 @@ public class BankAccountControllerAdvice {
     private static final String NOT_FOUND_TITLE = "title.not_found";
     private static final String CONFLICT_TITLE = "title.conflict";
     private static final String BAD_REQUEST_TITLE = "title.bad_request";
+    private static final String UNPROCESSABLE_ENTITY_TITLE = "title.unprocessable_entity";
 
     private MessageSourceAccessor messages;
 
@@ -38,6 +39,12 @@ public class BankAccountControllerAdvice {
     @ExceptionHandler(BankAccountService.InvalidArgument.class)
     public ErrorResponseDto handleInvalidArgument(BankAccountService.InvalidArgument e) {
         return new ErrorResponseDto(messages.getMessage(BAD_REQUEST_TITLE), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BankAccountService.UnprocessableEntity.class)
+    public ErrorResponseDto handleUnprocessableEntity(BankAccountService.UnprocessableEntity e) {
+        return new ErrorResponseDto(messages.getMessage(UNPROCESSABLE_ENTITY_TITLE), e.getMessage());
     }
 
 }

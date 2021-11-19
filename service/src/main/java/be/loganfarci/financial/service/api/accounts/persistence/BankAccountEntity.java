@@ -1,6 +1,5 @@
 package be.loganfarci.financial.service.api.accounts.persistence;
 
-import be.loganfarci.financial.service.api.owner.persistence.OwnerEntity;
 import be.loganfarci.financial.service.api.users.persistence.UserEntity;
 import org.hibernate.annotations.Check;
 
@@ -10,7 +9,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity(name = "bank_account")
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "name", "owner" })
+        @UniqueConstraint(columnNames = { "name", "owner_name" })
 })
 @Check(constraints = "trim(name) <> ''")
 public class BankAccountEntity {
@@ -34,9 +33,8 @@ public class BankAccountEntity {
     @JoinColumn(name = "user", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "owner", referencedColumnName = "name")
-    private OwnerEntity owner;
+    @Column(name = "owner_name")
+    private String ownerName;
 
     @Column(name = "iban", length = 34, unique = true)
     private String iban;
@@ -44,30 +42,24 @@ public class BankAccountEntity {
     @Column(name = "balance")
     private Double balance;
 
+    /**
+     * An internal bank account is owned by one of the application user.
+     */
     @Column(name = "is_internal")
     private boolean isInternal;
 
-    public BankAccountEntity(Long id, String name, UserEntity user, String iban, Double balance) {
+    public BankAccountEntity(Long id, String name, UserEntity user, String ownerName, String iban, Double balance, boolean isInternal) {
         this.id = id;
         this.name = name;
-        this.owner = null;
         this.user = user;
-        this.iban = iban;
-        this.balance = balance;
-        this.isInternal = false;
-    }
-
-    public BankAccountEntity(String name, OwnerEntity owner, String iban, Double balance, boolean isInternal) {
-        this.id = 0L;
-        this.name = name;
-        this.owner = owner;
+        this.ownerName = ownerName;
         this.iban = iban;
         this.balance = balance;
         this.isInternal = isInternal;
     }
 
-    public BankAccountEntity(String name, OwnerEntity owner, String iban, Double balance) {
-        this(name, owner, iban, balance, true);
+    public BankAccountEntity(String name, String ownerName, String iban, Double balance, boolean isInternal) {
+        this(0L, name, null, ownerName, iban, balance, isInternal);
     }
 
     public BankAccountEntity() {
@@ -86,8 +78,8 @@ public class BankAccountEntity {
         return user;
     }
 
-    public OwnerEntity getOwner() {
-        return owner;
+    public String getOwnerName() {
+        return ownerName;
     }
 
     public String getIban() {
@@ -114,8 +106,8 @@ public class BankAccountEntity {
         this.user = user;
     }
 
-    public void setOwner(OwnerEntity owner) {
-        this.owner = owner;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public void setIban(String iban) {

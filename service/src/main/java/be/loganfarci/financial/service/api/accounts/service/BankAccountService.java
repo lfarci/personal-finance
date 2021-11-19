@@ -19,10 +19,15 @@ import java.util.stream.Collectors;
 @Service
 public class BankAccountService {
 
-    public static final String NOT_FOUND_MESSAGE_CODE = "account.not_found";
-    public static final String IBAN_ALREADY_EXIST_MESSAGE_CODE = "account.iban_conflict";
-    public static final String SAVE_ID_MISMATCH_MESSAGE_CODE = "account.save_id_mismatch";
-    public static final String REQUIRED_BALANCE_MESSAGE_CODE = "account.required_balance";
+    public static final String NOT_FOUND = "account.not_found";
+    public static final String IBAN_ALREADY_EXIST = "account.iban_conflict";
+    public static final String SAVE_ID_MISMATCH = "account.save_id_mismatch";
+    public static final String REQUIRED_BALANCE = "account.required_balance";
+    public static final String SAVE_INTERNAL_OWNER_NAME = "account.save_internal_with_owner_name";
+    public static final String SAVE_EXTERNAL_OWNER_NAME = "account.save_external_without_owner_name";
+    public static final String INTERNAL_FLAG_UPDATE = "account.update_cannot_update_internal_flag";
+    public static final String UPDATE_INTERNAL_OWNER_NAME = "account.update_internal_with_owner_name";
+    public static final String UPDATE_EXTERNAL_OWNER_NAME = "account.update_external_without_owner_name";
     public static final Double DEFAULT_BALANCE = 0.0;
 
     private final UserService userService;
@@ -48,7 +53,10 @@ public class BankAccountService {
 
     public List<BankAccountDto> findByUserId(Long userId) {
         UserDto user = userService.findById(userId);
-        return findAllFor(user);
+        return findAllFor(user)
+                .stream()
+                .filter(BankAccountDto::isInternal)
+                .collect(Collectors.toList());
     }
 
     public BankAccountDto findByIdAndUserId(Long userId, Long bankAccountId) {
@@ -89,15 +97,25 @@ public class BankAccountService {
                 .collect(Collectors.toList());
     }
 
-    public BankAccountDto saveForUserId(Long userId, BankAccountDto bankAccount) {
-        UserEntity user = userService.findEntityById(userId);
-        BankAccountEntity entity = mapper.fromRest(bankAccount, user);
+    private void requireValidBankAccountForSaving(Long userId, BankAccountDto bankAccount) {
         if (!userId.equals(bankAccount.getUserId())) {
             throw userIdMismatch(userId, bankAccount.getId());
         }
         if (existsByIban(bankAccount.getIban())) {
             throw conflict(bankAccount.getIban());
         }
+        if (bankAccount.isInternal() && bankAccount.hasOwnerName()) {
+            throw unprocessable(SAVE_INTERNAL_OWNER_NAME);
+        }
+        if (bankAccount.isExternal() && !bankAccount.hasOwnerName()) {
+            throw unprocessable(SAVE_EXTERNAL_OWNER_NAME);
+        }
+    }
+
+    public BankAccountDto saveForUserId(Long userId, BankAccountDto bankAccount) {
+        UserEntity user = userService.findEntityById(userId);
+        BankAccountEntity entity = mapper.fromRest(bankAccount, user);
+        requireValidBankAccountForSaving(userId, bankAccount);
         if (!entity.hasBalance()) {
             entity.setBalance(DEFAULT_BALANCE);
         }
@@ -108,9 +126,12 @@ public class BankAccountService {
         return existing.getIban() != null && !existing.getIban().equals(updated.getIban());
     }
 
-    public void updateByIdAndUserUd(Long userId, Long bankAccountId, BankAccountDto updated) {
-        UserEntity user = userService.findEntityById(userId);
-        BankAccountDto existing = findByIdAndUserId(userId, bankAccountId);
+    private boolean hasTheInternalFlagBeenUpdated(BankAccountDto existing, BankAccountDto updated) {
+        return existing.isInternal() != null && !existing.isInternal().equals(updated.isInternal());
+    }
+
+
+    private void requireValidBankAccountForUpdating(Long userId, BankAccountDto existing, BankAccountDto updated) {
         if (updated.getBalance() == null) {
             throw balanceRequired();
         }
@@ -120,9 +141,27 @@ public class BankAccountService {
         if (hasNewIban(existing, updated) && existsByIban(updated.getIban())) {
             throw conflict(updated.getIban());
         }
+        if (hasTheInternalFlagBeenUpdated(existing, updated)) {
+            throw unprocessable(INTERNAL_FLAG_UPDATE);
+        }
+        if (existing.isInternal() && updated.hasOwnerName()) {
+            throw unprocessable(UPDATE_INTERNAL_OWNER_NAME);
+        }
+        if (existing.isExternal() && !updated.hasOwnerName()) {
+            throw unprocessable(UPDATE_EXTERNAL_OWNER_NAME);
+        }
+    }
+
+    public void updateByIdAndUserUd(Long userId, Long bankAccountId, BankAccountDto updated) {
+        UserEntity user = userService.findEntityById(userId);
+        BankAccountDto existing = findByIdAndUserId(userId, bankAccountId);
+        requireValidBankAccountForUpdating(userId, existing, updated);
         existing.setName(updated.getName());
         existing.setIban(updated.getIban());
         existing.setBalance(updated.getBalance());
+        if (existing.isExternal()) {
+            existing.setOwnerName(updated.getOwnerName());
+        }
         repository.save(mapper.fromRest(existing, user));
     }
 
@@ -144,21 +183,30 @@ public class BankAccountService {
         }
     }
 
-    private BankAccountService.NotFound notFound(Long bankAccountId) {
-        return new BankAccountService.NotFound(messages.getMessage(NOT_FOUND_MESSAGE_CODE, new Long[]{ bankAccountId }));
+    public static class UnprocessableEntity extends RuntimeException {
+        public UnprocessableEntity(String message) {
+            super(message);
+        }
     }
 
+    private BankAccountService.NotFound notFound(Long bankAccountId) {
+        return new BankAccountService.NotFound(messages.getMessage(NOT_FOUND, new Long[]{ bankAccountId }));
+    }
 
     private BankAccountService.Conflict conflict(String iban) {
-        return new Conflict(messages.getMessage(IBAN_ALREADY_EXIST_MESSAGE_CODE, new String[] { iban }));
+        return new Conflict(messages.getMessage(IBAN_ALREADY_EXIST, new String[] { iban }));
     }
 
-    private UserService.InvalidArgument balanceRequired() {
-        return new UserService.InvalidArgument(messages.getMessage(REQUIRED_BALANCE_MESSAGE_CODE));
+    private BankAccountService.InvalidArgument balanceRequired() {
+        return new BankAccountService.InvalidArgument(messages.getMessage(REQUIRED_BALANCE));
     }
 
-    private UserService.InvalidArgument userIdMismatch(Long bodyId, Long URLQueryParamId) {
-        return new UserService.InvalidArgument(messages.getMessage(SAVE_ID_MISMATCH_MESSAGE_CODE, new Long[]{ bodyId, URLQueryParamId }));
+    private BankAccountService.InvalidArgument userIdMismatch(Long bodyId, Long URLQueryParamId) {
+        return new BankAccountService.InvalidArgument(messages.getMessage(SAVE_ID_MISMATCH, new Long[]{ bodyId, URLQueryParamId }));
+    }
+
+    private BankAccountService.UnprocessableEntity unprocessable(String messageKey) {
+        return new BankAccountService.UnprocessableEntity(messages.getMessage(messageKey));
     }
 
     private boolean existsByIban(String iban) {
