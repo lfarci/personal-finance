@@ -30,7 +30,7 @@ public class BankAccountEntity {
     private String name;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "application_user", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
     @Column(name = "owner_name")
