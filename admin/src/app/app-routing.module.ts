@@ -4,8 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
   {
-    path: 'owners',
-    loadChildren: () => import('./owners/owners.module').then(m => m.OwnersModule)
+    path: 'users',
+    loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
   },
   {
     path: 'accounts',

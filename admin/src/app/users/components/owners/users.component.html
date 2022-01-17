@@ -1,0 +1,31 @@
+<h2>Users</h2>
+<mat-card>
+  <h3>Create a new user</h3>
+  <form (ngSubmit)="submitUser()">
+    <mat-form-field>
+      <mat-label>User name</mat-label>
+      <input matInput id="userName" name="userName" type="text" [(ngModel)]="user.name" required/>
+    </mat-form-field>
+    <button color="primary" mat-raised-button type="submit">Add</button>
+  </form>
+</mat-card>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let user">{{ user.id || "N/A" }}</td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let owner">{{ owner.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let user">
+      <button mat-mini-fab (click)="deleteUser(user.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

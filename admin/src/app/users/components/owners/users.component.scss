@@ -1,0 +1,17 @@
+:host {
+  mat-card {
+    margin-bottom: 1rem;
+    form {
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      gap: 1rem;
+      button {
+        height: fit-content;
+      }
+    }
+  }
+  table {
+    width: 100%;
+  }
+}

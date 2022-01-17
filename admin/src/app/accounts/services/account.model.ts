@@ -1,9 +1,9 @@
-import { Owner } from "src/app/owners/services/owner.model";
+import { User } from "src/app/users/services/user.model";
 
 export interface BankAccount {
     id: number;
     name: string;
-    owner: Owner;
+    owner: User;
     iban?: string;
     balance: number;
 }
