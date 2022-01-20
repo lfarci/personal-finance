@@ -9,7 +9,7 @@ import {UsersService} from '../../services/users.service';
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = [ 'id', 'name', 'actions'];
+  displayedColumns: string[] = [ 'id', 'name', 'creation', 'lastUpdate', 'actions'];
   dataSource: User[] = [];
   user: User = {name: ""};
 
@@ -20,9 +20,11 @@ export class UsersComponent implements OnInit {
     this.service.getUsers().subscribe(this.handleUsers);
   }
 
+  get empty() { return this.dataSource.length === 0; }
+
   submitUser() {
     this.service.saveUser(this.user).subscribe({
-      next: this.handleUser,
+      next: this.handleNewUser,
       error: console.error
     });
   }
@@ -32,9 +34,10 @@ export class UsersComponent implements OnInit {
     this.dataSource = this.dataSource.filter(u => u.id !== id);
   };
 
-  private handleUser = (user: User) => {
+  private handleNewUser = (user: User) => {
     this.dataSource.push(user);
     this.dataSource = [...this.dataSource];
+    this.user.name = "";
   };
 
   private handleUsers = (owners: User[]) => {

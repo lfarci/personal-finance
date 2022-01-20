@@ -16,11 +16,6 @@ export class UsersService {
     this._usersBaseUrl = `${environment.baseUrl}/users`;
   }
 
-  findUserById(id: number): Observable<User | null> {
-    return this.http.get<User>(`${this._usersBaseUrl}/${id}`)
-      .pipe(catchError(error => throwError(error)));
-  }
-
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this._usersBaseUrl)
       .pipe(catchError(error => throwError(error)));
@@ -31,6 +26,10 @@ export class UsersService {
       .pipe(catchError(error => throwError(error)));
   }
 
+  updateUser(id: number, user: User): Observable<User> {
+    return this.http.put<User>(`${this._usersBaseUrl}/${id}`, user)
+      .pipe(catchError(error => throwError(error)));
+  }
 
   deleteUserById(id: number): Observable<void> {
     return this.http.delete<void>(`${this._usersBaseUrl}/${id}`)

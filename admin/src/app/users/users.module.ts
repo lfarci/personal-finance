@@ -8,23 +8,25 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatCard, MatCardModule} from "@angular/material/card";
+import {MatCardModule} from "@angular/material/card";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
   declarations: [
     UsersComponent
   ],
-  imports: [
-    CommonModule,
-    UsersRoutingModule,
-    MatTableModule,
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatIconModule,
-    MatCardModule
-  ]
+    imports: [
+        CommonModule,
+        UsersRoutingModule,
+        MatTableModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatIconModule,
+        MatCardModule,
+        MatMenuModule
+    ]
 })
 export class UsersModule { }
