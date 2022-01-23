@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{ action | titlecase }} user</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>User name</mat-label>
+    <input matInput [formControl]="userName"/>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [disabled]="!userName.valid" [mat-dialog-close]="submittedUser">{{ action | titlecase }}</button>
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+</div>

@@ -1,0 +1,9 @@
+<h2>Users</h2>
+<app-table
+  [dataSource]="dataSource"
+  [displayedColumns]="displayedColumns"
+  [rowOptions]="rowOptions"
+  (create)="create()"
+  (edit)="edit($event)"
+  (delete)="delete($event)"
+></app-table>
