@@ -12,12 +12,12 @@ export class BankAccountService {
 
   private _accountsBaseUrl: string;
 
-  constructor(private readonly http: HttpClient) { 
+  constructor(private readonly http: HttpClient) {
     this._accountsBaseUrl = environment.baseUrl;
   }
 
-  getBankAccounts = (): Observable<BankAccount[]> => {
-    const url = `${this._accountsBaseUrl}/accounts?internal=true`;
+  getBankAccounts = (userId: string): Observable<BankAccount[]> => {
+    const url = `${this._accountsBaseUrl}/users/${userId}/accounts`;
     return this.http.get<BankAccount[]>(url).pipe(catchError(error => throwError(error)));
   };
 
