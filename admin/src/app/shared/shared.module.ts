@@ -10,6 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { TitleCasePipe } from './title-case.pipe';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { SelectPipe } from './select.pipe';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -21,14 +22,15 @@ import { SelectPipe } from './select.pipe';
   exports: [
     TableComponent,
   ],
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule,
-    MatSnackBarModule
-  ]
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatPaginatorModule
+    ]
 })
 export class SharedModule { }

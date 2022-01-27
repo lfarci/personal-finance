@@ -7,6 +7,8 @@ import be.loganfarci.financial.service.api.users.persistence.UserEntity;
 import be.loganfarci.financial.service.api.users.persistence.UserRepository;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,6 +65,10 @@ public class UserService {
 
     public List<UserDto> findAll() {
         return repository.findAll().stream().map(mapper::toRest).collect(Collectors.toList());
+    }
+
+    public Page<UserDto> findAll(Pageable request) {
+        return repository.findAll(request).map(mapper::toRest);
     }
 
     public UserDto save(UserDto user) {

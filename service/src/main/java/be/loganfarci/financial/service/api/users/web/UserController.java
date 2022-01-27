@@ -2,6 +2,10 @@ package be.loganfarci.financial.service.api.users.web;
 
 import be.loganfarci.financial.service.api.users.model.UserDto;
 import be.loganfarci.financial.service.api.users.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +31,12 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users")
-    public List<UserDto> findAll() {
-        return service.findAll();
+    public Page<UserDto> findAll(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ) {
+        Pageable request = PageRequest.of(page, size, Sort.by("creationDate").descending());
+        return service.findAll(request);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

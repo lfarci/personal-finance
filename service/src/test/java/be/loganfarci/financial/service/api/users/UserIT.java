@@ -47,8 +47,10 @@ public abstract class UserIT extends ResourceIT {
         return String.format("%s/%d", USERS_PATH, id);
     }
 
-    protected ResultActions findAll() throws Exception {
-        return mvc.perform(get(USERS_PATH));
+    protected ResultActions findAll(Integer page, Integer size) throws Exception {
+        return mvc.perform(get(USERS_PATH)
+                .param("page", page.toString())
+                .param("size", size.toString()));
     }
 
     protected ResultActions findById(long id) throws Exception {

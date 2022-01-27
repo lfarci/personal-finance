@@ -1,10 +1,14 @@
 <h2>Users</h2>
 <app-table
-  [dataSource]="dataSource"
+  [resources]="dataSource"
   [displayedColumns]="displayedColumns"
   [rowOptions]="rowOptions"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="pageSizeOptions"
+  [totalNumberOfResources]="totalNumberOfElements"
   dateFormat="short"
   (create)="create()"
   (edit)="edit($event)"
   (delete)="delete($event)"
+  (page)="handlePageChange($event)"
 ></app-table>

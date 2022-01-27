@@ -7,6 +7,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {UserFormComponent} from "../user/user-form.component";
 import {filter, mergeMap} from "rxjs/operators";
+import {Page} from "../../shared/models/page.model";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-owners',
@@ -19,6 +21,11 @@ export class UsersComponent implements OnInit {
   dataSource: User[] = [];
 
   rowOptions: RowOption<User>[];
+
+  pageSizeOptions = [5, 10, 20];
+  pageIndex: number = 0;
+  pageSize: number = 5;
+  totalNumberOfElements: number = 0;
 
   constructor(
     private readonly service: UsersService,
@@ -36,8 +43,12 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.getUsers().subscribe(this.handleUsers);
+    this.getUsers();
   }
+
+  getUsers = () => {
+    this.service.getUsers(this.pageIndex, this.pageSize).subscribe(this.handlePage);
+  };
 
   showBankAccountsFor = (user: User) => {
     this.router.navigate(['users', user.id, 'accounts']);
@@ -109,6 +120,11 @@ export class UsersComponent implements OnInit {
     this.showMessage(`User "${user.firstName}" could not be deleted.`);
   }
 
+  private handlePage = (page: Page<User>) => {
+    this.totalNumberOfElements = page.totalElements;
+    this.handleUsers(page.content);
+  };
+
   private handleUsers = (owners: User[]) => {
     this.dataSource = owners;
   };
@@ -119,4 +135,9 @@ export class UsersComponent implements OnInit {
     });
   };
 
+  handlePageChange($event: PageEvent) {
+    this.pageSize = $event.pageSize;
+    this.pageIndex = $event.pageIndex;
+    this.getUsers();
+  }
 }
