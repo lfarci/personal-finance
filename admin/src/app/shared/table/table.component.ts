@@ -24,6 +24,8 @@ export class TableComponent<Resource> implements OnInit {
   rowOptions: RowOption<Resource>[] = [];
   @Input()
   emptyTableMessage: string = "Empty table.";
+  @Input()
+  dateFormat: string = "medium";
 
   @Output()
   create = new EventEmitter<void>();

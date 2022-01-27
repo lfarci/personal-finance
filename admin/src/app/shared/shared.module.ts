@@ -9,12 +9,14 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import { TitleCasePipe } from './title-case.pipe';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { SelectPipe } from './select.pipe';
 
 @NgModule({
   declarations: [
     ConfirmitionDialogComponent,
     TableComponent,
     TitleCasePipe,
+    SelectPipe,
   ],
   exports: [
     TableComponent,

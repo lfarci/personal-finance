@@ -3,7 +3,7 @@
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container *ngFor="let column of columns" [matColumnDef]="column">
       <th mat-header-cell *matHeaderCellDef>{{ column | titleCase }}</th>
-      <td mat-cell *matCellDef="let resource">{{ resource[column] }}</td>
+      <td mat-cell *matCellDef="let resource">{{ resource | select: column : dateFormat }}</td>
     </ng-container>
     <ng-container *ngIf="showRowOptions" matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef>Options</th>
