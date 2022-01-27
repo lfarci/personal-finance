@@ -14,15 +14,21 @@ public class UserDto {
     @NotBlank
     @NotNull
     @Size(min = 1, max = 50)
-    private String name;
+    private String firstName;
+
+    @NotBlank
+    @NotNull
+    @Size(min = 1, max = 50)
+    private String lastName;
 
     private LocalDateTime creationDate;
 
     private LocalDateTime updateDate;
 
-    public UserDto(Long id, String name, LocalDateTime creationDate, LocalDateTime updateDate) {
+    public UserDto(Long id, String firstName, String lastName, LocalDateTime creationDate, LocalDateTime updateDate) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
     }
@@ -35,12 +41,20 @@ public class UserDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public LocalDateTime getCreationDate() {
@@ -58,4 +72,5 @@ public class UserDto {
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
+
 }

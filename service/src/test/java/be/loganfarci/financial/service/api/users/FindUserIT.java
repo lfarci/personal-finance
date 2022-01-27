@@ -17,7 +17,7 @@ public class FindUserIT extends UserIT {
 
     @Test
     public void findById_responseJsonContentIsExpectedUser() throws Exception {
-        String jsonContent = userJsonContent(FIRST_EXISTING_USER_ID, "User A");
+        String jsonContent = userJsonContent(FIRST_EXISTING_USER_ID, "User A", "User A");
         findById(FIRST_EXISTING_USER_ID).andExpect(content().json(jsonContent));
     }
 

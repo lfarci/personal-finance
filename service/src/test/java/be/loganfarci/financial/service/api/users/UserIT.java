@@ -30,6 +30,7 @@ public abstract class UserIT extends ResourceIT {
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String DEFAULT_DATE_TIME = "2021-01-01 00:00:00";
 
+    protected static final String VALID_NAME = "Roger";
     protected static final String TOO_LONG_NAME = "Lorem ipsum dolor sit amet, consectetur vestibulum.";
 
     @Autowired
@@ -84,21 +85,30 @@ public abstract class UserIT extends ResourceIT {
         return LocalDateTime.parse(DEFAULT_DATE_TIME, formatter);
     }
 
-    protected String userJsonContent(Long id, String name) throws JsonProcessingException {
+    protected String userJsonContent(Long id, String firstName, String lastName) throws JsonProcessingException {
         LocalDateTime date = getDate();
-        UserDto userDto = new UserDto(id, name, date, date);
+        UserDto userDto = new UserDto(id, firstName, lastName, date, date);
         return mapper.writeValueAsString(userDto);
     }
 
-    protected String userJsonContent(String name) throws JsonProcessingException {
-        return userJsonContent(null, name);
+    protected String userJsonContent(Long id, String firstName) throws JsonProcessingException {
+        return userJsonContent(id, firstName, "lastName");
+    }
+
+    protected String userJsonContent(String firstName) throws JsonProcessingException {
+        return userJsonContent((Long) null, firstName);
+    }
+
+    protected String userJsonContent(String firstName, String lastName) throws JsonProcessingException {
+        return userJsonContent(null, firstName, lastName);
     }
 
     protected String makeUsersJsonOfSize(long size) throws JsonProcessingException {
         LocalDateTime date = getDate();
         List<UserDto> users = new ArrayList<>() {{
             for (long i = 0; i < size; i++) {
-                add(new UserDto(i, "User " + getChar(i), date, date));
+                String name = "User " + getChar(i);
+                add(new UserDto(i, name, name, date, date));
             }
         }};
         return mapper.writeValueAsString(users);

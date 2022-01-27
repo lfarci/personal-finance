@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 public class UserMapper {
 
     public UserDto toRest(UserEntity entity) {
-        return new UserDto(entity.getId(), entity.getName(), entity.getCreationDate(), entity.getUpdateDate());
+        return new UserDto(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getCreationDate(), entity.getUpdateDate());
     }
 
     public UserEntity fromRest(UserDto user) {
-        return new UserEntity(user.getId(), user.getName());
+        return new UserEntity(user.getId(), user.getFirstName(), user.getLastName());
     }
 
 }

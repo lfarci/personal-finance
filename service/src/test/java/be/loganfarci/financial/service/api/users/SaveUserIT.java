@@ -43,6 +43,26 @@ public class SaveUserIT extends UserIT {
     }
 
     @Test
+    public void save_statusIsBadRequestWhenLastNameIsNull() throws Exception {
+        save(userJsonContent(VALID_NAME, null)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_statusIsBadRequestWhenLastNameIsEmpty() throws Exception {
+        save(userJsonContent(VALID_NAME, "")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_statusIsBadRequestWhenLastNameIsBlank() throws Exception {
+        save(userJsonContent(VALID_NAME, "     ")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void save_statusIsBadRequestWhenLastNameIsTooLong() throws Exception {
+        save(userJsonContent(VALID_NAME, TOO_LONG_NAME)).andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void save_statusIsConflictWhenSavingAnExistingUser() throws Exception {
         save(userJsonContent(FIRST_EXISTING_USER_ID, "User A")).andExpect(status().isConflict());
     }

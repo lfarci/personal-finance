@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "application_user")
-@Check(constraints = "trim(name) <> ''")
+@Check(constraints = "trim(first_name) <> '' and trim(last_name) <> ''")
 public class UserEntity {
 
     public static final int NAME_COLUMN_LENGTH = 50;
@@ -25,8 +25,11 @@ public class UserEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", length = NAME_COLUMN_LENGTH)
-    private String name;
+    @Column(name = "first_name", length = NAME_COLUMN_LENGTH)
+    private String firstName;
+
+    @Column(name = "last_name", length = NAME_COLUMN_LENGTH)
+    private String lastName;
 
     @OneToMany(mappedBy = "user")
     private List<BankAccountEntity> bankAccounts;
@@ -39,13 +42,14 @@ public class UserEntity {
     @Column(name = "updated", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDate;
 
-    public UserEntity(Long id, String name) {
+    public UserEntity(Long id, String firstName, String lastName) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public UserEntity() {
-        this(0L, null);
+        this(0L, null, null);
     }
 
     public Long getId() {
@@ -56,12 +60,20 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public LocalDateTime getCreationDate() {

@@ -1,6 +1,5 @@
 package be.loganfarci.financial.service.api.users.service;
 
-import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.errors.exceptions.ResourceConflict;
 import be.loganfarci.financial.service.api.errors.exceptions.ResourceNotFound;
 import be.loganfarci.financial.service.api.users.model.UserDto;
@@ -85,7 +84,8 @@ public class UserService {
     public void updateById(Long userId, UserDto user) {
         validateUpdateArguments(userId, user);
         UserDto updated = findById(userId);
-        updated.setName(user.getName());
+        updated.setFirstName(user.getFirstName());
+        updated.setLastName(user.getLastName());
         repository.save(mapper.fromRest(updated));
     }
 

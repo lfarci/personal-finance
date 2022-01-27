@@ -17,7 +17,7 @@ public class UpdateUserIT extends UserIT {
     public void updateById_userNameIsUpdated() throws Exception {
         String userName = "New user A";
         updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, userName)).andReturn();
-        assertThat(service.findById(FIRST_EXISTING_USER_ID).getName()).isEqualTo(userName);
+        assertThat(service.findById(FIRST_EXISTING_USER_ID).getFirstName()).isEqualTo(userName);
     }
 
     @Test
@@ -38,6 +38,33 @@ public class UpdateUserIT extends UserIT {
     @Test
     public void updateById_statusIsBadRequestWhenNameIsTooLong() throws Exception {
         updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, TOO_LONG_NAME)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_lastNameIsUpdated() throws Exception {
+        String newLastName = "New user A";
+        updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, "User A", newLastName)).andReturn();
+        assertThat(service.findById(FIRST_EXISTING_USER_ID).getLastName()).isEqualTo(newLastName);
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenLastNameIsNull() throws Exception {
+        updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, "User A", null)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenLastNameIsEmpty() throws Exception {
+        updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, "User A","")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenLastNameIsBlank() throws Exception {
+        updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, "User A", "      ")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateById_statusIsBadRequestWhenLastNameIsTooLong() throws Exception {
+        updateById(FIRST_EXISTING_USER_ID, userJsonContent(FIRST_EXISTING_USER_ID, "User A", TOO_LONG_NAME)).andExpect(status().isBadRequest());
     }
 
     @Test
