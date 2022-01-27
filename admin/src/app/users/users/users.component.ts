@@ -15,7 +15,7 @@ import {filter, mergeMap} from "rxjs/operators";
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = [ 'name', 'creationDate', 'updateDate', 'options'];
+  displayedColumns: string[] = [ 'firstName', 'lastName', 'creationDate', 'updateDate', 'options'];
   dataSource: User[] = [];
 
   rowOptions: RowOption<User>[];
@@ -57,7 +57,7 @@ export class UsersComponent implements OnInit {
   private afterSuccessfulCreate = (user: User) => {
     this.dataSource.push(user);
     this.dataSource = [...this.dataSource];
-    this.showMessage(`User "${user.name}" has been created.`);
+    this.showMessage(`User "${user.firstName}" has been created.`);
   };
 
   private afterFailedCreate = () => {
@@ -80,11 +80,11 @@ export class UsersComponent implements OnInit {
     const index = this.dataSource.findIndex(u => u.id === user.id);
     this.dataSource[index] = user;
     this.dataSource = [...this.dataSource];
-    this.showMessage(`User "${user.name}" has been updated.`);
+    this.showMessage(`User "${user.firstName}" has been updated.`);
   };
 
   private afterFailedEdit = (user: User) => {
-    this.showMessage(`User "${user.name}" could not be updated.`);
+    this.showMessage(`User "${user.firstName}" could not be updated.`);
   };
 
   delete = (user: User) => {
@@ -102,11 +102,11 @@ export class UsersComponent implements OnInit {
 
   afterSuccessfulDelete = (user: User) => {
     this.dataSource = this.dataSource.filter(u => u.id !== user.id);
-    this.showMessage(`User "${user.name}" has been successfully deleted.`);
+    this.showMessage(`User "${user.firstName}" has been successfully deleted.`);
   }
 
   afterFailedDelete = (user: User) => {
-    this.showMessage(`User "${user.name}" could not be deleted.`);
+    this.showMessage(`User "${user.firstName}" could not be deleted.`);
   }
 
   private handleUsers = (owners: User[]) => {

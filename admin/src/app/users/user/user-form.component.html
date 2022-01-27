@@ -1,11 +1,17 @@
 <h1 mat-dialog-title>{{ action | titlecase }} user</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <mat-label>User name</mat-label>
-    <input matInput [formControl]="userName"/>
+    <mat-label>First name</mat-label>
+    <input matInput [formControl]="firstName"/>
+    <mat-error *ngIf="firstName.invalid">Required.</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Last name</mat-label>
+    <input matInput [formControl]="lastName"/>
+    <mat-error *ngIf="lastName.invalid">Required.</mat-error>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [disabled]="!userName.valid" [mat-dialog-close]="submittedUser">{{ action | titlecase }}</button>
+  <button mat-button [disabled]="!firstName.valid" [mat-dialog-close]="submittedUser">{{ action | titlecase }}</button>
   <button mat-button [mat-dialog-close]="undefined">Cancel</button>
 </div>

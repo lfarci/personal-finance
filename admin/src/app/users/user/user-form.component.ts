@@ -12,7 +12,12 @@ export class UserFormComponent implements OnInit {
 
   user?: User;
 
-  userName = new FormControl("", [
+  firstName = new FormControl("", [
+    Validators.required,
+    Validators.minLength(1),
+  ]);
+
+  lastName = new FormControl("", [
     Validators.required,
     Validators.minLength(1),
   ]);
@@ -32,11 +37,16 @@ export class UserFormComponent implements OnInit {
   get action() { return this.isEdit ? 'edit' : 'create'; }
 
   ngOnInit(): void {
-    this.userName.setValue(this.user?.name);
+    this.firstName.setValue(this.user?.firstName);
+    this.lastName.setValue(this.user?.lastName);
   }
 
   get submittedUser(): User {
-    return { ...this.user, name: this.userName.value, };
+    return {
+      ...this.user,
+      firstName: this.firstName.value,
+      lastName: this.lastName.value
+    };
   }
 
 }
