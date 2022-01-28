@@ -66,7 +66,7 @@ export class UsersComponent implements OnInit {
   };
 
   private afterSuccessfulCreate = (user: User) => {
-    this.dataSource.push(user);
+    this.dataSource.unshift(user);
     this.dataSource = [...this.dataSource];
     this.showMessage(`User "${user.firstName}" has been created.`);
   };

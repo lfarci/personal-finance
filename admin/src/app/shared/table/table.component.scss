@@ -1,10 +1,11 @@
 :host {
+  background: green;
   table {
     width: 100%;
   }
   .table-add-button {
-    position: absolute;
-    right: 1em;
-    bottom: 1em;
+    position: fixed;
+    right: 1.5em;
+    bottom: 1.5em;
   }
 }

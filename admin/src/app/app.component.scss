@@ -1,5 +1,11 @@
 :host {
-    section {
-        padding: 1em;
+  section {
+    padding: 1em;
+    margin: 0 auto;
+    max-width: 100%;
+
+    @media screen and (min-width: 1200px) {
+      max-width: 60%;
     }
+  }
 }
