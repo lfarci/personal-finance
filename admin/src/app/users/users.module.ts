@@ -13,6 +13,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {SharedModule} from "../shared/shared.module";
 import {UserFormComponent} from './user/user-form.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatDividerModule} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatMenuModule,
     SharedModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDividerModule
   ]
 })
 export class UsersModule { }

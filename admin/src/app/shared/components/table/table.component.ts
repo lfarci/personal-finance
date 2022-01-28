@@ -1,12 +1,10 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
-  OnInit,
-  Output, ViewChild,
+  Output,
 } from '@angular/core';
-import {RowOption} from "../row-option.model";
+import {RowOption} from "../../models/row-option.model";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmitionDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {PageEvent} from "@angular/material/paginator";
@@ -38,8 +36,6 @@ export class TableComponent<Resource> {
   totalNumberOfResources: number = 0;
 
   @Output()
-  create = new EventEmitter<void>();
-  @Output()
   edit = new EventEmitter<Resource>();
   @Output()
   delete = new EventEmitter<Resource>();
@@ -47,8 +43,6 @@ export class TableComponent<Resource> {
   page = new EventEmitter<PageEvent>();
 
   constructor(private readonly dialog: MatDialog) {}
-
-  get empty() { return this.resources.length === 0; }
 
   get columns() { return this.displayedColumns.filter(c => c !== 'options'); }
 
@@ -74,10 +68,6 @@ export class TableComponent<Resource> {
 
   handleDeleteConfirmation(resource: Resource) {
     this.delete.emit(resource);
-  }
-
-  handleCreate() {
-    this.create.emit();
   }
 
   handleEdit(resource: Resource) {

@@ -1,4 +1,12 @@
-<h2>Users</h2>
+<div>
+  <h2>Users</h2>
+  <button mat-raised-button (click)="create()">
+    <mat-icon>add</mat-icon>
+    <span>Create user</span>
+  </button>
+</div>
+<mat-divider></mat-divider>
+
 <app-table
   [resources]="dataSource"
   [displayedColumns]="displayedColumns"
@@ -7,7 +15,6 @@
   [pageSizeOptions]="pageSizeOptions"
   [totalNumberOfResources]="totalNumberOfElements"
   dateFormat="short"
-  (create)="create()"
   (edit)="edit($event)"
   (delete)="delete($event)"
   (page)="handlePageChange($event)"

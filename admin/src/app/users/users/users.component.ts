@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../services/user.model';
 import {UsersService} from '../services/users.service';
-import {RowOption} from "../../shared/row-option.model";
+import {RowOption} from "../../shared/models/row-option.model";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
@@ -9,6 +9,7 @@ import {UserFormComponent} from "../user/user-form.component";
 import {filter, mergeMap} from "rxjs/operators";
 import {Page} from "../../shared/models/page.model";
 import {PageEvent} from "@angular/material/paginator";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-owners',
@@ -28,11 +29,13 @@ export class UsersComponent implements OnInit {
   totalNumberOfElements: number = 0;
 
   constructor(
+    private readonly title: Title,
     private readonly service: UsersService,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
     private readonly dialog: MatDialog
   ) {
+    this.title.setTitle("Admin: users");
     this.rowOptions = [
       {
         label: "Bank Accounts",
