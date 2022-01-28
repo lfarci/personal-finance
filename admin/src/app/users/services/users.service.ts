@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { User } from './user.model';
 import {catchError, map} from 'rxjs/operators';
 import {Page} from "../../shared/models/page.model";
+import {WithRequired} from "../../shared/models/with-required";
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,8 @@ export class UsersService {
       .pipe(catchError(error => throwError(error)));
   }
 
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this._usersBaseUrl}/${id}`, user)
+  updateUser = (user: User): Observable<User> => {
+    return this.http.put<User>(`${this._usersBaseUrl}/${user.id}`, user)
       .pipe(
         map(() => user),
         catchError(error => throwError(error))
