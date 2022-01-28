@@ -27,11 +27,11 @@ export class TableComponent<Resource> {
   @Input()
   dateFormat: string = "medium";
   @Input()
-  pageSizeOptions = [5, 10, 20];
+  pageSizeOptions = [10, 20, 30];
   @Input()
   pageIndex: number = 0;
   @Input()
-  pageSize: number = 5;
+  pageSize: number = 10;
   @Input()
   totalNumberOfResources: number = 0;
 

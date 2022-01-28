@@ -1,18 +1,13 @@
-<div>
-  <h2>Users</h2>
-  <button mat-raised-button (click)="create()">
-    <mat-icon>add</mat-icon>
-    <span>Create user</span>
-  </button>
-</div>
-<mat-divider></mat-divider>
-
+<app-table-header
+  title="Users"
+  createButtonLabel="Create user"
+  (create)="create()"
+></app-table-header>
 <app-table
   [resources]="dataSource"
   [displayedColumns]="displayedColumns"
   [rowOptions]="rowOptions"
   [pageIndex]="pageIndex"
-  [pageSizeOptions]="pageSizeOptions"
   [totalNumberOfResources]="totalNumberOfElements"
   dateFormat="short"
   (edit)="edit($event)"

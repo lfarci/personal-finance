@@ -23,9 +23,8 @@ export class UsersComponent implements OnInit {
 
   rowOptions: RowOption<User>[];
 
-  pageSizeOptions = [5, 10, 20];
   pageIndex: number = 0;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalNumberOfElements: number = 0;
 
   constructor(

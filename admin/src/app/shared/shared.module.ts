@@ -11,6 +11,7 @@ import { TitleCasePipe } from './pipes/title-case.pipe';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { SelectPipe } from './pipes/select.pipe';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { TableHeaderComponent } from './components/table-header/table-header.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +19,11 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     TableComponent,
     TitleCasePipe,
     SelectPipe,
+    TableHeaderComponent,
   ],
   exports: [
     TableComponent,
+    TableHeaderComponent,
   ],
     imports: [
         CommonModule,
