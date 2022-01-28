@@ -3,7 +3,6 @@ import {User} from '../services/user.model';
 import {UsersService} from '../services/users.service';
 import {RowOption} from "../../shared/models/row-option.model";
 import {Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
 import {UserFormComponent} from "../user/user-form.component";
 import {Page} from "../../shared/models/page.model";
 import {PageEvent} from "@angular/material/paginator";
@@ -35,8 +34,7 @@ export class UsersComponent implements OnInit {
     private readonly service: UsersService,
     private readonly router: Router,
     private readonly message: MessageService,
-    private readonly formDialog: FormDialogService<UserFormComponent, User>,
-    private readonly dialog: MatDialog
+    private readonly formDialog: FormDialogService<UserFormComponent, User>
   ) {
     this.title.setTitle("Admin: users");
     this.rowOptions = [
@@ -60,8 +58,8 @@ export class UsersComponent implements OnInit {
     this.service.getUsers(this.pageIndex, this.pageSize).subscribe(this.handlePage);
   };
 
-  showBankAccountsFor = (user: User) => {
-    this.router.navigate(['users', user.id, 'accounts']);
+  showBankAccountsFor = async (user: User) => {
+    await this.router.navigate(['users', user.id, 'accounts']);
   };
 
   create = () => {
