@@ -1,5 +1,16 @@
 <mat-toolbar color="primary">
-  <h1>Financial Administration Panel</h1>
+  <h1>{{ "title" | translate }}</h1>
+  <button mat-icon-button color="white" aria-label="Menu" [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="languages">Languages</button>
+  </mat-menu>
+  <mat-menu #languages="matMenu">
+    <button mat-menu-item *ngFor="let lang of languageOptions" (click)="changeLanguage(lang.code)">
+      {{ lang.labelKey | translate }}
+    </button>
+  </mat-menu>
 </mat-toolbar>
 <section>
   <router-outlet></router-outlet>

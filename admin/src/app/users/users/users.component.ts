@@ -39,7 +39,7 @@ export class UsersComponent implements OnInit {
     this.title.setTitle("Admin: users");
     this.rowOptions = [
       {
-        label: "Bank Accounts",
+        label: "users.accounts",
         icon: "account_balance_wallet",
         action: this.showBankAccountsFor
       }
@@ -102,6 +102,7 @@ export class UsersComponent implements OnInit {
 
   private afterSuccessfulEdit = (user: User) => {
     const index = this.dataSource.findIndex(u => u.id === user.id);
+    user.updateDate = new Date();
     this.dataSource[index] = user;
     this.dataSource = [...this.dataSource];
     this.message.show(`User "${user.firstName}" has been updated.`);

@@ -10,10 +10,12 @@ import {MatIconModule} from "@angular/material/icon";
 import {TitleCasePipe} from './pipes/title-case.pipe';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {SelectPipe} from './pipes/select.pipe';
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator";
 import {TableHeaderComponent} from './components/table-header/table-header.component';
 import {MessageService} from "./services/message.service";
 import {FormDialogService} from "./services/form-dialog.service";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TablePaginatorLabels} from "./services/table-paginator-labels.service";
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import {FormDialogService} from "./services/form-dialog.service";
   exports: [
     TableComponent,
     TableHeaderComponent,
+    TranslateModule
   ],
   imports: [
     CommonModule,
@@ -35,11 +38,13 @@ import {FormDialogService} from "./services/form-dialog.service";
     MatMenuModule,
     MatIconModule,
     MatSnackBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    TranslateModule
   ],
   providers: [
     MessageService,
-    FormDialogService
+    FormDialogService,
+    {provide: MatPaginatorIntl, useClass: TablePaginatorLabels}
   ]
 })
 export class SharedModule {

@@ -1,6 +1,6 @@
 <app-table-header
-  title="Users"
-  createButtonLabel="Create user"
+  [title]="'users.title' | translate"
+  [createButtonLabel]="'users.create' | translate"
   (create)="create()"
 ></app-table-header>
 <app-table

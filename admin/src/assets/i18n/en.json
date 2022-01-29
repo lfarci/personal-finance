@@ -1,0 +1,36 @@
+{
+  "title": "Personal Finance",
+  "language": {
+    "english": "English",
+    "french": "French"
+  },
+  "message": {
+    "dismiss": "dismiss"
+  },
+  "users": {
+    "title": "Users",
+    "create": "Create user",
+    "accounts": "Bank accounts"
+  },
+  "shared": {
+    "table": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "creationDate": "Creation",
+      "updateDate": "Last Update",
+      "options": "Options",
+      "menu": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "paginator": {
+        "itemsPerPage": "Items par page:",
+        "nextPage": "Next page",
+        "previousPage": "Previous page",
+        "firstPage": "First page",
+        "lastPage": "Last page",
+        "range": "Page {{page}} of {{length}}"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Finances personnelles",
+  "language": {
+    "english": "Anglais",
+    "french": "Français"
+  },
+  "message": {
+    "dismiss": "OK"
+  },
+  "users": {
+    "title": "Utilisateurs",
+    "create": "Nouvel utilisateur",
+    "accounts": "Comptes bancaires"
+  },
+  "shared": {
+    "table": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "creationDate": "Création",
+      "updateDate": "Dernière mise à jour",
+      "options": "Options",
+      "menu": {
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "paginator": {
+        "itemsPerPage": "Éléments par page:",
+        "nextPage": "Page suivante",
+        "previousPage": "Page précédente",
+        "firstPage": "Première page",
+        "lastPage": "Dernière page",
+        "range": "Page {{page}} sur {{length}}"
+      }
+    }
+  }
+}
