@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,13 @@ export class AppComponent {
   constructor(
     readonly translate: TranslateService
   ) {
+    const defaultLanguage = localStorage.getItem('language') || 'en';
     translate.addLangs(this.languageOptions.map(o => o.code));
-    translate.setDefaultLang('en');
-    translate.use('en');
+    translate.setDefaultLang(defaultLanguage);
+    translate.use(defaultLanguage);
+    translate.onLangChange.subscribe((languageChange: LangChangeEvent) => {
+      localStorage.setItem('language', languageChange.lang);
+    });
   }
 
   get currentLanguage() { return this.translate.currentLang; }
