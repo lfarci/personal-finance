@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:api": "openapi-generator-cli generate -i ../docs/api/*.yaml -g typescript-angular -o rest-client"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,7 @@
     "@angular-devkit/build-angular": "~13.2.0",
     "@angular/cli": "~13.2.0",
     "@angular/compiler-cli": "~13.2.0",
+    "@openapitools/openapi-generator-cli": "^2.4.25",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~3.8.0",

@@ -1,0 +1,21 @@
+type: object
+properties:
+  sort:
+    $ref: './Sort.yaml'
+  offset:
+    type: number
+  pageNumber:
+    type: number
+  pageSize:
+    type: number
+  unpaged:
+    type: boolean
+  paged:
+    type: boolean
+required:
+  - sort
+  - offset
+  - pageNumber
+  - pageSize
+  - unpaged
+  - paged
