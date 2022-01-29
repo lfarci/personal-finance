@@ -1,11 +1,14 @@
 :host {
 
   .mat-dialog-content {
-
     display: flex;
     flex-direction: column;
     gap: 1em;
-
   }
 
+  .mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }

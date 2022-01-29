@@ -6,9 +6,9 @@ import {Router} from "@angular/router";
 import {UserFormComponent} from "../user/user-form.component";
 import {Page} from "../../shared/models/page.model";
 import {PageEvent} from "@angular/material/paginator";
-import {Title} from "@angular/platform-browser";
 import {MessageService} from "../../shared/services/message.service";
 import {FormDialogService} from "../../shared/services/form-dialog.service";
+import {AppTitleService} from "../../shared/services/app-title.service";
 
 @Component({
   selector: 'app-owners',
@@ -30,13 +30,13 @@ export class UsersComponent implements OnInit {
   edit$ = this.service.updateUser;
 
   constructor(
-    private readonly title: Title,
+    private readonly title: AppTitleService,
     private readonly service: UsersService,
     private readonly router: Router,
     private readonly message: MessageService,
     private readonly formDialog: FormDialogService<UserFormComponent, User>
   ) {
-    this.title.setTitle("Admin: users");
+    this.title.setTitle("users.documentTitle");
     this.rowOptions = [
       {
         label: "users.accounts",

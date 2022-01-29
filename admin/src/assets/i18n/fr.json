@@ -1,16 +1,31 @@
 {
   "title": "Finances personnelles",
-  "language": {
-    "english": "Anglais",
-    "french": "Français"
+  "cancel": "Annuler",
+  "create": "Créer",
+  "edit": "Modifier",
+  "delete": "Supprimer",
+  "required": "Requis",
+  "menu": {
+    "languages": {
+      "label": "Langues",
+      "english": "Anglais",
+      "french": "Français"
+    }
   },
   "message": {
     "dismiss": "OK"
   },
   "users": {
     "title": "Utilisateurs",
+    "documentTitle": "Finances personnelles : utilisateurs",
     "create": "Nouvel utilisateur",
-    "accounts": "Comptes bancaires"
+    "accounts": "Comptes bancaires",
+    "user": {
+      "createTitle": "Nouvel utilisateur",
+      "editTitle": "Modifier l'utilisateur",
+      "firstName": "Prénom",
+      "lastName": "Nom"
+    }
   },
   "shared": {
     "table": {
@@ -18,11 +33,11 @@
       "lastName": "Nom",
       "creationDate": "Création",
       "updateDate": "Dernière mise à jour",
+      "name": "Nom",
+      "owner": "Propriétaire",
+      "iban": "IBAN",
+      "balance": "Montant",
       "options": "Options",
-      "menu": {
-        "edit": "Modifier",
-        "delete": "Supprimer"
-      },
       "paginator": {
         "itemsPerPage": "Éléments par page:",
         "nextPage": "Page suivante",

@@ -1,16 +1,31 @@
 {
   "title": "Personal Finance",
-  "language": {
-    "english": "English",
-    "french": "French"
+  "cancel": "Cancel",
+  "create": "Create",
+  "edit": "Edit",
+  "delete": "Delete",
+  "required": "Required",
+  "menu": {
+    "languages": {
+      "label": "Languages",
+      "english": "English",
+      "french": "French"
+    }
   },
   "message": {
     "dismiss": "dismiss"
   },
   "users": {
     "title": "Users",
+    "documentTitle": "Personal finance: users",
     "create": "Create user",
-    "accounts": "Bank accounts"
+    "accounts": "Bank accounts",
+    "user": {
+      "createTitle": "Create user",
+      "editTitle": "Edit user",
+      "firstName": "First Name",
+      "lastName": "Last Name"
+    }
   },
   "shared": {
     "table": {
@@ -18,11 +33,11 @@
       "lastName": "Last Name",
       "creationDate": "Creation",
       "updateDate": "Last Update",
+      "name": "Name",
+      "owner": "Owner",
+      "iban": "IBAN",
+      "balance": "Balance",
       "options": "Options",
-      "menu": {
-        "edit": "Edit",
-        "delete": "Delete"
-      },
       "paginator": {
         "itemsPerPage": "Items par page:",
         "nextPage": "Next page",

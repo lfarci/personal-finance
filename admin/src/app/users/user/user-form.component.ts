@@ -34,7 +34,9 @@ export class UserFormComponent implements OnInit {
 
   get isEdit() { return this.user !== undefined; }
 
-  get action() { return this.isEdit ? 'edit' : 'create'; }
+  get titleKey() { return this.isEdit ? 'users.user.editTitle' : 'users.user.createTitle'; }
+
+  get actionLabelKey() { return this.isEdit ? 'edit' : 'create'; }
 
   ngOnInit(): void {
     this.firstName.setValue(this.user?.firstName);
