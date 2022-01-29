@@ -1,14 +1,7 @@
 :host {
-
-  .mat-dialog-content {
+  app-form-dialog .user-dialog-form-content {
     display: flex;
     flex-direction: column;
     gap: 1em;
-  }
-
-  .mat-dialog-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
   }
 }

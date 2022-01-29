@@ -7,28 +7,34 @@ import {TableComponent} from './components/table/table.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
-import {TitleCasePipe} from './pipes/title-case.pipe';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {SelectPipe} from './pipes/select.pipe';
 import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator";
 import {TableHeaderComponent} from './components/table-header/table-header.component';
 import {MessageService} from "./services/message.service";
 import {FormDialogService} from "./services/form-dialog.service";
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TranslateModule} from "@ngx-translate/core";
 import {TablePaginatorLabels} from "./services/table-paginator-labels.service";
+import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {ReactiveFormsModule} from "@angular/forms";
+import { FormDialogContentDirective } from './components/form-dialog/form-dialog-content.directive';
 
 @NgModule({
   declarations: [
     ConfirmitionDialogComponent,
     TableComponent,
-    TitleCasePipe,
     SelectPipe,
     TableHeaderComponent,
+    FormDialogComponent,
+    FormDialogContentDirective,
   ],
   exports: [
     TableComponent,
     TableHeaderComponent,
-    TranslateModule
+    TranslateModule,
+    FormDialogComponent,
+    FormDialogContentDirective
   ],
   imports: [
     CommonModule,
@@ -39,7 +45,9 @@ import {TablePaginatorLabels} from "./services/table-paginator-labels.service";
     MatIconModule,
     MatSnackBarModule,
     MatPaginatorModule,
-    TranslateModule
+    TranslateModule,
+    MatFormFieldModule,
+    ReactiveFormsModule
   ],
   providers: [
     MessageService,

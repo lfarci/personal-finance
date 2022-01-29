@@ -10,9 +10,7 @@ export class MessageService {
   constructor(
     private readonly translate: TranslateService,
     private readonly snackBar: MatSnackBar
-  ) {
-
-  }
+  ) {}
 
   show = (messageKey: string) => {
     this.translate.get(messageKey).subscribe({

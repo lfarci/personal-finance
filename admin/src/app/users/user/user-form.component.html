@@ -1,17 +1,14 @@
-<h1 mat-dialog-title>{{titleKey | translate}}</h1>
-<div mat-dialog-content>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ "users.user.firstName" | translate }}</mat-label>
-    <input matInput [formControl]="firstName"/>
-    <mat-error *ngIf="firstName.invalid">{{ "required" | translate }}</mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ "users.user.lastName" | translate }}</mat-label>
-    <input matInput [formControl]="lastName"/>
-    <mat-error *ngIf="lastName.invalid">{{ "required" | translate }}</mat-error>
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button color="primary" [disabled]="!firstName.valid" [mat-dialog-close]="submittedUser">{{actionLabelKey | translate | uppercase}}</button>
-  <button mat-button color="primary" [mat-dialog-close]="undefined">{{ "cancel" | translate | uppercase}}</button>
-</div>
+<app-form-dialog [title]="titleKey | translate" [edit]="edit" [valid]="valid" [closeResult]="submittedUser">
+  <div class="user-dialog-form-content" *appFormDalogContent>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "users.user.firstName" | translate }}</mat-label>
+      <input matInput [formControl]="firstName"/>
+      <mat-error *ngIf="firstName.invalid">{{ "required" | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "users.user.lastName" | translate }}</mat-label>
+      <input matInput [formControl]="lastName"/>
+      <mat-error *ngIf="lastName.invalid">{{ "required" | translate }}</mat-error>
+    </mat-form-field>
+  </div>
+</app-form-dialog>

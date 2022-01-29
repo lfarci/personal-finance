@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{formDialogTitle | translate}}</h1>
+<div mat-dialog-content>
+  <ng-template [ngTemplateOutlet]="content.template"></ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="primary" [mat-dialog-close]="closeResult" [disabled]="!valid">{{primaryActionLabel | translate | uppercase}}</button>
+  <button mat-button color="primary" [mat-dialog-close]="undefined">{{"cancel" | translate | uppercase}}</button>
+</div>
