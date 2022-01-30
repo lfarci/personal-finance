@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: number
+  firstName:
+    type: string
+  lastName:
+    type: string
+  creationDate:
+    type: string
+  updateDate:
+    type: string
+required:
+  - id
+  - firstName
+  - lastName
+  - creationDate
+  - updateDate

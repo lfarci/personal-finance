@@ -1,0 +1,10 @@
+allOf:
+  - $ref: '../shared/Page.yaml'
+  - type: object
+    properties:
+      content:
+        type: array
+        items:
+          $ref: './User.yaml'
+    required:
+      - content

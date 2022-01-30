@@ -12,10 +12,10 @@
 
 
 export interface User { 
-    id?: number;
-    firstName?: string;
-    lastName?: string;
-    creationDate?: string;
-    updateDate?: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+    creationDate: string;
+    updateDate: string;
 }
 

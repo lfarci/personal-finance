@@ -2,7 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
-api/default.service.ts
+api/user.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -10,6 +10,10 @@ index.ts
 model/models.ts
 model/page.ts
 model/pageable.ts
+model/serviceError.ts
 model/sort.ts
 model/user.ts
+model/userPage.ts
+model/userPageAllOf.ts
+model/userSubmission.ts
 variables.ts
