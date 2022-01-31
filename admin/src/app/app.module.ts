@@ -13,6 +13,9 @@ import {HttpClient} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
+import {ApiModule} from "@rest-client/api.module";
+import {Configuration} from "@rest-client/configuration";
+import {environment} from "../environments/environment";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -29,6 +32,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatToolbarModule,
     MatIconModule,
     MatDialogModule,
+    MatButtonModule,
+    MatMenuModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -37,8 +42,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    MatButtonModule,
-    MatMenuModule
+    ApiModule.forRoot(() => new Configuration({
+      basePath: environment.baseUrl
+    }))
   ],
   bootstrap: [AppComponent]
 })

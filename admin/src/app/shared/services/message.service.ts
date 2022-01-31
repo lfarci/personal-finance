@@ -12,7 +12,7 @@ export class MessageService {
     private readonly snackBar: MatSnackBar
   ) {}
 
-  show = (messageKey: string) => {
+  info = (messageKey: string) => {
     this.translate.get(messageKey).subscribe({
       next: (message: string) => {
         this.snackBar.open(message, "DISMISS", {

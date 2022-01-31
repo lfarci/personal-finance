@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate:api": "openapi-generator-cli generate -i ../docs/api/*.yaml -g typescript-angular -o rest-client"
+    "generate:api": "openapi-generator-cli generate -i ../docs/api/*.yaml -g typescript-angular -o rest-client --additional-properties=ngVersion=13.0.1"
   },
   "private": true,
   "dependencies": {

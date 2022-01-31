@@ -8,8 +8,10 @@ properties:
     type: string
   creationDate:
     type: string
+    format: date-time
   updateDate:
     type: string
+    format: date-time
 required:
   - id
   - firstName

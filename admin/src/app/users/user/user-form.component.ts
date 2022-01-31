@@ -2,6 +2,7 @@ import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {User} from "../services/user.model";
 import {FormControl, Validators} from "@angular/forms";
+import {UserSubmission} from "@rest-client/model/userSubmission";
 
 @Component({
   selector: 'app-user-form',
@@ -43,7 +44,7 @@ export class UserFormComponent implements OnInit {
     this.lastName.setValue(this.user?.lastName);
   }
 
-  get submittedUser(): User {
+  get submittedUser(): UserSubmission {
     return {
       ...this.user,
       firstName: this.firstName.value,

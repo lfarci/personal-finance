@@ -5,12 +5,11 @@ import { environment } from 'src/environments/environment';
 import { User } from './user.model';
 import {catchError, map} from 'rxjs/operators';
 import {Page} from "../../shared/models/page.model";
-import {WithRequired} from "../../shared/models/with-required";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class OutdatedUserService {
 
   private _usersBaseUrl: string;
 
