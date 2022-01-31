@@ -1,0 +1,77 @@
+get:
+  summary: Returns a user by ID.
+  operationId: 'findById'
+  tags:
+    - User
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: This is the user identfier.
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: The user for the given id.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/users/User.yaml'
+    '404':
+      description: No users exist for the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/shared/ServiceError.yaml'
+put:
+  summary: Updates the user for the given ID.
+  operationId: 'updateById'
+  tags:
+    - User
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: This is the user identfier.
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    description: The updated user.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../resources/users/User.yaml'
+  responses:
+    '204':
+      description: The user has been updated.
+    '400':
+      description: The user first name and last name are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/shared/ServiceError.yaml'
+delete:
+  summary: Deletes a user by ID.
+  operationId: 'deleteById'
+  tags:
+    - User
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: This is the user identfier.
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '204':
+      description: The user has been successfuly deleted.
+    '404':
+      description: The user could not be deleted because it doesn't exist.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/shared/ServiceError.yaml'
