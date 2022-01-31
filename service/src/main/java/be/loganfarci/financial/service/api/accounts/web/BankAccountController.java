@@ -1,13 +1,14 @@
 package be.loganfarci.financial.service.api.accounts.web;
 
-import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
+import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -29,8 +30,12 @@ public class BankAccountController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{userId}/accounts")
-    public List<BankAccountDto> findByUserId(@PathVariable Long userId) {
-        return bankAccountService.findByUserId(userId);
+    public Page<BankAccountDto> findByUserId(
+            @PathVariable Long userId,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ) {
+        return bankAccountService.findByUserId(userId, PageRequest.of(page, size));
     }
 
     @ResponseStatus(HttpStatus.CREATED)

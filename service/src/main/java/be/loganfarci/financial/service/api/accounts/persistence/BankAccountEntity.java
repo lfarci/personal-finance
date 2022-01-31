@@ -46,20 +46,20 @@ public class BankAccountEntity {
      * An internal bank account is owned by one of the application user.
      */
     @Column(name = "is_internal")
-    private boolean isInternal;
+    private boolean internal;
 
-    public BankAccountEntity(Long id, String name, UserEntity user, String ownerName, String iban, Double balance, boolean isInternal) {
+    public BankAccountEntity(Long id, String name, UserEntity user, String ownerName, String iban, Double balance, boolean internal) {
         this.id = id;
         this.name = name;
         this.user = user;
         this.ownerName = ownerName;
         this.iban = iban;
         this.balance = balance;
-        this.isInternal = isInternal;
+        this.internal = internal;
     }
 
-    public BankAccountEntity(String name, String ownerName, String iban, Double balance, boolean isInternal) {
-        this(0L, name, null, ownerName, iban, balance, isInternal);
+    public BankAccountEntity(String name, String ownerName, String iban, Double balance, boolean internal) {
+        this(0L, name, null, ownerName, iban, balance, internal);
     }
 
     public BankAccountEntity() {
@@ -119,10 +119,10 @@ public class BankAccountEntity {
     }
 
     public boolean isInternal() {
-        return isInternal;
+        return internal;
     }
 
     public void setInternal(boolean internal) {
-        isInternal = internal;
+        this.internal = internal;
     }
 }

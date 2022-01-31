@@ -3,6 +3,7 @@ package be.loganfarci.financial.service.api;
 import be.loganfarci.financial.service.api.errors.dto.ErrorResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,8 +28,16 @@ public abstract class ResourceIT {
     @Autowired
     protected ObjectMapper mapper;
 
+    protected SimpleModule module = new SimpleModule();
+
     @Autowired
     protected MessageSource messageSource;
+
+    protected ResultActions performGet(String path, Integer page, Integer size) throws Exception {
+        return mvc.perform(get(path)
+                .param("page", page.toString())
+                .param("size", size.toString()));
+    }
 
     protected String getMessage(String messageCode, Object[] args) {
         MessageSourceAccessor accessor = new MessageSourceAccessor(messageSource);

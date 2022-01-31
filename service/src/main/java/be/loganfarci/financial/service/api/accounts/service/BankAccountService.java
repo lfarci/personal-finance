@@ -10,6 +10,8 @@ import be.loganfarci.financial.service.api.users.persistence.UserEntity;
 import be.loganfarci.financial.service.api.users.service.UserService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,12 +53,9 @@ public class BankAccountService {
         return repository.existsByIdAndUserId(bankAccountId, userId);
     }
 
-    public List<BankAccountDto> findByUserId(Long userId) {
+    public Page<BankAccountDto> findByUserId(Long userId, Pageable pageable) {
         UserDto user = userService.findById(userId);
-        return findAllFor(user)
-                .stream()
-                .filter(BankAccountDto::isInternal)
-                .collect(Collectors.toList());
+        return findAllFor(user, pageable);
     }
 
     public BankAccountDto findByIdAndUserId(Long userId, Long bankAccountId) {
@@ -95,6 +94,10 @@ public class BankAccountService {
                 .stream()
                 .map(mapper::toRest)
                 .collect(Collectors.toList());
+    }
+
+    private Page<BankAccountDto> findAllFor(UserDto user, Pageable pageable) {
+        return repository.findByUserIdAndInternalIsTrue(user.getId(), pageable).map(mapper::toRest);
     }
 
     private void requireValidBankAccountForSaving(Long userId, BankAccountDto bankAccount) {

@@ -48,9 +48,7 @@ public abstract class UserIT extends ResourceIT {
     }
 
     protected ResultActions findAll(Integer page, Integer size) throws Exception {
-        return mvc.perform(get(USERS_PATH)
-                .param("page", page.toString())
-                .param("size", size.toString()));
+        return performGet(USERS_PATH, page, size);
     }
 
     protected ResultActions findById(long id) throws Exception {

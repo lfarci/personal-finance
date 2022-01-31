@@ -64,5 +64,4 @@ public class FindBankAccountIT extends BankAccountIT {
         List<BankAccountDto> accounts = parseBankAccountsFrom(findByUserId(0L).andReturn());
         assertThat(accounts).allMatch(BankAccountDto::isInternal);
     }
-
 }

@@ -6,14 +6,14 @@ import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.transaction.Transactional;
-
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -51,7 +51,7 @@ public abstract class BankAccountIT extends ResourceIT {
     }
 
     protected ResultActions findByUserId(long userId) throws Exception {
-        return mvc.perform(get(getBankAccountPath(userId)));
+        return performGet(getBankAccountPath(userId), 0, 10);
     }
 
     protected ResultActions save(BankAccountDto bankAccount) throws Exception {
@@ -78,18 +78,8 @@ public abstract class BankAccountIT extends ResourceIT {
         return toJson(Sample.ID, Sample.NAME, Sample.USER_ID, Sample.IBAN, Sample.BALANCE);
     }
 
-    protected String sampleListJsonContent() throws JsonProcessingException {
-        BankAccountDto sample = new BankAccountDto(Sample.ID, Sample.NAME, Sample.USER_ID, Sample.IBAN, Sample.BALANCE);
-        return mapper.writeValueAsString(new ArrayList<>(List.of(sample)));
-    }
-
     protected String toJson(long id, String name, long userId, String iban, double balance) throws JsonProcessingException {
         BankAccountDto bankAccount = new BankAccountDto(id, name, userId, iban, balance);
-        return mapper.writeValueAsString(bankAccount);
-    }
-
-    protected String toJson(String name, long userId, String iban, double balance) throws JsonProcessingException {
-        BankAccountDto bankAccount = new BankAccountDto(name, userId, iban, balance);
         return mapper.writeValueAsString(bankAccount);
     }
 
@@ -99,8 +89,12 @@ public abstract class BankAccountIT extends ResourceIT {
     }
 
     protected List<BankAccountDto> parseBankAccountsFrom(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
+        module.addDeserializer(PageImpl.class, new BankAccountsPageDeserializer());
+        mapper.registerModule(module);
         String content = result.getResponse().getContentAsString();
-        return mapper.readValue(content, new TypeReference<>(){});
+        TypeReference<PageImpl<BankAccountDto>> pageTypeReference = new TypeReference<>() {};
+        Page<BankAccountDto> accounts = mapper.readValue(content, pageTypeReference);
+        return accounts.toList();
     }
 
     protected String userNotFoundJsonContent(long userId) throws JsonProcessingException {

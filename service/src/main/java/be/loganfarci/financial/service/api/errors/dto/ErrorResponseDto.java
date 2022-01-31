@@ -1,7 +1,6 @@
 package be.loganfarci.financial.service.api.errors.dto;
 
 import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ErrorResponseDto {
