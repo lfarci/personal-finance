@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 public class BankAccountDto {
 
@@ -28,7 +29,11 @@ public class BankAccountDto {
 
     private String ownerName;
 
-    public BankAccountDto(Long id, String name, Long userId, String iban, Double balance, Boolean isInternal, String ownerName) {
+    private LocalDateTime creationDate;
+
+    private LocalDateTime updateDate;
+
+    public BankAccountDto(Long id, String name, Long userId, String iban, Double balance, Boolean isInternal, String ownerName, LocalDateTime creationDate, LocalDateTime updateDate) {
         this.id = id;
         this.name = name;
         this.userId = userId;
@@ -36,6 +41,12 @@ public class BankAccountDto {
         this.balance = balance;
         this.isInternal = isInternal;
         this.ownerName = ownerName;
+        this.creationDate = creationDate;
+        this.updateDate = updateDate;
+    }
+
+    public BankAccountDto(Long id, String name, Long userId, String iban, Double balance, Boolean isInternal, String ownerName) {
+        this(id, name, userId, iban, balance, isInternal, ownerName, null, null);
     }
 
     public BankAccountDto(Long id, String name, Long userId, String iban, Double balance) {
@@ -102,6 +113,22 @@ public class BankAccountDto {
         this.balance = balance;
     }
 
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
     public Boolean isInternal() {
         return isInternal;
     }
@@ -146,6 +173,16 @@ public class BankAccountDto {
 
     public BankAccountDto internal(Boolean value) {
         this.isInternal = value;
+        return this;
+    }
+
+    public BankAccountDto createDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    public BankAccountDto updateDate(LocalDateTime updateDate) {
+        this.creationDate = updateDate;
         return this;
     }
 }

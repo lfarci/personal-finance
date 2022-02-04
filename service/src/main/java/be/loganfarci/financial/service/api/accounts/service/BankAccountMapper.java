@@ -16,7 +16,9 @@ public class BankAccountMapper {
                 entity.getIban(),
                 entity.getBalance(),
                 entity.isInternal(),
-                entity.getOwnerName());
+                entity.getOwnerName(),
+                entity.getCreationDate(),
+                entity.getUpdateDate());
     }
 
     public BankAccountEntity fromRest(BankAccountDto bankAccount, UserEntity user) {
@@ -27,6 +29,8 @@ public class BankAccountMapper {
                 bankAccount.getOwnerName(),
                 bankAccount.getIban(),
                 bankAccount.getBalance(),
+                bankAccount.getCreationDate(),
+                bankAccount.getUpdateDate(),
                 bankAccount.isInternal()
         );
     }

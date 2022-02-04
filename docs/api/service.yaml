@@ -13,3 +13,7 @@ paths:
     $ref: "./paths/users.yaml"
   /users/{userId}:
     $ref: "./paths/user.yaml"
+  /users/{userId}/accounts:
+    $ref: "./paths/accounts.yaml"
+  /users/{userId}/accounts/{accountId}:
+    $ref: "./paths/account.yaml"

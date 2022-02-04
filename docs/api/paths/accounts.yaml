@@ -1,0 +1,34 @@
+get:
+  summary: Returns a page of bank accounts.
+  operationId: 'findAll'
+  tags:
+    - BankAccount
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: This is the user identfier that owns the bank account.
+      schema:
+        type: integer
+        format: int64
+    - name: page
+      in: query
+      required: true
+      description: This is the page index.
+      schema:
+        type: integer
+        format: int64
+    - name: size
+      in: query
+      required: true
+      description: This is the page size.
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: A JSON page of bank accounts.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/accounts/BankAccountPage.yaml'

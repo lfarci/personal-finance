@@ -64,4 +64,11 @@ public class FindBankAccountIT extends BankAccountIT {
         List<BankAccountDto> accounts = parseBankAccountsFrom(findByUserId(0L).andReturn());
         assertThat(accounts).allMatch(BankAccountDto::isInternal);
     }
+
+    @Test
+    public void responseJsonContentAreOwnedByUserWhenGettingBankAccountsForAUserId() throws Exception {
+        List<BankAccountDto> accounts = parseBankAccountsFrom(findByUserId(0L).andReturn());
+        assertThat(accounts).allMatch(bankAccount -> bankAccount.getUserId().equals(0L));
+    }
+
 }
