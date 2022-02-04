@@ -1,0 +1,16 @@
+<app-table-header
+  [title]="'users.title' | translate"
+  [createButtonLabel]="'users.create' | translate"
+  (create)="create()"
+></app-table-header>
+<app-table
+  [resources]="dataSource"
+  [displayedColumns]="displayedColumns"
+  [rowOptions]="rowOptions"
+  [pageIndex]="pageIndex"
+  [totalNumberOfResources]="totalNumberOfElements"
+  dateFormat="short"
+  (edit)="edit($event)"
+  (delete)="delete($event)"
+  (page)="handlePageChange($event)"
+></app-table>

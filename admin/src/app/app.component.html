@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <h1>{{ "title" | translate }}</h1>
+  <button mat-icon-button color="white" aria-label="Menu" [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="languages">
+      <mat-icon>language</mat-icon>
+      <span>{{ "menu.languages.label" | translate }}</span>
+    </button>
+  </mat-menu>
+  <mat-menu #languages="matMenu">
+    <button mat-menu-item *ngFor="let lang of languageOptions"
+            [disabled]="currentLanguage === lang.code"
+            (click)="changeLanguage(lang.code)">
+      {{ lang.labelKey | translate }}
+    </button>
+  </mat-menu>
+</mat-toolbar>
+<section>
+  <router-outlet></router-outlet>
+</section>

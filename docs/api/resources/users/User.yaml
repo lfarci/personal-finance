@@ -1,0 +1,20 @@
+type: object
+properties:
+  id:
+    type: number
+  firstName:
+    type: string
+  lastName:
+    type: string
+  creationDate:
+    type: string
+    format: date-time
+  updateDate:
+    type: string
+    format: date-time
+required:
+  - id
+  - firstName
+  - lastName
+  - creationDate
+  - updateDate

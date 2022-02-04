@@ -1,0 +1,12 @@
+type: object
+properties:
+  sorted:
+    type: boolean
+  unsorted:
+    type: boolean
+  empty:
+    type: boolean
+required:
+  - sorted
+  - unsorted
+  - empty

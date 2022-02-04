@@ -1,0 +1,14 @@
+<app-form-dialog [title]="titleKey | translate" [edit]="edit" [valid]="valid" [closeResult]="submittedUser">
+  <div class="user-dialog-form-content" *appFormDalogContent>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "users.user.firstName" | translate }}</mat-label>
+      <input matInput [formControl]="firstName"/>
+      <mat-error *ngIf="firstName.invalid">{{ "required" | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "users.user.lastName" | translate }}</mat-label>
+      <input matInput [formControl]="lastName"/>
+      <mat-error *ngIf="lastName.invalid">{{ "required" | translate }}</mat-error>
+    </mat-form-field>
+  </div>
+</app-form-dialog>

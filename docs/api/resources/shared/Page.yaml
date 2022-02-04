@@ -1,0 +1,33 @@
+type: object
+properties:
+  pageable:
+    $ref: './Pageable.yaml'
+  last:
+    type: boolean
+  totalPages:
+    type: number
+  totalElements:
+    type: number
+  size:
+    type: number
+  sort:
+    $ref: './Sort.yaml'
+  numberOfElements:
+    type: number
+  first:
+    type: boolean
+  number:
+    type: number
+  empty:
+    type: boolean
+required:
+  - pageable
+  - last
+  - totalPages
+  - totalElements
+  - size
+  - sort
+  - numberOfElements
+  - first
+  - number
+  - empty
