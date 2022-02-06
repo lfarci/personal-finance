@@ -1,4 +1,8 @@
-<h2>Bank Accounts</h2>
+<app-table-header
+  [title]="'accounts.title' | translate: { userName: user?.firstName }"
+  [createButtonLabel]="'accounts.create' | translate"
+  (create)="create()"
+></app-table-header>
 <app-table
   [resources]="dataSource"
   [displayedColumns]="displayedColumns"

@@ -23,8 +23,6 @@ export class TableComponent<Resource> {
   @Input()
   rowOptions: RowOption<Resource>[] = [];
   @Input()
-  emptyTableMessage: string = "Empty table.";
-  @Input()
   dateFormat: string = "medium";
   @Input()
   pageSizeOptions = [10, 20, 30];

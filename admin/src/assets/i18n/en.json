@@ -27,6 +27,11 @@
       "lastName": "Last Name"
     }
   },
+  "accounts": {
+    "title": "{{ userName }}'s bank accounts",
+    "documentTitle": "Personal finance: accounts",
+    "create": "Create account"
+  },
   "shared": {
     "table": {
       "firstName": "First Name",
@@ -38,6 +43,7 @@
       "iban": "IBAN",
       "balance": "Balance",
       "options": "Options",
+      "empty": "No data.",
       "paginator": {
         "itemsPerPage": "Items par page:",
         "nextPage": "Next page",
