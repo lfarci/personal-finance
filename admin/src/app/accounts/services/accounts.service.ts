@@ -8,7 +8,7 @@ import { BankAccount } from './account.model';
 @Injectable({
   providedIn: 'root'
 })
-export class BankAccountService {
+export class Deprecated_BankAccountService {
 
   private _accountsBaseUrl: string;
 

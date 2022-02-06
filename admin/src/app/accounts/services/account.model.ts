@@ -1,4 +1,4 @@
-import { User } from "src/app/users/services/user.model";
+import { User } from "@rest-client/model/user";
 
 export interface BankAccount {
     id: number;

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {OutdatedUserService} from '../services/outdated-user.service';
 import {RowOption} from "../../shared/models/row-option.model";
 import {Router} from "@angular/router";
 import {UserFormComponent} from "../user/user-form.component";
@@ -30,12 +29,11 @@ export class UsersComponent implements OnInit {
   pageSize: number = 10;
   totalNumberOfElements: number = 0;
 
-  edit$ = this.userService.updateById;
+  edit$ = this.service.updateById;
 
   constructor(
     private readonly title: AppTitleService,
-    private readonly service: OutdatedUserService,
-    private readonly userService: UserService,
+    private readonly service: UserService,
     private readonly router: Router,
     private readonly message: MessageService,
     private readonly formDialog: FormDialogService<UserFormComponent>
@@ -70,7 +68,7 @@ export class UsersComponent implements OnInit {
   };
 
   delete = (user: User) => {
-    this.service.deleteUserById(user.id).subscribe({
+    this.service.deleteById(user.id).subscribe({
       next: () => this.afterDeleted(user),
       error: () => this.afterDeleteFailed(user)
     });
@@ -87,16 +85,16 @@ export class UsersComponent implements OnInit {
   }
 
   private getCurrentUserPage = () => {
-    this.userService.findAll(this.pageIndex, this.pageSize).subscribe(this.handlePage);
+    this.service.findAll(this.pageIndex, this.pageSize).subscribe(this.handlePage);
   };
 
   private afterCreated(): Observable<User> {
-    const handler = this.userService.create.bind(this.userService);
+    const handler = this.service.create.bind(this.service);
     return this.formDialog.afterCreated<UserSubmission, User>(handler);
   }
 
   private afterSubmitted = (user: User) => {
-    this.userService.updateById(user.id, user).subscribe({
+    this.service.updateById(user.id, user).subscribe({
       next: () => this.afterUpdated(user),
       error: () => this.afterUpdateFailed(user)
     });

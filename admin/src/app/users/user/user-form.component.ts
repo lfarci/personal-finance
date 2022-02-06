@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {User} from "../services/user.model";
 import {FormControl, Validators} from "@angular/forms";
 import {UserSubmission} from "@rest-client/model/userSubmission";
+import {User} from "@rest-client/model/user";
 
 @Component({
   selector: 'app-user-form',

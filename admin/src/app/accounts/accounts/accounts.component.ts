@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BankAccount } from '../services/account.model';
-import { BankAccountService } from '../services/accounts.service';
-import {ActivatedRoute, ParamMap} from "@angular/router";
-import {filter, map, mergeMap} from "rxjs/operators";
+import { Deprecated_BankAccountService } from '../services/accounts.service';
+import {ActivatedRoute} from "@angular/router";
+import {BankAccountService} from "@rest-client/api/bankAccount.service";
+import {BankAccount} from "@rest-client/model/bankAccount";
+import {AppTitleService} from "../../shared/services/app-title.service";
 
 @Component({
   selector: 'app-accounts',
@@ -17,22 +18,32 @@ export class AccountsComponent implements OnInit {
   dataSource: BankAccount[] = [];
 
   constructor(
+    private readonly title: AppTitleService,
     private readonly route: ActivatedRoute,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
-    private readonly service: BankAccountService
-  ) { }
+    private readonly service: Deprecated_BankAccountService,
+    private readonly bankAccountService: BankAccountService
+  ) {
+    this.title.setTitle("accounts.documentTitle");
+
+  }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      map((params: ParamMap) => params.get("userId")),
-      filter(id => id !== null),
-      mergeMap(userId => this.service.getBankAccounts(userId!!))
-    ).subscribe({
-        next: this.handleBankAccounts,
-        error: this.handleError
-    });
+    // this.route.paramMap.pipe(
+    //   map((params: ParamMap) => params.get("userId")),
+    //   filter(id => id !== null),
+    //   mergeMap(userId => this.service.getBankAccounts(userId!!))
+    // ).subscribe({
+    //     next: this.handleBankAccounts,
+    //     error: this.handleError
+    // });
   }
+
+  getCurrentBankAccountPage = () => {
+    // this.service.findAll(this.pageIndex, this.pageSize).subscribe(this.handlePage);
+
+  };
 
   private handleBankAccounts = (bankAccounts: BankAccount[]) => {
     this.dataSource = bankAccounts;
