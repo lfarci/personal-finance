@@ -46,6 +46,8 @@ export class TableComponent<Resource> {
 
   get columns() { return this.displayedColumns.filter(c => c !== 'options'); }
 
+  get noDataRowColSpan() { return this.displayedColumns.length; }
+
   get showRowOptions() { return this.displayedColumns.includes('options'); };
 
   openConfirmationDialog = (resource: Resource): void => {

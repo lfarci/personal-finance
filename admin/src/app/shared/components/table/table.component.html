@@ -29,7 +29,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" [attr.colspan]="columns.length">{{emptyTableMessage}}</td>
+      <td class="mat-cell" [attr.colspan]="noDataRowColSpan">{{emptyTableMessage}}</td>
     </tr>
   </table>
   <mat-paginator [pageSizeOptions]="pageSizeOptions"
