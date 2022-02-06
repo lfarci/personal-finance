@@ -57,8 +57,8 @@ export class FormDialogService<Component> {
    *
    * When the user cancels the submission null is returned.
    */
-  afterCreated = <Form, Response = Form>(handler: CreationHandler<Form, Response>): Observable<Response> => {
-    return this.open().afterClosed().pipe(
+  afterCreated = <Form, Response = Form>(handler: CreationHandler<Form, Response>, config?: MatDialogConfig): Observable<Response> => {
+    return this.open(config).afterClosed().pipe(
       filter(result => result !== undefined),
       mergeMap(handler)
     );

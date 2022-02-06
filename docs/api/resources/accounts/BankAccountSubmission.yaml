@@ -1,0 +1,26 @@
+type: object
+properties:
+  id:
+    type: number
+  name:
+    type: string
+  userId:
+    type: number
+  iban:
+    type: string
+  balance:
+    type: number
+  isInternal:
+    type: boolean
+  ownerName:
+    type: string
+  creationDate:
+    type: string
+    format: date-time
+  updateDate:
+    type: string
+    format: date-time
+required:
+  - name
+  - userId
+  - ownerName

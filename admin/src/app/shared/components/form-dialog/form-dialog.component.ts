@@ -9,6 +9,7 @@ import {FormDialogContentDirective} from "./form-dialog-content.directive";
 export class FormDialogComponent<Resource> {
 
   @Input() edit = true;
+  @Input() title = "";
   @Input() closeResult!: Resource;
   @Input() valid = true;
   @Output() cancel = new EventEmitter<void>();
@@ -16,8 +17,6 @@ export class FormDialogComponent<Resource> {
   @ContentChild(FormDialogContentDirective) content!: FormDialogContentDirective;
 
   constructor() {}
-
-  get formDialogTitle() { return this.edit ? 'users.user.editTitle' : 'users.user.createTitle'; }
 
   get primaryActionLabel() { return this.edit ? 'edit' : 'create'; }
 

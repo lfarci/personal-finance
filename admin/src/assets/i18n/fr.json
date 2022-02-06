@@ -5,6 +5,7 @@
   "edit": "Modifier",
   "delete": "Supprimer",
   "required": "Requis",
+  "invalid": "Entrée invalide.",
   "menu": {
     "languages": {
       "label": "Langues",
@@ -30,7 +31,14 @@
   "accounts": {
     "title": "Comptes bancaires de {{ userName }}",
     "documentTitle": "Finances personnelles : comptes",
-    "create": "Nouveau compte"
+    "create": "Nouveau compte",
+    "account": {
+      "createTitle": "Nouveau compte bancaire",
+      "editTitle": "Modifier le compte bancaire",
+      "name": "Nom",
+      "iban": "IBAN",
+      "balance": "Montant"
+    }
   },
   "shared": {
     "table": {

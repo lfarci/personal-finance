@@ -8,10 +8,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { AccountFormComponent } from './account/account-form.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
-    AccountsComponent
+    AccountsComponent,
+    AccountFormComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +26,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    SharedModule
+    SharedModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ]
 })
 export class AccountsModule { }

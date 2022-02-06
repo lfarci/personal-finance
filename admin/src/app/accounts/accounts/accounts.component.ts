@@ -13,6 +13,12 @@ import {RowOption} from "../../shared/models/row-option.model";
 import {PageEvent} from "@angular/material/paginator";
 import {User} from "@rest-client/model/user";
 import {UserService} from "@rest-client/api/user.service";
+import {UserSubmission} from "@rest-client/model/userSubmission";
+import {FormDialogService} from "../../shared/services/form-dialog.service";
+import {UserFormComponent} from "../../users/user/user-form.component";
+import {AccountFormComponent} from "../account/account-form.component";
+import {BankAccountSubmission} from "@rest-client/model/bankAccountSubmission";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-accounts',
@@ -23,7 +29,7 @@ export class AccountsComponent implements OnInit {
 
   user?: User;
 
-  displayedColumns: string[] = ['name', 'owner', 'iban', 'balance', 'options'];
+  displayedColumns: string[] = ['name', 'iban', 'balance', 'creationDate', 'updateDate', 'options'];
   dataSource: BankAccount[] = [];
 
   rowOptions: RowOption<BankAccount>[];
@@ -40,8 +46,10 @@ export class AccountsComponent implements OnInit {
     private readonly service: Deprecated_BankAccountService,
     private readonly bankAccountService: BankAccountService,
     private readonly userService: UserService,
+    private readonly formDialog: FormDialogService<AccountFormComponent>
   ) {
     this.title.setTitle("accounts.documentTitle");
+    this.formDialog.use(AccountFormComponent);
     this.rowOptions = [];
   }
 
@@ -86,6 +94,18 @@ export class AccountsComponent implements OnInit {
     });
   };
 
+  private afterCreated(): Observable<BankAccount> {
+    const handler = (bankAccount: BankAccountSubmission) => {
+      console.log(bankAccount);
+      return this.bankAccountService.create(this.user?.id!!, bankAccount);
+    };
+    return this.formDialog.afterCreated<BankAccountSubmission, BankAccount>(handler, {
+      data: {
+        user: this.user
+      }
+    });
+  }
+
   private handlePage = (page: BankAccountPage) => {
     this.totalNumberOfElements = page.totalElements;
     this.handleBankAccounts(page.content)
@@ -95,8 +115,9 @@ export class AccountsComponent implements OnInit {
     this.dataSource = bankAccounts;
   };
 
-  private handleError = () => {
-    this.showMessage("Failed to load accounts.");
+  private handleError = (error: HttpErrorResponse) => {
+    console.log(error)
+    this.showMessage(error.error.message);
   };
 
   private showMessage = (message: string) => {
@@ -106,6 +127,14 @@ export class AccountsComponent implements OnInit {
   };
 
   create() {
-    console.log("create")
+    this.afterCreated().subscribe({
+      next: this.afterSuccessfulCreation,
+      error: this.handleError
+    });
   }
+
+  private afterSuccessfulCreation = (bankAccount: BankAccount) => {
+    this.dataSource.unshift(bankAccount);
+    this.dataSource = [...this.dataSource];
+  };
 }

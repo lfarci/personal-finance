@@ -4,6 +4,8 @@ import be.loganfarci.financial.service.api.accounts.model.dto.BankAccountDto;
 import be.loganfarci.financial.service.api.accounts.service.BankAccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,8 @@ public class BankAccountController {
             @RequestParam("page") int page,
             @RequestParam("size") int size
     ) {
-        return bankAccountService.findByUserId(userId, PageRequest.of(page, size));
+        Pageable request = PageRequest.of(page, size, Sort.by("creationDate").descending());
+        return bankAccountService.findByUserId(userId, request);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,0 +1,19 @@
+<app-form-dialog [title]="titleKey | translate" [valid]="valid" [edit]="edit" [closeResult]="submittedBankAccount">
+  <form class="account-dialog-form-content" *appFormDalogContent [formGroup]="bankAccountForm">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "accounts.account.name" | translate }}</mat-label>
+      <input matInput formControlName="name"/>
+      <mat-error *ngIf="!isValid('name')">{{ "invalid" | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "accounts.account.iban" | translate }}</mat-label>
+      <input matInput formControlName="iban"/>
+      <mat-error *ngIf="!isValid('iban')">{{ "invalid" | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "accounts.account.balance" | translate }}</mat-label>
+      <input type="number" matInput formControlName="balance"/>
+      <mat-error *ngIf="!isValid('balance')">{{ "invalid" | translate }}</mat-error>
+    </mat-form-field>
+  </form>
+</app-form-dialog>

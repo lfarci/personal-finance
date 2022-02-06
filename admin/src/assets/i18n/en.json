@@ -5,6 +5,7 @@
   "edit": "Edit",
   "delete": "Delete",
   "required": "Required",
+  "invalid": "Invalid input.",
   "menu": {
     "languages": {
       "label": "Languages",
@@ -30,7 +31,14 @@
   "accounts": {
     "title": "{{ userName }}'s bank accounts",
     "documentTitle": "Personal finance: accounts",
-    "create": "Create account"
+    "create": "Create account",
+    "account": {
+      "createTitle": "Create bank account",
+      "editTitle": "Edit bank account",
+      "name": "Name",
+      "iban": "IBAN",
+      "balance": "Balance"
+    }
   },
   "shared": {
     "table": {

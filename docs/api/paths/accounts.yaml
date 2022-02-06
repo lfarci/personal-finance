@@ -32,3 +32,36 @@ get:
         application/json:
           schema:
             $ref: '../resources/accounts/BankAccountPage.yaml'
+post:
+  summary: Creates a new bank account for the user
+  operationId: 'create'
+  tags:
+    - BankAccount
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: This is the user identfier that owns the bank account.
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    description: This is the new account information.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../resources/accounts/BankAccountSubmission.yaml'
+  responses:
+    '201':
+      description: The bank account has been created and the new entity is in the response.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/accounts/BankAccount.yaml'
+    '400':
+      description: The request body was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/shared/ServiceError.yaml'
