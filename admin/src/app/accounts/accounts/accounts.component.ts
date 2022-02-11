@@ -17,6 +17,7 @@ import {FormDialogService} from "../../shared/services/form-dialog.service";
 import {AccountFormComponent} from "../account/account-form.component";
 import {BankAccountSubmission} from "@rest-client/model/bankAccountSubmission";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MessageService} from "../../shared/services/message.service";
 
 @Component({
   selector: 'app-accounts',
@@ -44,6 +45,7 @@ export class AccountsComponent implements OnInit {
     private readonly service: Deprecated_BankAccountService,
     private readonly bankAccountService: BankAccountService,
     private readonly userService: UserService,
+    private readonly message: MessageService,
     private readonly formDialog: FormDialogService<AccountFormComponent>
   ) {
     this.title.setTitle("accounts.documentTitle");
@@ -140,9 +142,15 @@ export class AccountsComponent implements OnInit {
   private afterSuccessfulCreation = (bankAccount: BankAccount) => {
     this.dataSource.unshift(bankAccount);
     this.dataSource = [...this.dataSource];
+    this.message.info(`accounts.messages.created`, {
+      name: bankAccount.name
+    });
   };
 
   private afterDeleted(bankAccount: BankAccount) {
     this.dataSource = this.dataSource.filter(b => b.id !== bankAccount.id);
+    this.message.info(`accounts.messages.deleted`, {
+      name: bankAccount.name
+    });
   }
 }

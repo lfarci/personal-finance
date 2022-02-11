@@ -6,6 +6,7 @@
   "delete": "Delete",
   "required": "Required",
   "invalid": "Invalid input.",
+  "close": "Close",
   "menu": {
     "languages": {
       "label": "Languages",
@@ -38,6 +39,10 @@
       "name": "Name",
       "iban": "IBAN",
       "balance": "Balance"
+    },
+    "messages": {
+      "created": "The bank account \"{{ name }}\" has been created.",
+      "deleted": "The bank account \"{{ name }}\" has been deleted."
     }
   },
   "shared": {

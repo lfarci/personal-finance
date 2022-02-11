@@ -6,6 +6,7 @@
   "delete": "Supprimer",
   "required": "Requis",
   "invalid": "Entrée invalide.",
+  "close": "Fermer",
   "menu": {
     "languages": {
       "label": "Langues",
@@ -38,6 +39,10 @@
       "name": "Nom",
       "iban": "IBAN",
       "balance": "Montant"
+    },
+    "messages": {
+      "created": "Le compte bancaire \"{{ name }}\" a été enregistré.",
+      "deleted": "Le compte bancaire \"{{ name }}\" a été supprimé."
     }
   },
   "shared": {
