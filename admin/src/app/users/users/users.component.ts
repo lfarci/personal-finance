@@ -105,34 +105,54 @@ export class UsersComponent implements OnInit {
     user.updateDate = new Date().toISOString();
     this.dataSource[index] = user;
     this.dataSource = [...this.dataSource];
-    this.message.info(`${UsersComponent.format(user)} has been updated.`);
+    this.message.info(`users.messages.updated`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
+
   };
 
   private afterUpdateFailed = (user: User): void => {
-    this.message.info(`${UsersComponent.format(user)} could not be updated.`);
+    this.message.info(`users.errors.updated`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
   };
 
   private afterSuccessfulCreation = (user: User) => {
     this.dataSource.unshift(user);
     this.dataSource = [...this.dataSource];
-    this.message.info(`${UsersComponent.format(user)} has been created.`);
+    this.message.info(`users.messages.created`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
   };
 
   private afterCreationFailed = () => {
     this.message.info(`User could not be created.`);
+
   };
 
   private afterSubmissionFailed = (user: User) => {
-    this.message.info(`${UsersComponent.format(user)} could not be updated.`);
+    this.message.info(`users.errors.created`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
   };
 
   private afterDeleted = (user: User) => {
     this.dataSource = this.dataSource.filter(u => u.id !== user.id);
-    this.message.info(`${UsersComponent.format(user)} has been successfully deleted.`);
+    this.message.info(`users.messages.deleted`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
   }
 
   private afterDeleteFailed = (user: User) => {
-    this.message.info(`${UsersComponent.format(user)} could not be deleted.`);
+    this.message.info(`users.errors.deleted`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
   }
 
   private handlePage = (page: UserPage) => {
@@ -142,10 +162,6 @@ export class UsersComponent implements OnInit {
 
   private handleUsers = (owners: User[]) => {
     this.dataSource = owners;
-  };
-
-  private static format = (user: User) => {
-    return `User "${user.firstName} ${user.lastName}"`;
   };
 
 }

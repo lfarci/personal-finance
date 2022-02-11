@@ -27,6 +27,16 @@
       "editTitle": "Modifier l'utilisateur",
       "firstName": "Prénom",
       "lastName": "Nom"
+    },
+    "messages": {
+      "created": "L'utilisateur \"{{ firstName }} {{ lastName }}\" a été enregistré.",
+      "deleted": "L'utilisateur \"{{ firstName }} {{ lastName }}\" a été supprimé.",
+      "updated": "L'utilisateur \"{{ firstName }} {{ lastName }}\" a été modifié."
+    },
+    "errors": {
+      "created": "La création de l'utilisateur a échoué.",
+      "deleted": "La suppression de l'utilisateur \"{{ firstName }} {{ lastName }}\" a échoué.",
+      "updated": "La modification de l'utilisateur \"{{ firstName }} {{ lastName }}\" a échoué."
     }
   },
   "accounts": {

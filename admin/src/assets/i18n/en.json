@@ -27,6 +27,16 @@
       "editTitle": "Edit user",
       "firstName": "First Name",
       "lastName": "Last Name"
+    },
+    "messages": {
+      "created": "User \"{{ firstName }} {{ lastName }}\" has been created.",
+      "deleted": "User \"{{ firstName }} {{ lastName }}\" has been deleted.",
+      "updated": "User \"{{ firstName }} {{ lastName }}\" has been updated."
+    },
+    "errors": {
+      "created": "User creation has failed.",
+      "deleted": "User \"{{ firstName }} {{ lastName }}\" deletion has failed.",
+      "updated": "User \"{{ firstName }} {{ lastName }}\" update has failed."
     }
   },
   "accounts": {
