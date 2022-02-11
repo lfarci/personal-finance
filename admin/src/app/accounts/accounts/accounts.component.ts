@@ -13,9 +13,7 @@ import {RowOption} from "../../shared/models/row-option.model";
 import {PageEvent} from "@angular/material/paginator";
 import {User} from "@rest-client/model/user";
 import {UserService} from "@rest-client/api/user.service";
-import {UserSubmission} from "@rest-client/model/userSubmission";
 import {FormDialogService} from "../../shared/services/form-dialog.service";
-import {UserFormComponent} from "../../users/user/user-form.component";
 import {AccountFormComponent} from "../account/account-form.component";
 import {BankAccountSubmission} from "@rest-client/model/bankAccountSubmission";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -96,7 +94,6 @@ export class AccountsComponent implements OnInit {
 
   private afterCreated(): Observable<BankAccount> {
     const handler = (bankAccount: BankAccountSubmission) => {
-      console.log(bankAccount);
       return this.bankAccountService.create(this.user?.id!!, bankAccount);
     };
     return this.formDialog.afterCreated<BankAccountSubmission, BankAccount>(handler, {
@@ -126,15 +123,26 @@ export class AccountsComponent implements OnInit {
     });
   };
 
-  create() {
+  create = () => {
     this.afterCreated().subscribe({
       next: this.afterSuccessfulCreation,
       error: this.handleError
     });
-  }
+  };
+
+  delete = (bankAccount: BankAccount) => {
+    this.bankAccountService.deleteById(bankAccount.userId, bankAccount.id).subscribe({
+      next: () => this.afterDeleted(bankAccount),
+      error: this.handleError
+    });
+  };
 
   private afterSuccessfulCreation = (bankAccount: BankAccount) => {
     this.dataSource.unshift(bankAccount);
     this.dataSource = [...this.dataSource];
   };
+
+  private afterDeleted(bankAccount: BankAccount) {
+    this.dataSource = this.dataSource.filter(b => b.id !== bankAccount.id);
+  }
 }

@@ -6,4 +6,5 @@
 <app-table
   [resources]="dataSource"
   [displayedColumns]="displayedColumns"
+  (delete)="delete($event)"
 ></app-table>
