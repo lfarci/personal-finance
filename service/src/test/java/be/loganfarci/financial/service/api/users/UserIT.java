@@ -1,6 +1,7 @@
 package be.loganfarci.financial.service.api.users;
 
 import be.loganfarci.financial.service.api.ResourceIT;
+import be.loganfarci.financial.service.api.accounts.persistence.BankAccountRepository;
 import be.loganfarci.financial.service.api.users.model.UserDto;
 import be.loganfarci.financial.service.api.users.persistence.UserRepository;
 import be.loganfarci.financial.service.api.users.service.UserService;
@@ -25,7 +26,8 @@ public abstract class UserIT extends ResourceIT {
     protected static final String USERS_PATH = "/api/users";
     protected static final long FIRST_EXISTING_USER_ID = 0L;
     protected static final long LAST_EXISTING_USER_ID = 4L;
-    protected static final long NEXT_USER_ID = 5L;
+    protected static final long BANK_ACCOUNTS_USER_ID = 5L;
+    protected static final long NEXT_USER_ID = 6L;
 
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final String DEFAULT_DATE_TIME = "2021-01-01 00:00:00";
@@ -35,6 +37,9 @@ public abstract class UserIT extends ResourceIT {
 
     @Autowired
     protected UserRepository repository;
+
+    @Autowired
+    protected BankAccountRepository bankAccountRepository;
 
     @Autowired
     protected UserService service;

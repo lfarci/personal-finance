@@ -31,7 +31,7 @@ public class UserEntity {
     @Column(name = "last_name", length = NAME_COLUMN_LENGTH)
     private String lastName;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<BankAccountEntity> bankAccounts;
 
     @CreationTimestamp

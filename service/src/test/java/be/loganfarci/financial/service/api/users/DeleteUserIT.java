@@ -26,6 +26,20 @@ public class DeleteUserIT extends UserIT {
     }
 
     @Test
+    public void statusIsNoContentWhenDeletingAUserWithBankAccounts() throws Exception {
+        mvc.perform(delete(getUserPathWithId(BANK_ACCOUNTS_USER_ID))).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void usersAndBankAccountsAreDeletedWhenDeletionIsSuccessful() throws Exception {
+        mvc.perform(delete(getUserPathWithId(BANK_ACCOUNTS_USER_ID))).andReturn();
+        assertThat(repository.existsById(BANK_ACCOUNTS_USER_ID)).isFalse();
+        assertThat(bankAccountRepository.existsById(0L)).isFalse();
+        assertThat(bankAccountRepository.existsById(1L)).isFalse();
+        assertThat(bankAccountRepository.existsById(2L)).isFalse();
+    }
+
+    @Test
     public void responseJsonContentIsExpectedError() throws Exception {
         String jsonContent = notFoundJsonContent(NEXT_USER_ID);
         mvc.perform(delete(getUserPathWithId(NEXT_USER_ID))).andExpect(content().json(jsonContent));

@@ -120,7 +120,7 @@ public class SaveBankAccountIT extends BankAccountIT {
     @Test
     public void responseContentHasExpectedIdentifierWhenCreationIsSuccessful() throws Exception {
         BankAccountDto response = parseBankAccountFrom(save(sample()).andReturn());
-        assertThat(response.getId()).isEqualTo(3L);
+        assertThat(response.getId()).isEqualTo(6L);
     }
 
     @Test
