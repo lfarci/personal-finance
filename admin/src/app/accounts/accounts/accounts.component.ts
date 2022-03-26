@@ -132,6 +132,13 @@ export class AccountsComponent implements OnInit {
     });
   };
 
+  edit(bankAccount: BankAccount) {
+    this.formDialog.afterClosed(bankAccount).subscribe({
+      next: (submitted: BankAccount) => this.afterSubmitted(submitted),
+      error: () => this.afterUpdateFailed(bankAccount)
+    });
+  }
+
   delete = (bankAccount: BankAccount) => {
     this.bankAccountService.deleteById(bankAccount.userId, bankAccount.id).subscribe({
       next: () => this.afterDeleted(bankAccount),
@@ -147,10 +154,21 @@ export class AccountsComponent implements OnInit {
     });
   };
 
+  private afterSubmitted = (bankAccount: BankAccount) => {
+    console.log("Successfully submitted for update:", bankAccount)
+  }
+
+  private afterUpdateFailed = (bankAccount: BankAccount): void => {
+    // this.message.info(`users.errors.updated`);
+    console.log("Submitted for update but failed:", bankAccount)
+
+  };
+
   private afterDeleted(bankAccount: BankAccount) {
     this.getCurrentBankAccountPage();
     this.message.info(`accounts.messages.deleted`, {
       name: bankAccount.name
     });
   }
+
 }

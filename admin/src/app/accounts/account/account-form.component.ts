@@ -46,6 +46,9 @@ export class AccountFormComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    if (this.bankAccount) {
+      this.bankAccountForm.patchValue(this.bankAccount);
+    }
   }
 
   get submittedBankAccount(): BankAccountSubmission {

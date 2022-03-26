@@ -7,6 +7,8 @@
   [resources]="dataSource"
   [displayedColumns]="displayedColumns"
   [totalNumberOfResources]="totalNumberOfElements"
+  dateFormat="short"
+  (edit)="edit($event)"
   (delete)="delete($event)"
   (page)="handlePageChange($event)"
 ></app-table>
