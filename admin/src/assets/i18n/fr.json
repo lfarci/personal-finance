@@ -52,7 +52,12 @@
     },
     "messages": {
       "created": "Le compte bancaire \"{{ name }}\" a été enregistré.",
-      "deleted": "Le compte bancaire \"{{ name }}\" a été supprimé."
+      "deleted": "Le compte bancaire \"{{ name }}\" a été supprimé.",
+      "updated": "Le compte bancaire \"{{ name }}\" a été modifié."
+    },
+    "errors": {
+      "updated": "La modification du compte bancaire \"{{ name }}\" a échoué.",
+      "updateConflict": "Le compte bancaire \"{{ name }}\" ne peut pas être mis à jour à cause d'un conflit."
     }
   },
   "shared": {

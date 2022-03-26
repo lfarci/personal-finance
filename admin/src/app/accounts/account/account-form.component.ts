@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {BankAccount} from "@rest-client/model/bankAccount";
 import {BankAccountSubmission} from "@rest-client/model/bankAccountSubmission";
-import {User} from "@rest-client/model/user";
 
 @Component({
   selector: 'app-account',
@@ -12,7 +11,6 @@ import {User} from "@rest-client/model/user";
 })
 export class AccountFormComponent implements OnInit {
 
-  user?: User;
   bankAccount?: BankAccount;
 
   bankAccountForm = new FormGroup({
@@ -28,9 +26,6 @@ export class AccountFormComponent implements OnInit {
   ) {
     if (data && data.resource) {
       this.bankAccount = data.resource;
-    }
-    if (data && data.user) {
-      this.user = data.user;
     }
   }
 
@@ -55,7 +50,6 @@ export class AccountFormComponent implements OnInit {
     return {
       ...this.bankAccount,
       ...this.bankAccountForm.value,
-      userId: this.user?.id!!
     };
   }
 

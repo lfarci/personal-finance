@@ -31,6 +31,42 @@ get:
         application/json:
           schema:
             $ref: '../resources/shared/ServiceError.yaml'
+put:
+  summary: Updates a bank account.
+  operationId: 'updateForUserId'
+  tags:
+    - BankAccount
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: This is the user identfier to update the account for.
+      schema:
+        type: integer
+        format: int64
+    - name: accountId
+      in: path
+      required: true
+      description: This is the id of the bank account to update.
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    description: This is the updated account information.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../resources/accounts/BankAccountSubmission.yaml'
+  responses:
+    '204':
+      description: The bank account has been successfuly deleted.
+    '404':
+      description: The account could not be deleted because it doesn't exist.
+      content:
+        application/json:
+          schema:
+            $ref: '../resources/shared/ServiceError.yaml'
 delete:
   summary: Deletes a bank account.
   operationId: 'deleteById'

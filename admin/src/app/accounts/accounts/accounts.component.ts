@@ -135,7 +135,7 @@ export class AccountsComponent implements OnInit {
   edit(bankAccount: BankAccount) {
     this.formDialog.afterClosed(bankAccount).subscribe({
       next: (submitted: BankAccount) => this.afterSubmitted(submitted),
-      error: () => this.afterUpdateFailed(bankAccount)
+      error: () => this.afterSubmissionFailed(bankAccount)
     });
   }
 
@@ -155,13 +155,42 @@ export class AccountsComponent implements OnInit {
   };
 
   private afterSubmitted = (bankAccount: BankAccount) => {
-    console.log("Successfully submitted for update:", bankAccount)
+    if (this.user && this.user.id) {
+      this.bankAccountService.updateForUserId(this.user.id, bankAccount.id, bankAccount).subscribe({
+        next: () => this.afterUpdated(bankAccount),
+        error: (error: HttpErrorResponse) => this.afterUpdateFailed(bankAccount, error)
+      });
+    } else {
+      this.afterUpdateFailed(bankAccount);
+    }
   }
 
-  private afterUpdateFailed = (bankAccount: BankAccount): void => {
-    // this.message.info(`users.errors.updated`);
-    console.log("Submitted for update but failed:", bankAccount)
+  private afterUpdated = (bankAccount: BankAccount): void => {
+    const index = this.dataSource.findIndex(b => b.id === bankAccount.id);
+    bankAccount.updateDate = new Date().toISOString();
+    this.dataSource[index] = bankAccount;
+    this.dataSource = [...this.dataSource];
+    this.message.info(`accounts.messages.updated`, {
+      name: bankAccount.name,
+    });
+  };
 
+  private afterUpdateFailed = (bankAccount: BankAccount, error?: HttpErrorResponse): void => {
+    if (error && error.status === 409) {
+      this.message.info(`accounts.errors.updateConflict`, {
+        name: bankAccount.name
+      });
+    } else {
+      this.message.info(`accounts.errors.updated`, {
+        name: bankAccount.name
+      });
+    }
+  };
+
+  private afterSubmissionFailed = (bankAccount: BankAccount): void => {
+    this.message.info(`accounts.errors.updated`, {
+      name: bankAccount.name
+    });
   };
 
   private afterDeleted(bankAccount: BankAccount) {

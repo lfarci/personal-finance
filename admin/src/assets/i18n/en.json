@@ -52,7 +52,12 @@
     },
     "messages": {
       "created": "The bank account \"{{ name }}\" has been created.",
-      "deleted": "The bank account \"{{ name }}\" has been deleted."
+      "deleted": "The bank account \"{{ name }}\" has been deleted.",
+      "updated": "The bank account \"{{ name }}\" has been updated."
+    },
+    "errors": {
+      "updated": "Bank account \"{{ name }}\" update has failed.",
+      "updateConflict": "Bank account \"{{ name }}\" can't be updated because of a conflict."
     }
   },
   "shared": {
