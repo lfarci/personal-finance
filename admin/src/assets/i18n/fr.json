@@ -56,6 +56,8 @@
       "updated": "Le compte bancaire \"{{ name }}\" a été modifié."
     },
     "errors": {
+      "creationConflict": "Le compte bancaire n'a pas pû être créé à cause d'un conflit.",
+      "created": "La création du compte bancaire a échoué.",
       "updated": "La modification du compte bancaire \"{{ name }}\" a échoué.",
       "updateConflict": "Le compte bancaire \"{{ name }}\" ne peut pas être mis à jour à cause d'un conflit."
     }

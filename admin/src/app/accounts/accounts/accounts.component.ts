@@ -83,14 +83,14 @@ export class AccountsComponent implements OnInit {
   private getCurrentBankAccountPage = () => {
     this.currentBankAccountPage$.subscribe({
         next: this.handlePage,
-        error: this.handleError
+        error: this.afterCreationFailed
     });
   };
 
   private getCurrentUser = () => {
     this.currentUser$.subscribe({
       next: user => this.user = user,
-      error: this.handleError
+      error: this.afterCreationFailed
     });
   };
 
@@ -114,21 +114,18 @@ export class AccountsComponent implements OnInit {
     this.dataSource = bankAccounts;
   };
 
-  private handleError = (error: HttpErrorResponse) => {
-    console.log(error)
-    this.showMessage(error.error.message);
-  };
-
-  private showMessage = (message: string) => {
-    this.snackBar.open(message, "DISMISS", {
-      duration: 3000
-    });
+  private afterCreationFailed = (error: HttpErrorResponse) => {
+    if (error && error.status === 409) {
+      this.message.info(`accounts.errors.creationConflict`);
+    } else {
+      this.message.info(`accounts.errors.created`);
+    }
   };
 
   create = () => {
     this.afterCreated().subscribe({
       next: this.afterSuccessfulCreation,
-      error: this.handleError
+      error: this.afterCreationFailed
     });
   };
 
@@ -142,7 +139,7 @@ export class AccountsComponent implements OnInit {
   delete = (bankAccount: BankAccount) => {
     this.bankAccountService.deleteById(bankAccount.userId, bankAccount.id).subscribe({
       next: () => this.afterDeleted(bankAccount),
-      error: this.handleError
+      error: this.afterCreationFailed
     });
   };
 
