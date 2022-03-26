@@ -148,7 +148,7 @@ export class AccountsComponent implements OnInit {
   };
 
   private afterDeleted(bankAccount: BankAccount) {
-    this.dataSource = this.dataSource.filter(b => b.id !== bankAccount.id);
+    this.getCurrentBankAccountPage();
     this.message.info(`accounts.messages.deleted`, {
       name: bankAccount.name
     });
