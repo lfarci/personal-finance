@@ -6,5 +6,7 @@
 <app-table
   [resources]="dataSource"
   [displayedColumns]="displayedColumns"
+  [totalNumberOfResources]="totalNumberOfElements"
   (delete)="delete($event)"
+  (page)="handlePageChange($event)"
 ></app-table>
