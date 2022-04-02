@@ -7,6 +7,7 @@
   "required": "Required",
   "invalid": "Invalid input.",
   "close": "Close",
+  "confirm": "Confirm",
   "menu": {
     "languages": {
       "label": "Languages",
@@ -63,6 +64,12 @@
     }
   },
   "shared": {
+    "dialog": {
+      "delete": {
+        "title": "Delete",
+        "message": "Do you really want to delete this item? It won't be possible to recover it."
+      }
+    },
     "table": {
       "firstName": "First Name",
       "lastName": "Last Name",

@@ -7,6 +7,7 @@
   "required": "Requis",
   "invalid": "Entrée invalide.",
   "close": "Fermer",
+  "confirm": "Confirmer",
   "menu": {
     "languages": {
       "label": "Langues",
@@ -63,6 +64,12 @@
     }
   },
   "shared": {
+    "dialog": {
+      "delete": {
+        "title": "Suppression",
+        "message": "Êtes-vous sûr de vouloir définitivement supprimer cette ressource ? Il ne sera pas possible de la restaurer."
+      }
+    },
     "table": {
       "firstName": "Prénom",
       "lastName": "Nom",

@@ -5,9 +5,15 @@ import {
   Output,
 } from '@angular/core';
 import {RowOption} from "../../models/row-option.model";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmitionDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {PageEvent} from "@angular/material/paginator";
+import {TranslateService} from "@ngx-translate/core";
+
+interface DeleteDialogTranslation {
+  title: string;
+  message: string;
+}
 
 @Component({
   selector: 'app-table',
@@ -40,7 +46,10 @@ export class TableComponent<Resource> {
   @Output()
   page = new EventEmitter<PageEvent>();
 
-  constructor(private readonly dialog: MatDialog) {}
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly translate: TranslateService
+  ) {}
 
   get columns() { return this.displayedColumns.filter(c => c !== 'options'); }
 
@@ -48,25 +57,30 @@ export class TableComponent<Resource> {
 
   get showRowOptions() { return this.displayedColumns.includes('options'); };
 
-  openConfirmationDialog = (resource: Resource): void => {
-    const dialogRef = this.dialog.open(ConfirmitionDialogComponent, {
-      data: {
-        title: "Deletion",
-        message: `Do you really want to delete this item? It won't be possible to recover it.`
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.handleConfirmationDialogResult(resource, result);
+  afterDeleteClicked = (resource: Resource): void => {
+    this.translate.get("shared.dialog.delete").subscribe({
+      next: t => this.afterDeleteDialogTranslationResolved(resource, t)
     });
   };
 
-  handleConfirmationDialogResult = (resource: Resource, confirmed: boolean | undefined) => {
+  openDeleteDialog = (translation: DeleteDialogTranslation): MatDialogRef<any> => {
+    return this.dialog.open(ConfirmitionDialogComponent, { data: translation });
+  };
+
+  afterDeleteDialogTranslationResolved = (resource: Resource, translation: DeleteDialogTranslation) => {
+    const deleteDialogRef = this.openDeleteDialog(translation);
+    deleteDialogRef.afterClosed().subscribe(result => {
+      this.afterDeleteDialogClosed(resource, result);
+    });
+  };
+
+  afterDeleteDialogClosed = (resource: Resource, confirmed: boolean | undefined) => {
     if (confirmed) {
-      this.handleDeleteConfirmation(resource);
+      this.afterDelete(resource);
     }
   }
 
-  handleDeleteConfirmation(resource: Resource) {
+  afterDelete(resource: Resource) {
     this.delete.emit(resource);
   }
 
